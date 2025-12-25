@@ -5,6 +5,9 @@ from .serializers import SignupSerializer
 
 @api_view(['POST'])
 def signup(request):
+    print("🔥 signup view hit")
+    print("RAW request.data:", request.data)
+
     serializer = SignupSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -12,4 +15,6 @@ def signup(request):
             {"message": "User created successfully"},
             status=status.HTTP_201_CREATED
         )
+    print("❌ serializer errors:", serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

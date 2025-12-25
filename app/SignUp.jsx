@@ -11,6 +11,8 @@ const SignUp = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [agreePolicy, setAgreePolicy] = useState(false);
+    const [licenseImageBase64, setLicenseImageBase64] = useState(null)
+    const [licenseImageUri, setLicenseImageUri] = useState(null)
     const [dateOfBirth, setDateOfBirth] = useState('')
     const [gender, setGender] = useState(null)
     const [showGenderList, setShowGenderList] = useState(false)
@@ -19,22 +21,19 @@ const SignUp = () => {
     const [specialization, setSpecialization] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [licenseImage, setLicenseImage] = useState(null)
     const pickLicenseImage = async () => {
-      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync()
-
-      if (permission.status !== 'granted') {
-        alert('Permission is required to upload license image')
-        return
-      }
-
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 1,
+        base64: true,
       })
 
-      if (!result.canceled) {
-        setLicenseImage(result.assets[0].uri)
+      if (!result.canceled && result.assets[0].base64) {
+        setLicenseImageUri(result.assets[0].uri)
+        setLicenseImageBase64(result.assets[0].base64)
+        console.log("Base64 length:", result.assets[0].base64.length)
+      } else {
+        alert("Image selection failed")
       }
     }
 
@@ -47,6 +46,20 @@ const SignUp = () => {
 
       const formattedDOB = dateOfBirth.split('/').reverse().join('-')
 
+      console.log("Submitting signup:", {
+        role,
+        gender,
+        base64Length: licenseImageBase64?.length,
+      });
+
+      if (role === 'Doctor') {
+        if (!licenseImageBase64 || licenseImageBase64.length < 100) {
+          alert("Please upload a valid medical license image.");
+          return;
+        }
+        console.log("Sending license base64 length:", licenseImageBase64.length);  // Check in Expo logs
+      }
+
       try {
         const response = await fetch(`${API_BASE_URL}/api/accounts/signup/`, {
           method: "POST",
@@ -57,13 +70,11 @@ const SignUp = () => {
             username: username,
             email: email,
             password: password,
-
-            // IMPORTANT: must match Django choices
-            role: role.toLowerCase(),      // "doctor" or "patient"
-            gender: gender.toLowerCase(),  // "male" or "female"
-
-            date_of_birth: formattedDOB,    // "YYYY-MM-DD"
+            role: role.toLowerCase(),
+            gender: gender.toLowerCase(),
+            date_of_birth: formattedDOB,
             specialization: specialization,
+            ...(role === 'Doctor' && { license_image: licenseImageBase64 }),  // ← Only include if Doctor and base64 exists
           }),
         });
 
@@ -257,18 +268,18 @@ return (
                   onPress={pickLicenseImage}
                 >
                   <Text style={{ color: '#555' }}>
-                    {licenseImage ? 'License Uploaded' : 'Upload Medical License'}
+                    {licenseImageUri ? 'License Uploaded' : 'Upload Medical License'}
                   </Text>
                 </TouchableOpacity>
 
-                {licenseImage && (
+                {licenseImageUri && (
                   <View style={styles.licenseContainer}>
                     <Text style={styles.licenseText}>
                       License image selected
                     </Text>
 
                     <Image
-                      source={{ uri: licenseImage }}
+                      source={{ uri: licenseImageUri }}
                       style={styles.licensePreview}
                     />
                   </View>
@@ -323,7 +334,7 @@ return (
               password !== confirmPassword ||
               !dateOfBirth ||
               !gender ||
-              (role === 'Doctor' && (!specialization || !licenseImage))
+              (role === 'Doctor' && (!specialization || !licenseImageUri))
             ) && { opacity: 0.5 }
           ]}
           disabled={
@@ -334,7 +345,7 @@ return (
             password !== confirmPassword ||
             !dateOfBirth ||
             !gender ||
-            (role === 'Doctor' && (!specialization || !licenseImage))
+            (role === 'Doctor' && (!specialization || !licenseImageUri))
           }
           onPress={handleSignup}
         >
