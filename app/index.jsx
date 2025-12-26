@@ -134,16 +134,11 @@ const Home = () => {
 export default Home
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#88C8FF",
-    alignItems: "center",
-  },
   back: {
     backgroundColor: "#88C8FF",
     paddingVertical: 15,
     borderRadius: 50,
-    marginTop: 80,
+    marginTop: 40,
     marginLeft: 50,
     marginRight: 720,
     alignItems: "center",
@@ -186,7 +181,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontWeight: "700", //Bold
+    fontWeight: "700",
     marginTop: 20,
     color: "lightblue",
   },
@@ -198,8 +193,8 @@ const styles = StyleSheet.create({
   box: {
     padding: 20,
     borderRadius: 12,
-    marginLeft: 80,
-    marginRight: 80,
+    marginLeft: 40,
+    marginRight: 40,
   },
   inputRow: {
     flexDirection: "row",
@@ -228,7 +223,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#88C8FF',
     paddingVertical: 1,
-    marginLeft: 377,
+    marginLeft: 80,
   },
   forgetpassword: {
     flexDirection: "row",
@@ -249,10 +244,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#88C8FF",
     paddingVertical: 15,
     borderRadius: 10,
-    marginTop: 300,
+    marginTop: 150,
     alignItems: "center",
-    marginLeft: 100,
-    marginRight: 100,
+    marginLeft: 60,
+    marginRight: 60,
   },
   buttonText: {
     color: "black",
@@ -261,7 +256,7 @@ const styles = StyleSheet.create({
   },
   signupRow: {
     flexDirection: "row",
-    marginTop: 30,
+    marginTop: 20,
     justifyContent: 'center',
   },
   signupLink: {
