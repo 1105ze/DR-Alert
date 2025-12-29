@@ -104,7 +104,7 @@ const upload = () => {
         </View>
 
         <View>
-            <TouchableOpacity style={styles.back} onPress={() => router.push('/homepage')}>
+            <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
                 <Text style={styles.notificationText}>‹   Upload Images</Text>
             </TouchableOpacity>
         </View>

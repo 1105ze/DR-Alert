@@ -9,7 +9,7 @@ const notificationscreen = () => {
           <View style={styles.header}>
               <TouchableOpacity style={styles.profile} onPress={() => router.push('/firstpage')}>
                   <Image source={require('../assets/people_icon.png')} style={styles.profileImage} />
-              </TouchableOpacity>s
+              </TouchableOpacity>
 
               <View style={styles.Texttitle}>
                   <Text style={styles.title}>DR Detection</Text>
@@ -20,7 +20,7 @@ const notificationscreen = () => {
           </View>
 
           <View>
-              <TouchableOpacity style={styles.back} onPress={() => router.push('/homepage')}>
+              <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
                   <Text style={styles.notificationText}>‹   Notifications</Text>
               </TouchableOpacity>
           </View>

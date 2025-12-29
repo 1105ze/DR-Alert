@@ -1,9 +1,21 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native'
 import React, { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const home = () => {
     const router = useRouter();
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const loadUser = async () => {
+            const storedUser = await AsyncStorage.getItem("user");
+            if (storedUser) {
+                setUser(JSON.parse(storedUser));
+            }
+        };
+        loadUser();
+    }, []);
 
     const ads = [
         {id: "1", image: require('../assets/eye_open.png')},
@@ -48,7 +60,9 @@ const home = () => {
                                 <Image source={require('../assets/notification_icon.png')} style={styles.notificationIcon} />
                             </TouchableOpacity>
                         </View>
-                        <Text style={styles.name}>Hey, Ze Gui</Text>
+                        <Text style={styles.name}>
+                            Hey, {user ? user.username : ""}
+                        </Text>
                     </View>
 
                     <View style={styles.navigationBar}>

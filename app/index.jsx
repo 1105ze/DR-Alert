@@ -48,8 +48,7 @@ const Home = () => {
 
         alert("Login successful!");
 
-        // 🔥 REPLACE, NOT PUSH
-        router.replace('/homepage');
+        router.replace('/home');
       } else {
         if (data.error === "NO_ACCOUNT") {
           alert("No account found. Please create an account.");
