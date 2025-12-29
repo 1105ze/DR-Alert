@@ -77,11 +77,6 @@ const home = () => {
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/upload')} >
-                            <Image source={require('../assets/note_icon.png')} style={styles.navigationImage} />
-                            <Text style={styles.navigationText}>View Report</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/upload')} >
                             <Image source={require('../assets/specialist_icon.png')} style={styles.navigationImage} />
                             <Text style={styles.navigationText}>Specialist</Text>
                         </TouchableOpacity>

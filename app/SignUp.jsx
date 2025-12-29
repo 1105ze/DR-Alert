@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -99,6 +99,7 @@ const SignUp = () => {
 
 
 return (
+  <ScrollView>
     <View>
         <View>
             <TouchableOpacity style={styles.back} onPress={() => router.push('/firstpage')}>
@@ -362,6 +363,7 @@ return (
             </TouchableOpacity>
         </View>
     </View>
+  </ScrollView>
 )
 }
 
