@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   signupLink: {
-    color: "#88C8FF",
+    color: "black",
     fontWeight: "700",
     fontSize: 16,
     marginBottom: 500,

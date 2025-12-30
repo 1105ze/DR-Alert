@@ -139,7 +139,7 @@ return (
                 style={styles.iconImage}
               />
               <TextInput
-                placeholder="Date of Birth (DD/MM/YYYY)"
+                placeholder="Date of Birth (YYYY-MM-DD)"
                 value={dateOfBirth}
                 onChangeText={setDateOfBirth}
                 style={{ flex: 1 }}
