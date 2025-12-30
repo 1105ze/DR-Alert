@@ -92,6 +92,7 @@ const Home = () => {
               placeholder="Username"
               value={username}
               onChangeText={setUsername}
+              style={styles.textInput}
             />
         </View>
 
@@ -104,9 +105,10 @@ const Home = () => {
               secureTextEntry={!showPassword}
               value={password}
               onChangeText={setPassword}
+              style={styles.textInput}
             />
             
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeBtn} >
                 <Image source={showPassword ? require('../assets/eye_open.png') : require('../assets/eye_closed.png')}style={styles.eyeIcon}/>
             </TouchableOpacity>
         </View>
@@ -198,18 +200,23 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     height: 50,
   },
+  textInput: {
+    flex: 1,
+    paddingVertical: 0  
+  },
   iconImage: {
     width: 20,
     height: 20,
     marginRight: 10,
     resizeMode: 'contain',
   },
+  eyeBtn: {
+    paddingLeft: 10,
+  },
   eyeIcon: {
-    width: 25,
-    height: 25,
+    width: 22,
+    height: 22,
     tintColor: "#555",
-    marginLeft: "175",
-    marginTop: "5",
   },
   forgotPasswordLink: {
     fontSize: 14,
