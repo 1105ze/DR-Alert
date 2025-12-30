@@ -27,14 +27,14 @@ const historyData = [
   },
   {
     id: '4',
-    result: 'Moderate',
+    result: 'Severe',
     color: '#FF9800',
     image: require('../assets/eye_open.png'),
     time: '11/18/2025, 4:30:00 PM',
   },
   {
     id: '5',
-    result: 'Moderate',
+    result: 'Proliferative',
     color: '#F44336',
     image: require('../assets/eye_open.png'),
     time: '11/18/2025, 4:30:00 PM',
@@ -47,7 +47,7 @@ const history = () => {
     return (
         <View>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.profile} onPress={() => router.push('/firstpage')}>
+                <TouchableOpacity style={styles.profile} onPress={() => router.push('/home')}>
                     <Image source={require('../assets/people_icon.png')} style={styles.profileImage} />
                 </TouchableOpacity>
 
@@ -70,6 +70,7 @@ const history = () => {
                     <TouchableOpacity
                         key={item.id}
                         style={[styles.card, { borderColor: item.color }]}
+                        onPress={() => router.push('/result')}
                     >
                         <Image source={item.image} style={styles.cardImage} />
 
@@ -87,7 +88,7 @@ const history = () => {
                     </TouchableOpacity>
                     ))}            
                     
-                    <TouchableOpacity style={styles.analysisButton}>
+                    <TouchableOpacity style={styles.analysisButton} onPress={() => router.push('/upload')}>
                         <Image source={require('../assets/upload_icon.png')} style={styles.uploadIcon} />
                         <Text style={styles.analysisText}>New Analysis</Text>
                     </TouchableOpacity>

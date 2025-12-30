@@ -89,7 +89,7 @@ const upload = () => {
   return (
     <View style={{flex: 1}}>
         <View style={styles.header}>
-            <TouchableOpacity style={styles.profile} onPress={() => router.push('/firstpage')}>
+            <TouchableOpacity style={styles.profile} onPress={() => router.push('/home')}>
                 <Image source={require('../assets/people_icon.png')} style={styles.profileImage} />
             </TouchableOpacity>
 
@@ -145,7 +145,7 @@ const upload = () => {
                   )}
             </View>
 
-            <TouchableOpacity style={styles.historyButton}>
+            <TouchableOpacity style={styles.historyButton} onPress={() => router.push('/history')}>
                 <Image source={require('../assets/clock_icon.png')} style={styles.clockIcon} />
                 <Text style={styles.historyText}>View Detection History</Text>
             </TouchableOpacity>

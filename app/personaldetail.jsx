@@ -14,7 +14,7 @@ const personaldetail = () => {
     const [occupation, setOccupation] = React.useState("IT");
     const [email, setEmail] = React.useState("123@gmail.com");
     const [contact, setContact] = React.useState("+60 12-3456789");
-    const [password, setPassword] = React.useState("Zegui123.");
+    const [password, setPassword] = React.useState("Zegui123");
 
     const occupations = ["IT", "Student", "Doctor", "Teacher", "Engineer", "Others"];
     const [showOccModal, setShowOccModal] = React.useState(false);
