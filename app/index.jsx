@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     tintColor: "#555",
-    marginLeft: "475",
+    marginLeft: "175",
     marginTop: "5",
   },
   forgotPasswordLink: {
