@@ -1,9 +1,24 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
 
-const notificationscreen = () => {
-  const router = useRouter();
+
+  const notificationscreen = () => {
+    const router = useRouter();
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+      const loadUser = async () => {
+        const storedUser = await AsyncStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      };
+      loadUser();
+    }, []);
+
     return (
       <View>
           <View style={styles.header}>
@@ -16,7 +31,7 @@ const notificationscreen = () => {
 
                   <Text style={styles.subtitle}>Diabetic Retinopathy Screening</Text>
               </View>
-              <Text style={styles.username}>Ze Gui</Text>
+              <Text style={styles.username}>Hey, {user ? user.username : ""}</Text>
           </View>
 
           <View>

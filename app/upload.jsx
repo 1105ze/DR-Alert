@@ -21,6 +21,7 @@ const upload = () => {
       }; 
       loadUser(); 
     }, []);
+    
     const [imageBase64, setImageBase64] = useState(null);
     const openImagePicker = async () => {
       const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();

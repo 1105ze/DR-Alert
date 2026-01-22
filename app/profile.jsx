@@ -1,10 +1,23 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Switch} from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
 
 const profile = () => {
     const router = useRouter();
     const [notifEnabled, setNotifEnabled] = React.useState(true);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+      const loadUser = async () => {
+        const storedUser = await AsyncStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      };
+      loadUser();
+    }, []);
 
     return (
         <ScrollView>
@@ -26,7 +39,7 @@ const profile = () => {
                         </TouchableOpacity>
                     </View>
 
-                    <Text style={styles.nameText}>Ze Gui</Text>
+                    <Text style={styles.nameText}>{user ? user.username : ""}</Text>
                 </View>
 
                 <View style={styles.button}>
