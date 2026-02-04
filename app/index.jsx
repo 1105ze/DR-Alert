@@ -33,10 +33,14 @@ const Home = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // 🔥 REMOVE OLD USER COMPLETELY
+        // 🔥 clear old data
         await AsyncStorage.removeItem("user");
+        await AsyncStorage.removeItem("accessToken");
 
-        // ✅ SAVE NEW USER
+        // ✅ SAVE TOKEN (THIS WAS MISSING)
+        await AsyncStorage.setItem("accessToken", data.access);
+
+        // ✅ SAVE USER
         await AsyncStorage.setItem(
           "user",
           JSON.stringify({
@@ -47,8 +51,7 @@ const Home = () => {
         );
 
         alert("Login successful!");
-
-        router.replace('/home');
+        router.replace("/home");
       } else {
         if (data.error === "NO_ACCOUNT") {
           alert("No account found. Please create an account.");

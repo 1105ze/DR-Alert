@@ -1,33 +1,106 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput, Pressable} from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from "../config";
+
 
 const personaldetail = () => {
     const router = useRouter();
     const [isEditing, setIsEditing] = React.useState(false);
+    
 
-    const [username, setUsername] = React.useState("Ze Gui");
-    const [gender, setGender] = React.useState("male");
-    const [day, setDay] = React.useState("01");
-    const [month, setMonth] = React.useState("01");
-    const [year, setYear] = React.useState("2025");
-    const [occupation, setOccupation] = React.useState("IT");
-    const [email, setEmail] = React.useState("123@gmail.com");
+    // const [username, setUsername] = React.useState("Ze Gui");
+    // const [gender, setGender] = React.useState("male");
+    // const [day, setDay] = React.useState("01");
+    // const [month, setMonth] = React.useState("01");
+    // const [year, setYear] = React.useState("2025");
+    // const [occupation, setOccupation] = React.useState("IT");
+    // const [email, setEmail] = React.useState("123@gmail.com");
+    const [username, setUsername] = React.useState("");
+    const [gender, setGender] = React.useState("");
+    const [day, setDay] = React.useState("");
+    const [month, setMonth] = React.useState("");
+    const [year, setYear] = React.useState("");
+    const [email, setEmail] = React.useState("");
     const [contact, setContact] = React.useState("+60 12-3456789");
-    const [password, setPassword] = React.useState("Zegui123");
+    // const [password, setPassword] = React.useState("Zegui123");
 
+    const [occupation, setOccupation] = React.useState("");
     const occupations = ["IT", "Student", "Doctor", "Teacher", "Engineer", "Others"];
+
     const [showOccModal, setShowOccModal] = React.useState(false);
 
     const toggleEdit = () => setIsEditing((v) => !v);
+    useEffect(() => {
+        const loadProfile = async () => {
+            const token = await AsyncStorage.getItem("accessToken");
 
-    const saveProfile = () => {
+            const res = await fetch(`${API_BASE_URL}/api/accounts/profile/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            });
+
+            if (res.ok) {
+            const data = await res.json();
+
+            setUsername(data.username);
+            setGender(data.gender || "");
+            setContact(data.contact || "");
+            setOccupation(data.occupation || "");
+
+            if (data.date_of_birth) {
+                const [y, m, d] = data.date_of_birth.split("-");
+                setYear(y);
+                setMonth(m);
+                setDay(d);
+            }
+
+            setEmail(data.email || "");
+            }
+        };
+
+        loadProfile();
+        }, []);
+
+
+    const saveProfile = async () => {
+        const token = await AsyncStorage.getItem("accessToken");
+        if (!token) return;
+
+        const dob =
+            year && month && day ? `${year}-${month}-${day}` : null;
+
+        const res = await fetch(`${API_BASE_URL}/api/accounts/profile/`, {
+            method: "PUT",
+            headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+            gender,
+            date_of_birth: dob,
+            email,
+            contact,
+            occupation,
+            }),
+        });
+
+        if (!res.ok) {
+            console.log("Profile update failed", await res.text());
+            return;
+        }
+
         setIsEditing(false);
-    };
+        };
+
+
 
     const Radio = ({ label, selected, onPress }) => {
     return (
-        <Pressable onPress={onPress} style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Pressable onPress={onPress} disabled={!isEditing} style={{ flexDirection: 'row', alignItems: 'center' }}>
         <View style={{
             width: 20,
             height: 20,
@@ -62,7 +135,7 @@ const personaldetail = () => {
 
                 <View style={styles.card}>
                     <Text style={[styles.label, !isEditing && styles.disabledWrap]}>Username</Text>
-                    <TextInput value={username} onChangeText={setUsername} editable={isEditing} style={[styles.labelInput, !isEditing && styles.disabledInput]} />
+                    <TextInput value={username} editable={false} style={[styles.labelInput, !isEditing && styles.disabledInput]} />
 
                     <Text style={styles.label}>Gender</Text>
                     <View style={styles.genderRow}>
@@ -111,8 +184,8 @@ const personaldetail = () => {
                     <Text style={[styles.label, !isEditing && styles.disabledWrap]}>Contact Number</Text>
                     <TextInput value={contact} onChangeText={setContact} editable={isEditing} style={[styles.labelInput, !isEditing && styles.disabledInput]} />
 
-                    <Text style={[styles.label, !isEditing && styles.disabledWrap]}>Password</Text>
-                    <TextInput value={password} onChangeText={setPassword} editable={isEditing} style={[styles.labelInput, !isEditing && styles.disabledInput]} />
+                    {/* <Text style={[styles.label, !isEditing && styles.disabledWrap]}>Password</Text>
+                    <TextInput value={password} onChangeText={setPassword} editable={isEditing} style={[styles.labelInput, !isEditing && styles.disabledInput]} /> */}
                 
                     {!isEditing ? (
                         <TouchableOpacity style={styles.editButton} activeOpacity={0.85} onPress={toggleEdit}>
@@ -277,9 +350,6 @@ const styles = StyleSheet.create({
     selectTextDisabled: { 
         color: "#777" 
     },
-    inputDisabled: { 
-        backgroundColor: "#F0F0F0" 
-    },
     editButton: {
         marginTop: 30,
         height: 45,
@@ -339,5 +409,8 @@ const styles = StyleSheet.create({
         fontSize: 11,
         textAlign: 'center',
         marginTop: 560,
-    }
+    },
+    disabledWrap: {
+    color: "#777",
+    },
 })
