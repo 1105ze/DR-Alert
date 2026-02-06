@@ -21,7 +21,10 @@ const upload = () => {
       }; 
       loadUser(); 
     }, []);
-    
+    const handleAnalyze = async () => {
+      await uploadImageToBackend();
+      router.push('/result');
+    };
     const [imageBase64, setImageBase64] = useState(null);
     const openImagePicker = async () => {
       const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -139,7 +142,7 @@ const upload = () => {
                 </View>
 
                 {image && (
-                    <TouchableOpacity style={styles.analyzeImage} onPress={uploadImageToBackend}>
+                    <TouchableOpacity style={styles.analyzeImage} onPress={handleAnalyze}>
                       <Image source={require('../assets/camera_icon.png')} style={styles.cameraIcon} />
                       <Text style={styles.analyzeText}>Analyze Image</Text>
                     </TouchableOpacity>
