@@ -3,7 +3,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-venv/
+backend/.venv/
 *.sqlite3
 
 # macOS

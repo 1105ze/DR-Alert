@@ -439,41 +439,127 @@ const personaldetail = () => {
 
 
     const toggleEdit = () => setIsEditing((v) => !v);
-    useEffect(() => {
-        const loadProfile = async () => {
-            const token = await AsyncStorage.getItem("accessToken");
-            const userStr = await AsyncStorage.getItem("user");
+        useEffect(() => {
+            console.log("API_BASE_URL =", API_BASE_URL);
+            let isMounted = true;
 
-            if (userStr) {
-            const user = JSON.parse(userStr);
-            setRole(user.role); // "doctor" or "patient"
-            }
+            const loadProfile = async () => {
+                const token = await AsyncStorage.getItem("accessToken");
+                const userStr = await AsyncStorage.getItem("user");
 
-            const res = await fetch(`${API_BASE_URL}/api/accounts/profile/`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            });
+                if (!token) return;
 
-            if (res.ok) {
-            const data = await res.json();
+                if (userStr && isMounted) {
+                const user = JSON.parse(userStr);
+                setRole(user.role);
+                }
 
-            setUsername(data.username);
-            setGender(data.gender || "");
-            // setContact(data.contact || "");
-            setEmail(data.email || "");
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-            if (data.date_of_birth) {
-                const [y, m, d] = data.date_of_birth.split("-");
-                setYear(y);
-                setMonth(m);
-                setDay(d);
-            }
-            }
-        };
+                try {
+                const res = await fetch(`${API_BASE_URL}/api/accounts/profile/`, {
+                    headers: {
+                    Authorization: `Bearer ${token}`,
+                    },
+                    signal: controller.signal,
+                });
 
-        loadProfile();
-        }, []);
+                if (res.status === 401 || res.status === 403) {
+                    await AsyncStorage.multiRemove(["accessToken", "user"]);
+                    router.replace("/firstpage");
+                    return;
+                }
+
+                if (!res.ok) {
+                    const txt = await res.text();
+                    console.log("Profile fetch error:", res.status, txt);
+                    return;
+                }
+
+                const data = await res.json();
+                if (!isMounted) return;
+
+                setUsername(data.username);
+                setGender(data.gender || "");
+                setEmail(data.email || "");
+
+                if (data.date_of_birth) {
+                    const [y, m, d] = data.date_of_birth.split("-");
+                    setYear(y);
+                    setMonth(m);
+                    setDay(d);
+                }
+                } catch (e) {
+                if (e.name === "AbortError") {
+                    console.log("Profile fetch timeout");
+                } else {
+                    console.log("Profile fetch failed:", e.message);
+                }
+                } finally {
+                clearTimeout(timeoutId);
+                }
+            };
+
+            loadProfile();
+
+            return () => {
+                isMounted = false;
+            };
+            }, []);
+
+    // useEffect(() => {
+    //     const loadProfile = async () => {
+    //         const token = await AsyncStorage.getItem("accessToken");
+    //         const userStr = await AsyncStorage.getItem("user");
+
+    //         if (userStr) {
+    //         const user = JSON.parse(userStr);
+    //         setRole(user.role); // "doctor" or "patient"
+    //         }
+
+    //         // const res = await fetch(`${API_BASE_URL}/api/accounts/profile/`, {
+    //         // headers: {
+    //         //     Authorization: `Bearer ${token}`,
+    //         // },
+    //         // });
+    //         const controller = new AbortController();
+    //             setTimeout(() => controller.abort(), 8000);
+
+    //             let res;
+    //             try {
+    //             if (!token) return;
+
+    //             res = await fetch(`${API_BASE_URL}/api/accounts/profile/`, {
+    //                 headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //                 },
+    //                 signal: controller.signal,
+    //             });
+    //             } catch (e) {
+    //             console.log("Profile fetch failed:", e.message);
+    //             return;
+    //             }
+
+    //         if (res.ok) {
+    //         const data = await res.json();
+
+    //         setUsername(data.username);
+    //         setGender(data.gender || "");
+    //         // setContact(data.contact || "");
+    //         setEmail(data.email || "");
+
+    //         if (data.date_of_birth) {
+    //             const [y, m, d] = data.date_of_birth.split("-");
+    //             setYear(y);
+    //             setMonth(m);
+    //             setDay(d);
+    //         }
+    //         }
+    //     };
+
+    //     loadProfile();
+    //     }, []);
 
 
     const saveProfile = async () => {
@@ -642,34 +728,6 @@ const personaldetail = () => {
                     )}
                 
                 </View>
-
-                {/* {showOccModal && (
-                    <View style={styles.modalOverlay}>
-                        <View style={styles.modalCard}>
-                        <Text style={styles.modalTitle}>Select Occupation</Text>
-
-                        {occupations.map((item) => (
-                            <TouchableOpacity
-                            key={item}
-                            style={styles.modalItem}
-                            onPress={() => {
-                                setOccupation(item);
-                                setShowOccModal(false);
-                            }}
-                            >
-                            <Text style={styles.modalItemText}>{item}</Text>
-                            </TouchableOpacity>
-                        ))}
-
-                        <TouchableOpacity
-                            style={styles.modalClose}
-                            onPress={() => setShowOccModal(false)}
-                        >
-                            <Text style={styles.modalCloseText}>Cancel</Text>
-                        </TouchableOpacity>
-                        </View>
-                    </View>
-                )} */}
 
                 <Text style={styles.disclaimer}>
                     This is a screening tool only. Consult a healthcare professional for diagnosis.
