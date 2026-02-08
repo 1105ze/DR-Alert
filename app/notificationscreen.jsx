@@ -3,11 +3,56 @@ import React from 'react'
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
+import { API_BASE_URL } from "../config";
 
 
   const notificationscreen = () => {
     const router = useRouter();
     const [user, setUser] = useState(null);
+    const [notifications, setNotifications] = useState([]);
+    useEffect(() => {
+      const fetchNotifications = async () => {
+        const token = await AsyncStorage.getItem("accessToken");
+        if (!token) return;
+
+        const res = await fetch(
+          `${API_BASE_URL}/api/accounts/notifications/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await res.json();
+        setNotifications(data);
+
+        // 👇 AUTO mark unread as read when page opens
+        const unread = data.filter((n) => !n.is_read);
+
+        await Promise.all(
+          unread.map((n) =>
+            fetch(
+              `${API_BASE_URL}/api/accounts/notifications/${n.id}/read/`,
+              {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+          )
+        );
+
+        // update UI
+        setNotifications((prev) =>
+          prev.map((n) => ({ ...n, is_read: true }))
+        );
+      };
+
+      fetchNotifications();
+    }, []);
+
 
     useEffect(() => {
       const loadUser = async () => {
@@ -18,6 +63,29 @@ import { useState, useEffect } from 'react';
       };
       loadUser();
     }, []);
+
+    const markAllAsRead = async () => {
+      const token = await AsyncStorage.getItem("accessToken");
+
+      await Promise.all(
+        notifications
+          .filter((n) => !n.is_read)
+          .map((n) =>
+            fetch(`${API_BASE_URL}/api/accounts/notifications/${n.id}/read/`,
+              {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+          )
+      );
+
+      setNotifications((prev) =>
+        prev.map((n) => ({ ...n, is_read: true }))
+      );
+    };
 
     return (
       <View>
@@ -41,42 +109,55 @@ import { useState, useEffect } from 'react';
           </View>
 
           <ScrollView>
-              <View style={styles.card}>
-                  <Image source={require('../assets/note_icon.png')} style={styles.noteImage} />
+            {notifications.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                style={[
+                  styles.card,
+                  item.is_read && styles.grayCard
+                ]}
+                onPress={async () => {
+                  const token = await AsyncStorage.getItem("accessToken");
 
-                  <View>
-                      <Text style={styles.topic}>Classification Result is Ready!</Text>
+                  await fetch(`${API_BASE_URL}/api/accounts/notifications/${item.id}/read/`,
+                    {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                      },
+                    }
+                  );
 
-                      <Text style={styles.cardText}>
-                        Your image upload from [Date] has been classified and verified.
-                        Tap to view the official report and recommended next steps.
-                      </Text>
+                  setNotifications((prev) =>
+                    prev.map((n) =>
+                      n.id === item.id ? { ...n, is_read: true } : n
+                    )
+                  );
+                }}
+              >
+                <Image
+                  source={require('../assets/note_icon.png')}
+                  style={styles.noteImage}
+                />
 
-                      <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>View Full Report</Text>
-                      </TouchableOpacity>
+                <View>
+                  <Text style={styles.topic}>
+                    {item.receiver_role === "doctor"
+                      ? "Doctor Notification"
+                      : "Patient Notification"}
+                  </Text>
 
-                      <Text style={styles.time}>2 hours ago</Text>
-                  </View>
-              </View>
+                  <Text style={styles.cardText}>{item.message}</Text>
 
-              <View style={[styles.card, styles.grayCard]}>
-                  <Image source={require('../assets/medical_icon.png')} style={styles.noteImage} />
-
-                  <View>
-                      <Text style={styles.topic}>Time to Re-Screen</Text>
-
-                      <Text style={styles.cardText}>
-                        Based on your last [Mild/Moderate] result, it's time for your follow-up screening.
-                        We recommend another check within 3 months.
-                      </Text>
-
-                      <Text style={styles.time}>2 hours ago</Text>
-                  </View>
-              </View>
+                  <Text style={styles.time}>
+                    {new Date(item.sent_at).toLocaleString()}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
           </ScrollView>
 
-          <TouchableOpacity style={styles.markRead}>
+          <TouchableOpacity style={styles.markRead} onPress={markAllAsRead}>
             <Image source={require('../assets/eye_open.png')} style={styles.eyeIcon} />
               <Text style={styles.markReadText}>Mark All As Read</Text>
           </TouchableOpacity>

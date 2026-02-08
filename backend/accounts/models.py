@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 import base64
 from django.utils.html import format_html
+from django.conf import settings
 
 class User(AbstractUser):
     ROLE_CHOICES = (
@@ -240,41 +241,24 @@ class DoctorValidation(models.Model):
     
 
 class Notification(models.Model):
-    doctor = models.ForeignKey(
-        Doctor,
+    ROLE_CHOICES = (
+        ('patient', 'Patient'),
+        ('doctor', 'Doctor'),
+        ('admin', 'Admin'),
+    )
+
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        related_name='notifications',
         null=True,
-        blank=True,
-        related_name='notifications'
+        blank=True
     )
 
-    patient = models.ForeignKey(
-        Patient,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name='notifications'
-    )
-
-    prediction = models.ForeignKey(
-        PredictionResult,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='notifications'
-    )
-
+    receiver_role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     message = models.TextField()
-
     is_read = models.BooleanField(default=False)
-
-    receiver_role = models.CharField(
-        max_length=10,
-        choices=(('doctor', 'Doctor'), ('patient', 'Patient'))
-    )
-
     sent_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Notification #{self.id}"
-
+        return f"{self.receiver_role} | {self.message[:30]}"

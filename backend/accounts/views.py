@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from django.utils import timezone
+from .models import Notification
 
 
 @api_view(['POST'])
@@ -166,5 +167,39 @@ def recent_retinal_images(request):
             "image_base64": base64.b64encode(img.retinal_image).decode("utf-8"),
             "created_at": img.created_at,
         })
+
+    return Response(data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_notification_read(request, notification_id):
+    try:
+        notification = Notification.objects.get(
+            id=notification_id,
+            receiver=request.user
+        )
+        notification.is_read = True
+        notification.save()
+        return Response({"success": True})
+    except Notification.DoesNotExist:
+        return Response({"error": "Notification not found"}, status=404)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_notifications(request):
+    notifications = Notification.objects.filter(
+        receiver=request.user
+    ).order_by('-sent_at')
+
+    data = [
+        {
+            "id": n.id,
+            "message": n.message,
+            "is_read": n.is_read,
+            "sent_at": n.sent_at,
+            "receiver_role": n.receiver_role,
+        }
+        for n in notifications
+    ]
 
     return Response(data)
