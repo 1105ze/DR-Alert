@@ -11,10 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-<<<<<<< HEAD
-=======
 from datetime import timedelta
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -35,10 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-<<<<<<< HEAD
-=======
     'corsheaders',
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -47,18 +41,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "rest_framework",
-<<<<<<< HEAD
-    "accounts",
-]
-
-MIDDLEWARE = [
-=======
     "accounts.apps.AccountsConfig",
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -139,9 +126,6 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-<<<<<<< HEAD
-AUTH_USER_MODEL = 'accounts.User'
-=======
 AUTH_USER_MODEL = 'accounts.User'
 
 REST_FRAMEWORK = {
@@ -171,4 +155,3 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b

@@ -1,13 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
-<<<<<<< HEAD
-
-=======
 import base64
 from django.utils.html import format_html
 from django.conf import settings
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
 class User(AbstractUser):
     ROLE_CHOICES = (
@@ -144,10 +140,7 @@ class RetinalImage(models.Model):
 
     retinal_image = models.BinaryField(null=True, blank=True)
     retinal_image_size = models.IntegerField(null=True, blank=True)
-<<<<<<< HEAD
-=======
     created_at = models.DateTimeField(auto_now_add=True)
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
     def uploader_name(self):
         if self.uploaded_by_type == 'patient' and self.patient:
@@ -158,8 +151,6 @@ class RetinalImage(models.Model):
 
     def __str__(self):
         return f"Retinal Image by {self.uploader_name()} on {self.uploaded_at.strftime('%Y-%m-%d')}"
-<<<<<<< HEAD
-=======
 
 
 class PredictionResult(models.Model):
@@ -271,4 +262,3 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.receiver_role} | {self.message[:30]}"
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b

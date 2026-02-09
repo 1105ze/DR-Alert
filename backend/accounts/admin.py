@@ -1,11 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils import timezone
-<<<<<<< HEAD
-from .models import User, Patient, Doctor, DoctorVerification, RetinalImage
-=======
 from .models import User, Patient, Doctor, DoctorVerification, RetinalImage, PredictionResult, DoctorValidation, Notification
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 import base64
 
 
@@ -405,9 +401,6 @@ class RetinalImageAdmin(admin.ModelAdmin):
         elif size < 1024 * 1024:
             return f"{size / 1024:.2f} KB"
         return f"{size / (1024 * 1024):.2f} MB"
-<<<<<<< HEAD
-    image_size_display.short_description = "Image Size"
-=======
     image_size_display.short_description = "Image Size"
 
 
@@ -470,4 +463,3 @@ class DoctorValidationAdmin(admin.ModelAdmin):
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ('id', 'receiver_role', 'is_read', 'sent_at')
     list_filter = ('receiver_role', 'is_read')
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b

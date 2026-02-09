@@ -4,16 +4,12 @@ from rest_framework import status
 from .serializers import SignupSerializer
 from django.contrib.auth import authenticate
 import base64
-<<<<<<< HEAD
-from .models import Patient, RetinalImage, User, Doctor
-=======
 from .models import Patient, RetinalImage, User, Doctor, PredictionResult
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from django.utils import timezone
 from .models import Notification
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
 
 @api_view(['POST'])
@@ -78,15 +74,12 @@ def upload_retinal_image(request):
 
     else:
         return Response({"error": "Invalid uploaded_by_type"}, status=400)
-<<<<<<< HEAD
-=======
     
         # ===== CREATE EMPTY PREDICTION RESULT =====
     PredictionResult.objects.create(
         retinal_image=retinal_image,
         prediction_date=timezone.now()
     )
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
     return Response(
         {
@@ -97,52 +90,12 @@ def upload_retinal_image(request):
     )
 
 
-<<<<<<< HEAD
-    
-=======
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 @api_view(['POST'])
 def login(request):
     username = request.data.get("username")
     password = request.data.get("password")
 
     if not username or not password:
-<<<<<<< HEAD
-        return Response(
-            {"error": "Username and password required"},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    # 🔹 Check if user exists
-    try:
-        user_obj = User.objects.get(username=username)
-    except User.DoesNotExist:
-        return Response(
-            {"error": "NO_ACCOUNT"},
-            status=status.HTTP_404_NOT_FOUND
-        )
-
-    # 🔹 Check password
-    user = authenticate(username=username, password=password)
-    if not user:
-        return Response(
-            {"error": "INVALID_PASSWORD"},
-            status=status.HTTP_401_UNAUTHORIZED
-        )
-
-    # ✅ Success
-    return Response(
-        {
-            "message": "Login successful",
-            "user": {
-                "id": user.id,
-                "username": user.username,
-                "role": user.role,
-            }
-        },
-        status=status.HTTP_200_OK
-    )
-=======
         return Response({"error": "Username and password required"}, status=400)
 
     try:
@@ -250,4 +203,3 @@ def get_notifications(request):
     ]
 
     return Response(data)
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
