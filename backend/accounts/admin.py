@@ -1,7 +1,11 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils import timezone
+<<<<<<< HEAD
 from .models import User, Patient, Doctor, DoctorVerification, RetinalImage
+=======
+from .models import User, Patient, Doctor, DoctorVerification, RetinalImage, PredictionResult, DoctorValidation, Notification
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 import base64
 
 
@@ -401,4 +405,69 @@ class RetinalImageAdmin(admin.ModelAdmin):
         elif size < 1024 * 1024:
             return f"{size / 1024:.2f} KB"
         return f"{size / (1024 * 1024):.2f} MB"
+<<<<<<< HEAD
     image_size_display.short_description = "Image Size"
+=======
+    image_size_display.short_description = "Image Size"
+
+
+@admin.register(PredictionResult)
+class PredictionResultAdmin(admin.ModelAdmin):
+
+    def retinal_image_preview(self, obj):
+        if not obj.retinal_image or not obj.retinal_image.retinal_image:
+            return "No image"
+
+        import base64
+        from django.utils.html import format_html
+
+        b64 = base64.b64encode(obj.retinal_image.retinal_image).decode("utf-8")
+        return format_html(
+            '<img src="data:image/jpeg;base64,{}" '
+            'style="max-height:300px; border-radius:8px; border:1px solid #ccc;" />',
+            b64
+        )
+
+    retinal_image_preview.short_description = "Retinal Image Preview"
+
+    fieldsets = (
+        ("Retinal Image", {
+            "fields": (
+                "retinal_image",
+                "retinal_image_preview",
+            )
+        }),
+        ("AI Prediction", {
+            "fields": (
+                "predicted_dr_stage",
+                "confidence_score",
+                "ai_report",
+                "prediction_date",
+            )
+        }),
+    )
+
+    readonly_fields = (
+        "retinal_image_preview",
+        "prediction_date",
+        "retinal_image",
+    )
+
+    list_display = (
+        "id",
+        "retinal_image",
+        "prediction_date",
+        "confidence_score",
+    )
+
+
+@admin.register(DoctorValidation)
+class DoctorValidationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'doctor', 'prediction', 'final_dr_stage', 'validation_date')
+    readonly_fields = ('created_at',)
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'receiver_role', 'is_read', 'sent_at')
+    list_filter = ('receiver_role', 'is_read')
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b

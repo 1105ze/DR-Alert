@@ -1,6 +1,11 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
+<<<<<<< HEAD
+=======
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
 
 const historyData = [
@@ -44,10 +49,29 @@ const historyData = [
 
 const history = () => {
   const router = useRouter();
+<<<<<<< HEAD
     return (
         <View>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.profile} onPress={() => router.back()}>
+=======
+  const [user, setUser] = useState(null);
+
+    useEffect(() => {
+      const loadUser = async () => {
+        const storedUser = await AsyncStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      };
+      loadUser();
+    }, []);
+
+    return (
+        <View>
+            <View style={styles.header}>
+                <TouchableOpacity style={styles.profile} onPress={() => router.push('/home')}>
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
                     <Image source={require('../assets/people_icon.png')} style={styles.profileImage} />
                 </TouchableOpacity>
 
@@ -56,7 +80,11 @@ const history = () => {
 
                     <Text style={styles.subtitle}>Diabetic Retinopathy Screening</Text>
                 </View>
+<<<<<<< HEAD
                 <Text style={styles.username}>Ze Gui</Text>
+=======
+                <Text style={styles.username}>Hey, {user ? user.username : ""}</Text>
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
             </View>
 
             <View>

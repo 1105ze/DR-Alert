@@ -1,7 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
+<<<<<<< HEAD
 
+=======
+import base64
+from django.utils.html import format_html
+from django.conf import settings
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
 class User(AbstractUser):
     ROLE_CHOICES = (
@@ -138,6 +144,10 @@ class RetinalImage(models.Model):
 
     retinal_image = models.BinaryField(null=True, blank=True)
     retinal_image_size = models.IntegerField(null=True, blank=True)
+<<<<<<< HEAD
+=======
+    created_at = models.DateTimeField(auto_now_add=True)
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
     def uploader_name(self):
         if self.uploaded_by_type == 'patient' and self.patient:
@@ -148,3 +158,117 @@ class RetinalImage(models.Model):
 
     def __str__(self):
         return f"Retinal Image by {self.uploader_name()} on {self.uploaded_at.strftime('%Y-%m-%d')}"
+<<<<<<< HEAD
+=======
+
+
+class PredictionResult(models.Model):
+    retinal_image = models.ForeignKey(
+        RetinalImage,
+        on_delete=models.CASCADE,
+        related_name='predictions'
+    )
+
+    predicted_dr_stage = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True
+    )
+
+    confidence_score = models.FloatField(
+        null=True,
+        blank=True
+    )
+
+    ai_report = models.TextField(
+        null=True,
+        blank=True
+    )
+
+    gradcam_data = models.BinaryField(
+        null=True,
+        blank=True
+    )
+
+    prediction_date = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Prediction #{self.id}"
+    
+    def retinal_image_preview(self, obj):
+        if not obj.retinal_image or not obj.retinal_image.retinal_image:
+            return "No image"
+
+        b64 = base64.b64encode(obj.retinal_image.retinal_image).decode()
+        return format_html(
+            '<img src="data:image/jpeg;base64,{}" style="max-height:300px; border-radius:6px;" />',
+            b64
+        )
+
+    retinal_image_preview.short_description = "Retinal Image Preview"
+    
+
+class DoctorValidation(models.Model):
+    prediction = models.ForeignKey(
+        PredictionResult,
+        on_delete=models.CASCADE,
+        related_name='validations'
+    )
+
+    doctor = models.ForeignKey(
+        Doctor,
+        on_delete=models.CASCADE,
+        related_name='validations'
+    )
+
+    final_dr_stage = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True
+    )
+
+    doctor_comments = models.TextField(
+        null=True,
+        blank=True
+    )
+
+    validation_date = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Validation #{self.id}"
+
+    
+
+class Notification(models.Model):
+    ROLE_CHOICES = (
+        ('patient', 'Patient'),
+        ('doctor', 'Doctor'),
+        ('admin', 'Admin'),
+    )
+
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='notifications',
+        null=True,
+        blank=True
+    )
+
+    receiver_role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    sent_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.receiver_role} | {self.message[:30]}"
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b

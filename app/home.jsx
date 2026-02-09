@@ -2,6 +2,10 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, FlatList }
 import React, { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+<<<<<<< HEAD
+=======
+import { API_BASE_URL } from "../config";
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
 const home = () => {
     const router = useRouter();
@@ -23,6 +27,7 @@ const home = () => {
         {id: "3", image: require('../assets/eye_open.png')},
     ]
 
+<<<<<<< HEAD
     const recentUploads = [
         {
             id: "r1",
@@ -35,6 +40,44 @@ const home = () => {
             time: "Uploaded by 2/12/2025 9:10:00 A.M.",
         },
     ];
+=======
+    // const recentUploads = [
+    //     {
+    //         id: "r1",
+    //         image: require("../assets/eye_open.png"),
+    //         time: "Uploaded by 3/12/2025 8:00:00 P.M.",
+    //     },
+    //     {
+    //         id: "r2",
+    //         image: require("../assets/eye_open.png"),
+    //         time: "Uploaded by 2/12/2025 9:10:00 A.M.",
+    //     },
+    // ];
+    const [recentUploads, setRecentUploads] = useState([]);
+
+    useEffect(() => {
+    const loadRecentUploads = async () => {
+        const token = await AsyncStorage.getItem("accessToken");
+        if (!token) return;
+
+        const res = await fetch(
+        `${API_BASE_URL}/api/accounts/retina/recent/`,
+        {
+            headers: {
+            Authorization: `Bearer ${token}`,
+            },
+        }
+        );
+
+        if (res.ok) {
+        const data = await res.json();
+        setRecentUploads(data);
+        }
+    };
+
+    loadRecentUploads();
+    }, []);
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
     const adListRef = useRef(null);
     const [activeAdIndex, setActiveAdIndex] = useState(0);
@@ -71,12 +114,20 @@ const home = () => {
                             <Text style={styles.navigationText}>Upload Image</Text>
                         </TouchableOpacity>
 
+<<<<<<< HEAD
                         <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/mainhistory')} >
+=======
+                        <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/history')} >
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
                             <Image source={require('../assets/clock_icon.png')} style={styles.navigationImage} />
                             <Text style={styles.navigationText}>View History</Text>
                         </TouchableOpacity>
 
+<<<<<<< HEAD
                         <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/specialist')} >
+=======
+                        <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/upload')} >
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
                             <Image source={require('../assets/specialist_icon.png')} style={styles.navigationImage} />
                             <Text style={styles.navigationText}>Specialist</Text>
                         </TouchableOpacity>
@@ -88,7 +139,11 @@ const home = () => {
                         <FlatList 
                             ref={adListRef}
                             data={ads}
+<<<<<<< HEAD
                             keyExtractor={(item) => item.id}
+=======
+                            keyExtractor={(item) => item.id.toString()}
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
                             horizontal pagingEnabled
                             showsHorizontalScrollIndicator = {false}
                             onScroll = {onAdScroll}
@@ -134,6 +189,7 @@ const home = () => {
                         </TouchableOpacity>
                     </View>
 
+<<<<<<< HEAD
                     <FlatList
                         data={recentUploads}
                         keyExtractor={(item) => item.id}
@@ -153,6 +209,58 @@ const home = () => {
                         </TouchableOpacity>
                         )}
                     />
+=======
+                    {recentUploads.length === 0 ? (
+                        <View style={styles.emptyState}>
+                            <Image
+                                source={require('../assets/eye_open.png')}
+                                style={styles.emptyImage}
+                            />
+                            <Text style={styles.emptyTitle}>No uploads yet</Text>
+                            <Text style={styles.emptySubtitle}>
+                                Upload your first retinal image to get started
+                            </Text>
+
+                            <TouchableOpacity
+                                style={styles.emptyButton}
+                                onPress={() => router.push("/upload")}
+                            >
+                                <Text style={styles.emptyButtonText}>Upload Image</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <FlatList
+                            data={recentUploads}
+                            keyExtractor={(item) => item.id.toString()}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={{
+                                paddingLeft: 20,
+                                paddingRight: 10,
+                                paddingBottom: 10,
+                            }}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    activeOpacity={0.9}
+                                    style={styles.recentCard}
+                                    onPress={() => router.push("/history")}
+                                >
+                                    <Image
+                                        source={{
+                                            uri: `data:image/jpeg;base64,${item.image_base64}`,
+                                        }}
+                                        style={styles.recentImage}
+                                    />
+                                    <View style={styles.recentOverlay}>
+                                        <Text style={styles.recentOverlayText}>
+                                            Uploaded on {new Date(item.created_at).toLocaleString()}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                        />
+                    )}
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
                     <TouchableOpacity style={styles.signoutButton} onPress={() => router.push("/firstpage")}>
                         <Image source={require('../assets/signout_icon.png')} style={styles.signoutImage} />
@@ -376,4 +484,50 @@ const styles = StyleSheet.create({
         color: "red",
         marginLeft: 5,
     },
+<<<<<<< HEAD
+=======
+    emptyState: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 30,
+    marginBottom: 20,
+    paddingHorizontal: 30,
+    },
+
+    emptyImage: {
+        width: 120,
+        height: 120,
+        resizeMode: "contain",
+        opacity: 0.6,
+        marginBottom: 12,
+    },
+
+    emptyTitle: {
+        fontSize: 20,
+        fontWeight: "700",
+        color: "#333",
+        marginBottom: 6,
+    },
+
+    emptySubtitle: {
+        fontSize: 14,
+        color: "#777",
+        textAlign: "center",
+        marginBottom: 18,
+    },
+
+    emptyButton: {
+        backgroundColor: "#2E7BEA",
+        paddingHorizontal: 28,
+        paddingVertical: 12,
+        borderRadius: 25,
+    },
+
+    emptyButtonText: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "700",
+    },
+
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 })

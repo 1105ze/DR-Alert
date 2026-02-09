@@ -52,7 +52,11 @@ const result = () => {
             </View>
 
             <View>
+<<<<<<< HEAD
                 <TouchableOpacity style={styles.back} onPress={() => router.back()}>
+=======
+                <TouchableOpacity style={styles.back} onPress={() => router.push('/history')}>
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
                     <Text style={styles.backText}>‹   Result</Text>
                 </TouchableOpacity>
             </View>

@@ -21,6 +21,13 @@ const upload = () => {
       }; 
       loadUser(); 
     }, []);
+<<<<<<< HEAD
+=======
+    const handleAnalyze = async () => {
+      await uploadImageToBackend();
+      router.push('/result');
+    };
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
     const [imageBase64, setImageBase64] = useState(null);
     const openImagePicker = async () => {
       const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -104,7 +111,11 @@ const upload = () => {
         </View>
 
         <View>
+<<<<<<< HEAD
             <TouchableOpacity style={styles.back} onPress={() => router.back()}>
+=======
+            <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
                 <Text style={styles.notificationText}>‹   Upload Images</Text>
             </TouchableOpacity>
         </View>
@@ -138,7 +149,11 @@ const upload = () => {
                 </View>
 
                 {image && (
+<<<<<<< HEAD
                     <TouchableOpacity style={styles.analyzeImage} onPress={uploadImageToBackend}>
+=======
+                    <TouchableOpacity style={styles.analyzeImage} onPress={handleAnalyze}>
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
                       <Image source={require('../assets/camera_icon.png')} style={styles.cameraIcon} />
                       <Text style={styles.analyzeText}>Analyze Image</Text>
                     </TouchableOpacity>

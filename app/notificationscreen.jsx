@@ -1,9 +1,98 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
+<<<<<<< HEAD
 
 const notificationscreen = () => {
   const router = useRouter();
+=======
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
+import { API_BASE_URL } from "../config";
+
+
+  const notificationscreen = () => {
+    const router = useRouter();
+    const [user, setUser] = useState(null);
+    const [notifications, setNotifications] = useState([]);
+    useEffect(() => {
+      const fetchNotifications = async () => {
+        const token = await AsyncStorage.getItem("accessToken");
+        if (!token) return;
+
+        const res = await fetch(
+          `${API_BASE_URL}/api/accounts/notifications/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await res.json();
+        setNotifications(data);
+
+        // 👇 AUTO mark unread as read when page opens
+        const unread = data.filter((n) => !n.is_read);
+
+        await Promise.all(
+          unread.map((n) =>
+            fetch(
+              `${API_BASE_URL}/api/accounts/notifications/${n.id}/read/`,
+              {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+          )
+        );
+
+        // update UI
+        setNotifications((prev) =>
+          prev.map((n) => ({ ...n, is_read: true }))
+        );
+      };
+
+      fetchNotifications();
+    }, []);
+
+
+    useEffect(() => {
+      const loadUser = async () => {
+        const storedUser = await AsyncStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      };
+      loadUser();
+    }, []);
+
+    const markAllAsRead = async () => {
+      const token = await AsyncStorage.getItem("accessToken");
+
+      await Promise.all(
+        notifications
+          .filter((n) => !n.is_read)
+          .map((n) =>
+            fetch(`${API_BASE_URL}/api/accounts/notifications/${n.id}/read/`,
+              {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+          )
+      );
+
+      setNotifications((prev) =>
+        prev.map((n) => ({ ...n, is_read: true }))
+      );
+    };
+
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
     return (
       <View>
           <View style={styles.header}>
@@ -16,16 +105,25 @@ const notificationscreen = () => {
 
                   <Text style={styles.subtitle}>Diabetic Retinopathy Screening</Text>
               </View>
+<<<<<<< HEAD
               <Text style={styles.username}>Ze Gui</Text>
           </View>
 
           <View>
               <TouchableOpacity style={styles.back} onPress={() => router.back()}>
+=======
+              <Text style={styles.username}>Hey, {user ? user.username : ""}</Text>
+          </View>
+
+          <View>
+              <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
                   <Text style={styles.notificationText}>‹   Notifications</Text>
               </TouchableOpacity>
           </View>
 
           <ScrollView>
+<<<<<<< HEAD
               <View style={styles.card}>
                   <Image source={require('../assets/note_icon.png')} style={styles.noteImage} />
 
@@ -62,6 +160,57 @@ const notificationscreen = () => {
           </ScrollView>
 
           <TouchableOpacity style={styles.markRead}>
+=======
+            {notifications.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                style={[
+                  styles.card,
+                  item.is_read && styles.grayCard
+                ]}
+                onPress={async () => {
+                  const token = await AsyncStorage.getItem("accessToken");
+
+                  await fetch(`${API_BASE_URL}/api/accounts/notifications/${item.id}/read/`,
+                    {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                      },
+                    }
+                  );
+
+                  setNotifications((prev) =>
+                    prev.map((n) =>
+                      n.id === item.id ? { ...n, is_read: true } : n
+                    )
+                  );
+                }}
+              >
+                <Image
+                  source={require('../assets/note_icon.png')}
+                  style={styles.noteImage}
+                />
+
+                <View>
+                  <Text style={styles.topic}>
+                    {item.receiver_role === "doctor"
+                      ? "Doctor Notification"
+                      : "Patient Notification"}
+                  </Text>
+
+                  <Text style={styles.cardText}>{item.message}</Text>
+
+                  <Text style={styles.time}>
+                    {new Date(item.sent_at).toLocaleString()}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+
+          <TouchableOpacity style={styles.markRead} onPress={markAllAsRead}>
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
             <Image source={require('../assets/eye_open.png')} style={styles.eyeIcon} />
               <Text style={styles.markReadText}>Mark All As Read</Text>
           </TouchableOpacity>

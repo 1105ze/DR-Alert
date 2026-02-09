@@ -1,17 +1,40 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Switch} from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
+<<<<<<< HEAD
+=======
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
 const profile = () => {
     const router = useRouter();
     const [notifEnabled, setNotifEnabled] = React.useState(true);
+<<<<<<< HEAD
+=======
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+      const loadUser = async () => {
+        const storedUser = await AsyncStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      };
+      loadUser();
+    }, []);
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
     return (
         <ScrollView>
             <View>
                 <View style={styles.header}>
                     <View>
+<<<<<<< HEAD
                         <TouchableOpacity style={styles.back} onPress={() => router.back()}>
+=======
+                        <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
                             <Text style={styles.backText}>‹   Profile</Text>
                         </TouchableOpacity>
                     </View>
@@ -26,7 +49,11 @@ const profile = () => {
                         </TouchableOpacity>
                     </View>
 
+<<<<<<< HEAD
                     <Text style={styles.nameText}>Ze Gui</Text>
+=======
+                    <Text style={styles.nameText}>{user ? user.username : ""}</Text>
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
                 </View>
 
                 <View style={styles.button}>

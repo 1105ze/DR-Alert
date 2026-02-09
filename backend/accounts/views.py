@@ -4,7 +4,16 @@ from rest_framework import status
 from .serializers import SignupSerializer
 from django.contrib.auth import authenticate
 import base64
+<<<<<<< HEAD
 from .models import Patient, RetinalImage, User, Doctor
+=======
+from .models import Patient, RetinalImage, User, Doctor, PredictionResult
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+from django.utils import timezone
+from .models import Notification
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
 
 @api_view(['POST'])
@@ -69,6 +78,15 @@ def upload_retinal_image(request):
 
     else:
         return Response({"error": "Invalid uploaded_by_type"}, status=400)
+<<<<<<< HEAD
+=======
+    
+        # ===== CREATE EMPTY PREDICTION RESULT =====
+    PredictionResult.objects.create(
+        retinal_image=retinal_image,
+        prediction_date=timezone.now()
+    )
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 
     return Response(
         {
@@ -79,13 +97,17 @@ def upload_retinal_image(request):
     )
 
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 @api_view(['POST'])
 def login(request):
     username = request.data.get("username")
     password = request.data.get("password")
 
     if not username or not password:
+<<<<<<< HEAD
         return Response(
             {"error": "Username and password required"},
             status=status.HTTP_400_BAD_REQUEST
@@ -120,3 +142,112 @@ def login(request):
         },
         status=status.HTTP_200_OK
     )
+=======
+        return Response({"error": "Username and password required"}, status=400)
+
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response({"error": "NO_ACCOUNT"}, status=404)
+
+    user = authenticate(username=username, password=password)
+    if not user:
+        return Response({"error": "INVALID_PASSWORD"}, status=401)
+
+    refresh = RefreshToken.for_user(user)
+
+    return Response({
+        "access": str(refresh.access_token),
+        "refresh": str(refresh),
+        "user": {
+            "id": user.id,
+            "username": user.username,
+            "role": user.role,
+        }
+    })
+
+
+@api_view(["GET", "PUT"])
+@permission_classes([IsAuthenticated])
+def profile(request):
+    user = request.user
+
+    if request.method == "GET":
+        return Response({
+            "username": user.username,
+            "email": user.email,
+            "gender": user.gender,
+            "date_of_birth": user.date_of_birth,
+        })
+
+    if request.method == "PUT":
+        user.gender = request.data.get("gender", user.gender)
+        user.date_of_birth = request.data.get("date_of_birth", user.date_of_birth)
+        user.email = request.data.get("email", user.email)
+        user.save()
+
+        return Response({"message": "Profile updated"})
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def recent_retinal_images(request):
+    user = request.user
+
+    if user.role == "patient":
+        images = RetinalImage.objects.filter(
+            patient__user=user
+        ).order_by("-created_at")[:5]
+
+    elif user.role == "doctor":
+        images = RetinalImage.objects.filter(
+            doctor__user=user
+        ).order_by("-created_at")[:5]
+
+    else:
+        return Response([])
+
+    data = []
+    for img in images:
+        data.append({
+            "id": img.id,
+            "image_base64": base64.b64encode(img.retinal_image).decode("utf-8"),
+            "created_at": img.created_at,
+        })
+
+    return Response(data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_notification_read(request, notification_id):
+    try:
+        notification = Notification.objects.get(
+            id=notification_id,
+            receiver=request.user
+        )
+        notification.is_read = True
+        notification.save()
+        return Response({"success": True})
+    except Notification.DoesNotExist:
+        return Response({"error": "Notification not found"}, status=404)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_notifications(request):
+    notifications = Notification.objects.filter(
+        receiver=request.user
+    ).order_by('-sent_at')
+
+    data = [
+        {
+            "id": n.id,
+            "message": n.message,
+            "is_read": n.is_read,
+            "sent_at": n.sent_at,
+            "receiver_role": n.receiver_role,
+        }
+        for n in notifications
+    ]
+
+    return Response(data)
+>>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
