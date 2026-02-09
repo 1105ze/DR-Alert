@@ -1,27 +1,42 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native'
 import React, { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const home = () => {
+const doctorhome = () => {
     const router = useRouter();
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const loadUser = async () => {
-            const storedUser = await AsyncStorage.getItem("user");
-            if (storedUser) {
-                setUser(JSON.parse(storedUser));
-            }
-        };
-        loadUser();
-    }, []);
 
     const ads = [
         {id: "1", image: require('../assets/eye_open.png')},
         {id: "2", image: require('../assets/eye_open.png')},
         {id: "3", image: require('../assets/eye_open.png')},
     ]
+
+    const pendingList = [
+        {
+            id: "p1",
+            name: "Aaron Chiah",
+            code: "P1987",
+            status: "Severe",
+            color: "#FF6B4A",
+            time: "Uploaded 2 hours ago",
+        },
+        {
+            id: "p2",
+            name: "Sarah Johns",
+            code: "P0061",
+            status: "Moderate",
+            color: "#F6B800",
+            time: "Uploaded 15 hours ago",
+        },
+        {
+            id: "p3",
+            name: "Arpon Wang",
+            code: "P2657",
+            status: "Mild",
+            color: "#5EC2B7",
+            time: "Uploaded 1 day ago",
+        },
+    ];
 
     const recentUploads = [
         {
@@ -39,7 +54,7 @@ const home = () => {
     const adListRef = useRef(null);
     const [activeAdIndex, setActiveAdIndex] = useState(0);
 
-    const AD_CARD_WIDTH = 395;
+    const AD_CARD_WIDTH = 395; // or any fixed width you want
 
     const onAdScroll = (e) => {
     const x = e.nativeEvent.contentOffset.x;
@@ -52,7 +67,7 @@ const home = () => {
                 <View>
                     <View style={styles.topSection}>
                         <View style={styles.header}>
-                            <TouchableOpacity style={styles.profile} onPress={() => router.push('/profile')}>
+                            <TouchableOpacity style={styles.profile} onPress={() => router.push('/doctorpersonaldetail')}>
                                 <Image source={require('../assets/people_icon.png')} style={styles.profileImage} />
                             </TouchableOpacity>
 
@@ -60,9 +75,7 @@ const home = () => {
                                 <Image source={require('../assets/notification_icon.png')} style={styles.notificationIcon} />
                             </TouchableOpacity>
                         </View>
-                        <Text style={styles.name}>
-                            Hey, {user ? user.username : ""}
-                        </Text>
+                        <Text style={styles.name}>Hey, Ze Gui</Text>
                     </View>
 
                     <View style={styles.navigationBar}>
@@ -71,7 +84,7 @@ const home = () => {
                             <Text style={styles.navigationText}>Upload Image</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/mainhistory')} >
+                        <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/doctorhistory')} >
                             <Image source={require('../assets/clock_icon.png')} style={styles.navigationImage} />
                             <Text style={styles.navigationText}>View History</Text>
                         </TouchableOpacity>
@@ -79,6 +92,18 @@ const home = () => {
                         <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/specialist')} >
                             <Image source={require('../assets/specialist_icon.png')} style={styles.navigationImage} />
                             <Text style={styles.navigationText}>Specialist</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.workBar}>
+                        <TouchableOpacity style={styles.workButton} onPress={() => router.push('/doctorresult')}>
+                            <Image source={require('../assets/file_icon.png')} style={styles.workIcon} />
+                            <Text style={styles.workText}>Work</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.workButton} onPress={() => router.push('/doctorreport')}>
+                            <Image source={require('../assets/file_icon.png')} style={styles.workIcon} />
+                            <Text style={styles.workText}>Work History</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -126,10 +151,36 @@ const home = () => {
                         ))}
                     </View>
 
+                    <View style={styles.pendingHeader}>
+                        <Text style={styles.pendingTitle}>Pending Verification</Text>
+                        <TouchableOpacity>
+                            <Text style={styles.PVseeAll}>See All</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.pendingBox}>
+                        {pendingList.map((item) => (
+                            <View key={item.id} style={styles.pendingCard}>
+                            <View>
+                                <Text style={styles.pendingName}>{item.name}</Text>
+                                <Text style={styles.pendingCode}>{item.code}</Text>
+                            </View>
+
+                            <View style={[styles.statusPill, { borderColor: item.color }]}>
+                                <Text style={[styles.statusText, { color: item.color }]}>
+                                {item.status}
+                                </Text>
+                            </View>
+
+                            <Text style={styles.pendingTime}>{item.time}</Text>
+                            </View>
+                        ))}
+                    </View>
+
                     <View style={styles.recentText}>
                         <Text style={styles.recentuploadText}>Recent Upload</Text>
     
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push('/doctorhistory')}>
                             <Text style={styles.seeAll}>See all</Text>
                         </TouchableOpacity>
                     </View>
@@ -145,7 +196,7 @@ const home = () => {
                             paddingBottom: 10,
                         }}
                         renderItem={({ item }) => (
-                        <TouchableOpacity activeOpacity={0.9} style={styles.recentCard} onPress={() => router.push("/history")}>
+                        <TouchableOpacity activeOpacity={0.9} style={styles.recentCard} onPress={() => router.push("/doctorresult")}>
                             <Image source={item.image} style={styles.recentImage} />
                             <View style={styles.recentOverlay}>
                             <Text style={styles.recentOverlayText}>{item.time}</Text>
@@ -164,7 +215,7 @@ const home = () => {
   )
 }
 
-export default home
+export default doctorhome
 
 const styles = StyleSheet.create({
     container: {
@@ -245,7 +296,32 @@ const styles = StyleSheet.create({
     },
     navigationText: {
         textAligh: "center",
+        fontWeight: "700",
     },
+    workBar: {
+        marginTop: 70,
+        marginHorizontal: 20,
+        borderRadius: 18,
+        borderWidth: 2,
+        borderColor: "#6AAEF8",
+        paddingVertical: 18,
+        flexDirection: "row",
+        justifyContent: "space-around",
+        backgroundColor: "white",
+        },
+    workButton: {
+        alignItems: "center",
+        gap: 6,
+        },
+    workIcon: {
+        width: 30,
+        height: 30,
+        resizeMode: "contain",
+        tintColor: "#2E7BEA",
+        },
+    workText: {
+        fontWeight: "700",
+        },
     uploadImage: {
         width: 36,
         height: 30,
@@ -256,7 +332,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: "700",
         color: "black",
-        marginTop: 65,
+        marginTop: 35,
         marginLeft: 30, 
     },
     adsList: {
@@ -277,7 +353,7 @@ const styles = StyleSheet.create({
     adsArrow: {
         position: "absolute",
         right: 6,
-        top: 40,
+        top: 150,
         width: 34,
         height: 34,
         borderRadius: 17,
@@ -310,6 +386,60 @@ const styles = StyleSheet.create({
     dotInactive: {
         width: 10,
         backgroundColor: "#CFE4FF",
+    },
+    pendingHeader: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginHorizontal: 30,
+        marginTop: 25,
+    },
+    pendingTitle: {
+        fontSize: 22,
+        fontWeight: "700",
+    },
+    pendingBox: {
+        backgroundColor: "#DDF1FF",
+        margin: 20,
+        borderRadius: 18,
+        padding: 15,
+    },
+    pendingCard: {
+        backgroundColor: "#fff",
+        borderRadius: 14,
+        padding: 15,
+        marginBottom: 12,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    pendingName: {
+        fontWeight: "700",
+        fontSize: 15,
+    },
+    pendingCode: {
+        fontSize: 13,
+        color: "grey",
+    },
+    PVseeAll: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: 'grey',
+        paddingVertical: 1,
+        marginLeft: 105,
+        marginTop: 8,
+    },
+    statusPill: {
+        borderWidth: 2,
+        borderRadius: 20,
+        paddingHorizontal: 14,
+        paddingVertical: 4,
+    },
+    statusText: {
+        fontWeight: "700",
+    },
+    pendingTime: {
+        fontSize: 12,
+        color: "grey",
     },
     recentText: {
         flexDirection: "row",

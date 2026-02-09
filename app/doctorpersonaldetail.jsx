@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput,
 import React from 'react'
 import { useRouter } from 'expo-router';
 
-const personaldetail = () => {
+const doctorpersonaldetail = () => {
     const router = useRouter();
     const [isEditing, setIsEditing] = React.useState(false);
 
@@ -11,10 +11,12 @@ const personaldetail = () => {
     const [day, setDay] = React.useState("01");
     const [month, setMonth] = React.useState("01");
     const [year, setYear] = React.useState("2025");
-    const [occupation, setOccupation] = React.useState("Patient");
+    const [occupation, setOccupation] = React.useState("Doctor");
     const [email, setEmail] = React.useState("123@gmail.com");
     const [contact, setContact] = React.useState("+60 12-3456789");
-    const [password, setPassword] = React.useState("Zegui123");
+    const [password, setPassword] = React.useState("Zegui123.");
+    const [specialist, setSpecialist] = React.useState("Eye specialist");
+
 
     const occupations = ["Patient", "Doctor"];
     const [showOccModal, setShowOccModal] = React.useState(false);
@@ -108,8 +110,16 @@ const personaldetail = () => {
                     <Text style={[styles.label, !isEditing && styles.disabledWrap]}>Email Address</Text>
                     <TextInput value={email} onChangeText={setEmail} editable={isEditing} style={[styles.labelInput, !isEditing && styles.disabledInput]} />
 
-                    <Text style={[styles.label, !isEditing && styles.disabledWrap]}>Contact Number</Text>
-                    <TextInput value={contact} onChangeText={setContact} editable={isEditing} style={[styles.labelInput, !isEditing && styles.disabledInput]} />
+                    <Text style={[styles.label, !isEditing && styles.disabledWrap]}>Specialist</Text>
+                    <TextInput value={specialist} onChangeText={setSpecialist} editable={isEditing} style={[styles.labelInput, !isEditing && styles.disabledInput]} />
+
+                    <Text style={[styles.label, !isEditing && styles.disabledWrap]}>License</Text>
+                    <Image source={require('../assets/doctor_license.webp')} style={styles.license} />
+
+                    <Text style={[styles.label, !isEditing && styles.disabledWrap]}>Status</Text>
+                    <View style={styles.statusText}>
+                        <Text>Approved</Text>
+                    </View>
 
                     <Text style={[styles.label, !isEditing && styles.disabledWrap]}>Password</Text>
                     <TextInput value={password} onChangeText={setPassword} editable={isEditing} style={[styles.labelInput, !isEditing && styles.disabledInput]} />
@@ -129,7 +139,7 @@ const personaldetail = () => {
                 {showOccModal && (
                     <View style={styles.modalOverlay}>
                         <View style={styles.modalCard}>
-                        <Text style={styles.modalTitle}>Select Occupation</Text>
+                        <Text style={styles.modalTitle}>Select Role</Text>
 
                         {occupations.map((item) => (
                             <TouchableOpacity
@@ -163,7 +173,7 @@ const personaldetail = () => {
     )
 }
 
-export default personaldetail
+export default doctorpersonaldetail
 
 const styles = StyleSheet.create({
     header: {
@@ -212,6 +222,26 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 18,
         borderColor: '#858585ff',
+    },
+    license: {
+        width: 350,
+        height: 180,
+        resizeMode: 'contain',
+        marginLeft: 20,
+        marginTop: 10,
+    },
+    statusText: {
+        fontSize: 15,
+        color: "#333",
+        height: 42,
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        borderWidth: 1,
+        borderColor: '#858585ff',
+        borderRadius: 18,
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 10,
     },
     genderRow: {
         flexDirection: "row",
@@ -338,6 +368,6 @@ const styles = StyleSheet.create({
     disclaimer: {
         fontSize: 11,
         textAlign: 'center',
-        marginTop: 560,
+        marginTop: 900,
     }
 })

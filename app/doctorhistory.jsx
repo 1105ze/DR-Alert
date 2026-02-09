@@ -10,6 +10,7 @@ const historyData = [
     color: '#4CAF50',
     image: require('../assets/eye_open.png'),
     time: '11/18/2025, 4:30:00 PM',
+    name: 'John Wick    P0115',
   },
   {
     id: '2',
@@ -17,6 +18,7 @@ const historyData = [
     color: '#6BC6C3',
     image: require('../assets/eye_open.png'),
     time: '11/18/2025, 4:30:00 PM',
+    name: 'Sarah Han    P0282',
   },
   {
     id: '3',
@@ -24,30 +26,33 @@ const historyData = [
     color: '#FFC107',
     image: require('../assets/eye_open.png'),
     time: '11/18/2025, 4:30:00 PM',
+    name: 'Darren Liu    P1519',
   },
   {
     id: '4',
     result: 'Severe',
-    color: '#FF9800',
+    color: '#fe9696ff',
     image: require('../assets/eye_open.png'),
     time: '11/18/2025, 4:30:00 PM',
+    name: 'John Smith    P0671',
   },
   {
     id: '5',
-    result: 'Proliferative',
+    result: 'Proliferatve',
     color: '#F44336',
     image: require('../assets/eye_open.png'),
     time: '11/18/2025, 4:30:00 PM',
+    name: 'Wong How    P0008',
   },
   
 ]
 
-const history = () => {
+const doctorhistory = () => {
   const router = useRouter();
     return (
         <View>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.profile} onPress={() => router.back()}>
+                <TouchableOpacity style={styles.profile} onPress={() => router.push('/profile')}>
                     <Image source={require('../assets/people_icon.png')} style={styles.profileImage} />
                 </TouchableOpacity>
 
@@ -60,35 +65,32 @@ const history = () => {
             </View>
 
             <View>
-                <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
+                <TouchableOpacity style={styles.back} onPress={() => router.back()}>
                     <Text style={styles.historyText}>‹   Detection History</Text>
                 </TouchableOpacity>
             </View>
 
             <ScrollView contentContainerStyle={{ paddingBottom: 160 }}>
                     {historyData.map(item => (
-                    <TouchableOpacity
-                        key={item.id}
-                        style={[styles.card, { borderColor: item.color }]}
-                        onPress={() => router.push('/result')}
-                    >
+                    <TouchableOpacity key={item.id} style={[styles.card, { borderColor: item.color }]} onPress={() => router.push('/doctorresult')}>
                         <Image source={item.image} style={styles.cardImage} />
 
                         <View style={styles.cardContent}>
-                        <View style={[styles.badge, { borderColor: item.color }]}>
-                            <Text style={[styles.badgeText, { color: item.color }]}>
-                            {item.result}
-                            </Text>
-                        </View>
+                            <View style={[styles.badge, { borderColor: item.color }]}>
+                                <Text style={[styles.badgeText, { color: item.color }]}>
+                                {item.result}
+                                </Text>
+                            </View>
 
-                        <Text style={styles.time}>{item.time}</Text>
+                            <Text style={styles.time}>{item.time}</Text>
+                            <Text style={styles.name}>{item.name}</Text>
                         </View>
 
                         <Text style={[styles.arrow, { color: item.color }]}>›</Text>
                     </TouchableOpacity>
                     ))}            
                     
-                    <TouchableOpacity style={styles.analysisButton} onPress={() => router.push('/upload')}>
+                    <TouchableOpacity style={styles.analysisButton} onPress={() => router.push('/upload')} >
                         <Image source={require('../assets/upload_icon.png')} style={styles.uploadIcon} />
                         <Text style={styles.analysisText}>New Analysis</Text>
                     </TouchableOpacity>
@@ -101,7 +103,7 @@ const history = () => {
     )
 }
 
-export default history
+export default doctorhistory
 
 const styles = StyleSheet.create({
   header: {
@@ -188,7 +190,10 @@ const styles = StyleSheet.create({
   time: {
     marginTop: 6,
     fontSize: 12,
-    color: '#555',
+  },
+  name: {
+    marginTop: 3,
+    fontsize: 12,
   },
   arrow: {
     fontSize: 26,
@@ -208,7 +213,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     resizeMode: 'contain',
-    marginLeft: 130
+    marginLeft: 130,
   },
   analysisText: {
     fontWeight: 'bold',

@@ -20,7 +20,7 @@ const notificationscreen = () => {
           </View>
 
           <View>
-              <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
+              <TouchableOpacity style={styles.back} onPress={() => router.back()}>
                   <Text style={styles.notificationText}>‹   Notifications</Text>
               </TouchableOpacity>
           </View>

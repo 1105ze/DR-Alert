@@ -68,7 +68,7 @@ const Home = () => {
     <View>
   {/* Header */}        
       <View>
-        <TouchableOpacity style={styles.back} onPress={() => router.push('/firstpage')}>
+        <TouchableOpacity style={styles.back} onPress={() => router.back()}>
           <Image source={require('../assets/back_icon.png')} style={styles.backImage} />
         </TouchableOpacity>
       </View>

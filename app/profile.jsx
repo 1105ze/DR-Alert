@@ -11,7 +11,7 @@ const profile = () => {
             <View>
                 <View style={styles.header}>
                     <View>
-                        <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
+                        <TouchableOpacity style={styles.back} onPress={() => router.back()}>
                             <Text style={styles.backText}>‹   Profile</Text>
                         </TouchableOpacity>
                     </View>
