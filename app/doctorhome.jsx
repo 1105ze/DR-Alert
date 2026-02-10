@@ -97,6 +97,34 @@ const doctorhome = () => {
     loadRecentUploads();
     }, []);
 
+    const [profileImage, setProfileImage] = useState(null);
+    useEffect(() => {
+        const loadProfileImage = async () => {
+            const token = await AsyncStorage.getItem("accessToken");
+            if (!token) return;
+
+            const res = await fetch(`${API_BASE_URL}/api/accounts/profile/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            });
+
+            if (res.ok) {
+            const data = await res.json();
+            if (data.profile_image) {
+                setProfileImage(
+                data.profile_image.startsWith("data:")
+                    ? data.profile_image
+                    : `data:image/jpeg;base64,${data.profile_image}`
+                );
+            }
+            }
+        };
+
+        loadProfileImage();
+        }, []);
+
+
     const adListRef = useRef(null);
     const [activeAdIndex, setActiveAdIndex] = useState(0);
 
@@ -114,7 +142,14 @@ const doctorhome = () => {
                     <View style={styles.topSection}>
                         <View style={styles.header}>
                             <TouchableOpacity style={styles.profile} onPress={() => router.push('/profile')}>
-                                <Image source={require('../assets/people_icon.png')} style={styles.profileImage} />
+                                <Image
+                                    source={
+                                        profileImage
+                                        ? { uri: profileImage }
+                                        : require("../assets/people_icon.png")
+                                    }
+                                    style={styles.profileImage}
+                                    />
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.notification} onPress={() => router.push('/notificationscreen')}>
@@ -335,24 +370,43 @@ const styles = StyleSheet.create({
         marginTop: 50,
         paddingHorizontal: 20,
     },
+    // profile: {
+    //     backgroundColor: "#aad5fcff",
+    //     justifyContent: 'center',
+    //     borderRadius: 30,
+    //     marginLeft: '5%',
+    //     width: 60,
+    //     height: 60,
+    //     alignItems: "center",
+    //     borderWidth: 5,
+    //     borderColor: '#54adfaff',
+    //     },
     profile: {
-        backgroundColor: "#aad5fcff",
-        justifyContent: 'center',
-        borderRadius: 30,
-        marginLeft: '5%',
-        width: 60,
-        height: 60,
-        alignItems: "center",
-        borderWidth: 5,
-        borderColor: '#54adfaff',
-        },
-    profileImage: {
-        width: 38,
-        height: 38,
-        marginRight: 10,
-        resizeMode: 'contain',
-        marginLeft: "8",
-    },
+  width: 64,
+  height: 64,
+  borderRadius: 32,
+  backgroundColor: "#FFFFFF",
+  borderWidth: 4,
+  borderColor: "#4da3ff",
+  justifyContent: "center",
+  alignItems: "center",
+  overflow: "hidden",   // IMPORTANT
+},
+
+profileImage: {
+  width: "100%",
+  height: "100%",
+  borderRadius: 32,
+  resizeMode: "cover",
+},
+
+    // profileImage: {
+    //     width: 38,
+    //     height: 38,
+    //     marginRight: 10,
+    //     resizeMode: 'contain',
+    //     marginLeft: "8",
+    // },
     notification: {
         paddingVertical: 15,
         marginRight: 15,

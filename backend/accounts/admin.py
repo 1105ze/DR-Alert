@@ -20,6 +20,8 @@ class UserAdmin(admin.ModelAdmin):
     )
 
     fields = (
+        "profile_image_preview",   # ✅ ADD
+        "profile_size", 
         "username",
         "email",
         "role",
@@ -31,6 +33,8 @@ class UserAdmin(admin.ModelAdmin):
     )
 
     readonly_fields = (
+        "profile_image_preview",
+        "profile_size",
         "license_preview",
         "license_size",
         'created_at'
@@ -66,6 +70,29 @@ class UserAdmin(admin.ModelAdmin):
 
     license_size.short_description = "License Size"
 
+    def profile_image_preview(self, obj):
+        if not obj.profile_image:
+            return "No profile image"
+
+        b64 = base64.b64encode(obj.profile_image).decode()
+        return format_html(
+            '<img src="data:image/jpeg;base64,{}" style="max-height:150px;" />',
+            b64
+        )
+
+    def profile_size(self, obj):
+        size = obj.profile_image_size
+        if not size:
+            return "-"
+        if size < 1024:
+            return f"{size} B"
+        elif size < 1024 * 1024:
+            return f"{size / 1024:.2f} KB"
+        return f"{size / (1024 * 1024):.2f} MB"
+
+    profile_size.short_description = "Profile Image Size"
+
+
 
 
 # =========================
@@ -81,6 +108,8 @@ class DoctorAdmin(admin.ModelAdmin):
     )
 
     fields = (
+        "profile_image_preview",   # ✅ ADD
+        "profile_size", 
         "doctor_name",
         "email",
         "gender",
@@ -94,6 +123,8 @@ class DoctorAdmin(admin.ModelAdmin):
     )
 
     readonly_fields = (
+        "profile_image_preview",   # ✅ ADD
+        "profile_size", 
         "doctor_name",
         "email",
         "gender",
@@ -167,6 +198,30 @@ class DoctorAdmin(admin.ModelAdmin):
 
     license_size.short_description = "License Size"
 
+    def profile_image_preview(self, obj):
+        if not obj.user.profile_image:
+            return "No profile image"
+
+        b64 = base64.b64encode(obj.user.profile_image).decode("utf-8")
+        return format_html(
+            '<img src="data:image/jpeg;base64,{}" style="max-height:150px;" />',
+            b64
+        )
+
+    def profile_size(self, obj):
+        size = obj.user.profile_image_size
+        if not size:
+            return "-"
+        if size < 1024:
+            return f"{size} B"
+        elif size < 1024 * 1024:
+            return f"{size / 1024:.2f} KB"
+        return f"{size / (1024 * 1024):.2f} MB"
+
+    profile_size.short_description = "Profile Image Size"
+
+    
+
 
 
 
@@ -185,6 +240,8 @@ class PatientAdmin(admin.ModelAdmin):
     )
 
     fields = (
+        "profile_image_preview",   # ✅ ADD
+        "profile_size", 
         "username",
         "email",
         "role",
@@ -198,6 +255,8 @@ class PatientAdmin(admin.ModelAdmin):
         "email",
         "role",
         "gender",
+        "profile_image_preview",   # ✅ ADD
+        "profile_size", 
         "date_of_birth",
         "created_at",
     )
@@ -217,6 +276,29 @@ class PatientAdmin(admin.ModelAdmin):
 
     def date_of_birth(self, obj):
         return obj.user.date_of_birth
+    
+    def profile_image_preview(self, obj):
+        if not obj.user.profile_image:
+            return "No profile image"
+
+        b64 = base64.b64encode(obj.user.profile_image).decode("utf-8")
+        return format_html(
+            '<img src="data:image/jpeg;base64,{}" style="max-height:150px;" />',
+            b64
+        )
+
+    def profile_size(self, obj):
+        size = obj.user.profile_image_size
+        if not size:
+            return "-"
+        if size < 1024:
+            return f"{size} B"
+        elif size < 1024 * 1024:
+            return f"{size / 1024:.2f} KB"
+        return f"{size / (1024 * 1024):.2f} MB"
+
+    profile_size.short_description = "Profile Image Size"
+
 
     username.short_description = "Username"
     email.short_description = "Email"

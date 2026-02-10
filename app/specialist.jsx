@@ -1,87 +1,365 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, TextInput, FlatList, Image } from 'react-native'
-import React from 'react'
-import{ useRouter } from "expo-router"
+// import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, TextInput, FlatList, Image } from 'react-native'
+// import React, { useState, useEffect, useMemo } from "react";
+// import{ useRouter } from "expo-router"
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { API_BASE_URL } from "../config";
 
-const specialist = () => {
-   const router = useRouter();
+// const specialist = () => {
+//   const router = useRouter();
 
-  const doctors = [
-    {
-      id: "dr-philip",
-      name: "Dr.Philip",
-      phone: "+60 125839302",
-      exp: "10+ years experience",
-      hours: "Mon–Fri, 9:00 AM – 5:00 PM",
-      specialty: "Retina Specialist",
-      clinic: "ABC Eye Specialist Centre",
-      location: "Kuala Lumpur, Malaysia",
-      avatar: "https://i.pravatar.cc/200?img=12",
-    },
-    {
-      id: "dr-adeline",
-      name: "Dr.Adeline",
-      phone: "+60 1119018788",
-      exp: "8 years experience",
-      hours: "Mon–Fri, 9:00 AM – 5:00 PM",
-      specialty: "Ophthalmologist",
-      clinic: "Sunrise Eye Clinic",
-      location: "Kuala Lumpur, Malaysia",
-      avatar: "https://i.pravatar.cc/200?img=47",
-    },
-    {
-      id: "dr-darius",
-      name: "Dr.Darius",
-      phone: "+60 190207612",
-      exp: "5 years experience",
-      hours: "Mon–Sat, 9:00 AM – 5:00 PM",
-      specialty: "Eye Specialist",
-      clinic: "VisionCare Specialist",
-      location: "Petaling Jaya, Malaysia",
-      avatar: "https://i.pravatar.cc/200?img=56",
-    },
-    {
-      id: "dr-raffles",
-      name: "Dr.Raffles",
-      phone: "+60 130982810",
-      exp: "7 years experience",
-      hours: "Mon–Fri, 9:00 AM – 5:00 PM",
-      specialty: "Retina Specialist",
-      clinic: "City Retina Centre",
-      location: "Shah Alam, Malaysia",
-      avatar: "https://i.pravatar.cc/200?img=65",
-    },
-    {
-      id: "dr-klang",
-      name: "Dr.Klang",
-      phone: "+60 178906527",
-      exp: "4 years experience",
-      hours: "Mon–Sun, 9:00 AM – 5:00 PM",
-      specialty: "Ophthalmologist",
-      clinic: "Klang Specialist Clinic",
-      location: "Klang, Malaysia",
-      avatar: "https://i.pravatar.cc/200?img=68",
-    },
-    {
-      id: "dr-lee",
-      name: "Dr.Lee",
-      phone: "+60 189012341",
-      exp: "2 years experience",
-      hours: "Mon–Sun, 9:00 AM – 5:00 PM",
-      specialty: "Eye Specialist",
-      clinic: "Lee Eye Centre",
-      location: "Subang Jaya, Malaysia",
-      avatar: "https://i.pravatar.cc/200?img=14",
-    },
-  ];
+//   const [doctors, setDoctors] = useState([]);
+//   const [query, setQuery] = useState("");
+//   const [expandedId, setExpandedId] = useState(null);
 
-  const [query, setQuery] = React.useState("");
-  const [expandedId, setExpandedId] = React.useState(null);
+//     useEffect(() => {
+//       const loadDoctors = async () => {
+//         try {
+//           const token = await AsyncStorage.getItem("accessToken");
 
-  const filtered = React.useMemo(() => {
+//           const res = await fetch(`${API_BASE_URL}/api/doctors/verified/`, {
+//             headers: {
+//               Authorization: `Bearer ${token}`,
+//             },
+//           });
+
+//           const data = await res.json();
+//           setDoctors(data);
+//         } catch (err) {
+//           console.error("Failed to load doctors", err);
+//         }
+//       };
+
+//       loadDoctors();
+//     }, []);
+
+//   // const doctors = [
+//   //   {
+//   //     id: "dr-philip",
+//   //     name: "Dr.Philip",
+//   //     phone: "+60 125839302",
+//   //     exp: "10+ years experience",
+//   //     hours: "Mon–Fri, 9:00 AM – 5:00 PM",
+//   //     specialty: "Retina Specialist",
+//   //     clinic: "ABC Eye Specialist Centre",
+//   //     location: "Kuala Lumpur, Malaysia",
+//   //     avatar: "https://i.pravatar.cc/200?img=12",
+//   //   },
+//   //   {
+//   //     id: "dr-adeline",
+//   //     name: "Dr.Adeline",
+//   //     phone: "+60 1119018788",
+//   //     exp: "8 years experience",
+//   //     hours: "Mon–Fri, 9:00 AM – 5:00 PM",
+//   //     specialty: "Ophthalmologist",
+//   //     clinic: "Sunrise Eye Clinic",
+//   //     location: "Kuala Lumpur, Malaysia",
+//   //     avatar: "https://i.pravatar.cc/200?img=47",
+//   //   },
+//   //   {
+//   //     id: "dr-darius",
+//   //     name: "Dr.Darius",
+//   //     phone: "+60 190207612",
+//   //     exp: "5 years experience",
+//   //     hours: "Mon–Sat, 9:00 AM – 5:00 PM",
+//   //     specialty: "Eye Specialist",
+//   //     clinic: "VisionCare Specialist",
+//   //     location: "Petaling Jaya, Malaysia",
+//   //     avatar: "https://i.pravatar.cc/200?img=56",
+//   //   },
+//   //   {
+//   //     id: "dr-raffles",
+//   //     name: "Dr.Raffles",
+//   //     phone: "+60 130982810",
+//   //     exp: "7 years experience",
+//   //     hours: "Mon–Fri, 9:00 AM – 5:00 PM",
+//   //     specialty: "Retina Specialist",
+//   //     clinic: "City Retina Centre",
+//   //     location: "Shah Alam, Malaysia",
+//   //     avatar: "https://i.pravatar.cc/200?img=65",
+//   //   },
+//   //   {
+//   //     id: "dr-klang",
+//   //     name: "Dr.Klang",
+//   //     phone: "+60 178906527",
+//   //     exp: "4 years experience",
+//   //     hours: "Mon–Sun, 9:00 AM – 5:00 PM",
+//   //     specialty: "Ophthalmologist",
+//   //     clinic: "Klang Specialist Clinic",
+//   //     location: "Klang, Malaysia",
+//   //     avatar: "https://i.pravatar.cc/200?img=68",
+//   //   },
+//   //   {
+//   //     id: "dr-lee",
+//   //     name: "Dr.Lee",
+//   //     phone: "+60 189012341",
+//   //     exp: "2 years experience",
+//   //     hours: "Mon–Sun, 9:00 AM – 5:00 PM",
+//   //     specialty: "Eye Specialist",
+//   //     clinic: "Lee Eye Centre",
+//   //     location: "Subang Jaya, Malaysia",
+//   //     avatar: "https://i.pravatar.cc/200?img=14",
+//   //   },
+//   // ];
+
+
+//   const filtered = React.useMemo(() => {
+//     const q = query.trim().toLowerCase();
+//     if (!q) return doctors;
+
+//     return doctors.filter((d) =>
+//       (d.name || "").toLowerCase().includes(q)
+//     );
+//   }, [query, doctors]);
+
+//   const toggleExpand = (id) => {
+//     setExpandedId((prev) => (prev === id ? null : id));
+//   };
+
+//   const renderDoctor = ({ item }) => {
+//     const expanded = expandedId === item.id;
+
+// //     return (
+// //       <View style={styles.card}>
+// //         {/* Chevron */}
+// //         <TouchableOpacity
+// //           style={styles.chevBtn}
+// //           onPress={() => toggleExpand(item.id)}
+// //           activeOpacity={0.8}
+// //         >
+// //           <Text style={styles.chevIcon}>{expanded ? "⌃" : "⌄"}</Text>
+// //         </TouchableOpacity>
+
+// //         {/* Avatar */}
+// //         <Image source={{ uri: item.avatar }} style={styles.avatar} />
+
+// //         {/* Info */}
+// //         <View style={styles.info}>
+// //           <Text style={styles.name}>{item.name}</Text>
+// //           <Text style={styles.sub}>{item.phone}</Text>
+
+// //           <Text style={styles.exp}>{item.exp}</Text>
+// //           <Text style={styles.sub}>{item.hours}</Text>
+
+// //           {/* Extra lines only when expanded */}
+// //           {expanded ? (
+// //             <View style={{ marginTop: 8 }}>
+// //               <Text style={styles.extra}>{item.specialty}</Text>
+// //               <Text style={styles.extra}>{item.clinic}</Text>
+// //               <Text style={styles.extra}>{item.location}</Text>
+// //             </View>
+// //           ) : null}
+// //         </View>
+// //       </View>
+// //     );
+// //   };
+
+// //   return (
+// //     <SafeAreaView style={styles.page}>
+// //       {/* Header */}
+// //       <View style={styles.header}>
+// //         <View style={styles.avatarCircle} />
+// //         <View style={styles.headerTitleWrap}>
+// //           <Text style={styles.headerTitle}>DR Detection</Text>
+// //           <Text style={styles.headerSubtitle}>Diabetic Retinopathy Screening</Text>
+// //         </View>
+// //         <Text style={styles.headerName}>Ze Gui</Text>
+// //       </View>
+
+// //       {/* Back to home */}
+// //       <TouchableOpacity style={styles.backRow} onPress={() => router.back()}>
+// //         <Text style={styles.backIcon}>←</Text>
+// //         <Text style={styles.backText}>Back to Home</Text>
+// //       </TouchableOpacity>
+
+// //       {/* Title */}
+// //       <Text style={styles.pageTitle}>Find a Specialist</Text>
+
+// //       {/* Search */}
+// //       <View style={styles.searchBar}>
+// //         <Text style={styles.searchIcon}>🔍</Text>
+// //         <TextInput
+// //           value={query}
+// //           onChangeText={setQuery}
+// //           placeholder="Search"
+// //           placeholderTextColor="#6b6b6b"
+// //           style={styles.searchInput}
+// //         />
+// //       </View>
+
+// //       <Text style={styles.sectionTitle}>Specialist</Text>
+
+// //       {/* List */}
+// //       <FlatList
+// //         data={filtered}
+// //         keyExtractor={(item) => item.id}
+// //         renderItem={renderDoctor}
+// //         contentContainerStyle={{ paddingBottom: 16 }}
+// //         showsVerticalScrollIndicator={false}
+// //       />
+
+// //       {/* Footer */}
+// //       <View style={styles.footer}>
+// //         <Text style={styles.footerText}>
+// //           This is a screening tool only. Consult a healthcare professional for
+// //           diagnosis.
+// //         </Text>
+// //       </View>
+// //     </SafeAreaView>
+// //   );
+// // };
+
+// // export default specialist;
+// return (
+//       <View style={styles.card}>
+//         {/* Chevron */}
+//         <TouchableOpacity
+//           style={styles.chevBtn}
+//           onPress={() => toggleExpand(item.id)}
+//         >
+//           <Text style={styles.chevIcon}>{expanded ? "⌃" : "⌄"}</Text>
+//         </TouchableOpacity>
+
+//         {/* Avatar (fallback safe) */}
+//         <View style={styles.avatarPlaceholder}>
+//           <Text style={styles.avatarText}>
+//             {item.name?.charAt(0) || "D"}
+//           </Text>
+//         </View>
+
+//         {/* Info */}
+//         <View style={styles.info}>
+//           <Text style={styles.name}>{item.name}</Text>
+//           <Text style={styles.sub}>{item.email}</Text>
+
+//           {expanded && (
+//             <Text style={styles.extra}>{item.specialization}</Text>
+//           )}
+//         </View>
+//       </View>
+//     );
+//   };
+
+//   return (
+//     <SafeAreaView style={styles.page}>
+//       {/* Header */}
+//       <View style={styles.header}>
+//         <View style={styles.avatarCircle} />
+//         <View style={styles.headerTitleWrap}>
+//           <Text style={styles.headerTitle}>DR Detection</Text>
+//           <Text style={styles.headerSubtitle}>
+//             Diabetic Retinopathy Screening
+//           </Text>
+//         </View>
+//         <Text style={styles.headerName}>Ze Gui</Text>
+//       </View>
+
+//       {/* Back */}
+//       <TouchableOpacity style={styles.backRow} onPress={() => router.back()}>
+//         <Text style={styles.backIcon}>←</Text>
+//         <Text style={styles.backText}>Back to Home</Text>
+//       </TouchableOpacity>
+
+//       <Text style={styles.pageTitle}>Find a Specialist</Text>
+
+//       {/* Search */}
+//       <View style={styles.searchBar}>
+//         <Text style={styles.searchIcon}>🔍</Text>
+//         <TextInput
+//           value={query}
+//           onChangeText={setQuery}
+//           placeholder="Search doctor"
+//           style={styles.searchInput}
+//         />
+//       </View>
+
+//       <Text style={styles.sectionTitle}>Specialist</Text>
+
+//       <FlatList
+//         data={filtered}
+//         keyExtractor={(item) => item.id.toString()}
+//         renderItem={renderDoctor}
+//         showsVerticalScrollIndicator={false}
+//       />
+
+//       <View style={styles.footer}>
+//         <Text style={styles.footerText}>
+//           This is a screening tool only. Consult a healthcare professional for
+//           diagnosis.
+//         </Text>
+//       </View>
+//     </SafeAreaView>
+//   );
+// };
+
+// export default specialist;
+
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+  FlatList
+} from "react-native";
+import React, { useState, useEffect, useMemo } from "react";
+import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_BASE_URL } from "../config";
+
+const Specialist = () => {
+  const router = useRouter();
+
+  const [doctors, setDoctors] = useState([]);
+  const [query, setQuery] = useState("");
+  const [expandedId, setExpandedId] = useState(null);
+
+  useEffect(() => {
+    const loadDoctors = async () => {
+      try {
+        const token = await AsyncStorage.getItem("accessToken");
+
+        if (!token) {
+          console.error("❌ No access token found");
+          return;
+        }
+
+        const res = await fetch(
+          `${API_BASE_URL}/api/accounts/doctors/verified/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+          }
+        );
+
+        const text = await res.text();
+        console.log("STATUS:", res.status);
+        console.log("RAW RESPONSE:", text);
+
+        if (!res.ok) {
+          throw new Error(text);
+        }
+
+        const data = JSON.parse(text);
+        setDoctors(data);
+      } catch (err) {
+        console.error("Failed to load doctors:", err.message);
+      }
+    };
+
+    loadDoctors();
+  }, []);
+
+  const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return doctors;
-    return doctors.filter((d) => d.name.toLowerCase().includes(q));
-  }, [query]);
+
+    return doctors.filter((d) =>
+      (d.name || "").toLowerCase().includes(q)
+    );
+  }, [query, doctors]);
 
   const toggleExpand = (id) => {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -92,34 +370,26 @@ const specialist = () => {
 
     return (
       <View style={styles.card}>
-        {/* Chevron */}
         <TouchableOpacity
           style={styles.chevBtn}
           onPress={() => toggleExpand(item.id)}
-          activeOpacity={0.8}
         >
           <Text style={styles.chevIcon}>{expanded ? "⌃" : "⌄"}</Text>
         </TouchableOpacity>
 
-        {/* Avatar */}
-        <Image source={{ uri: item.avatar }} style={styles.avatar} />
+        <View style={styles.avatarPlaceholder}>
+          <Text style={styles.avatarText}>
+            {item.name?.charAt(0) || "D"}
+          </Text>
+        </View>
 
-        {/* Info */}
         <View style={styles.info}>
           <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.sub}>{item.phone}</Text>
+          <Text style={styles.sub}>{item.email}</Text>
 
-          <Text style={styles.exp}>{item.exp}</Text>
-          <Text style={styles.sub}>{item.hours}</Text>
-
-          {/* Extra lines only when expanded */}
-          {expanded ? (
-            <View style={{ marginTop: 8 }}>
-              <Text style={styles.extra}>{item.specialty}</Text>
-              <Text style={styles.extra}>{item.clinic}</Text>
-              <Text style={styles.extra}>{item.location}</Text>
-            </View>
-          ) : null}
+          {expanded && (
+            <Text style={styles.extra}>{item.specialization}</Text>
+          )}
         </View>
       </View>
     );
@@ -127,60 +397,54 @@ const specialist = () => {
 
   return (
     <SafeAreaView style={styles.page}>
-      {/* Header */}
       <View style={styles.header}>
         <View style={styles.avatarCircle} />
         <View style={styles.headerTitleWrap}>
           <Text style={styles.headerTitle}>DR Detection</Text>
-          <Text style={styles.headerSubtitle}>Diabetic Retinopathy Screening</Text>
+          <Text style={styles.headerSubtitle}>
+            Diabetic Retinopathy Screening
+          </Text>
         </View>
         <Text style={styles.headerName}>Ze Gui</Text>
       </View>
 
-      {/* Back to home */}
       <TouchableOpacity style={styles.backRow} onPress={() => router.back()}>
         <Text style={styles.backIcon}>←</Text>
         <Text style={styles.backText}>Back to Home</Text>
       </TouchableOpacity>
 
-      {/* Title */}
       <Text style={styles.pageTitle}>Find a Specialist</Text>
 
-      {/* Search */}
       <View style={styles.searchBar}>
         <Text style={styles.searchIcon}>🔍</Text>
         <TextInput
           value={query}
           onChangeText={setQuery}
-          placeholder="Search"
-          placeholderTextColor="#6b6b6b"
+          placeholder="Search doctor"
           style={styles.searchInput}
         />
       </View>
 
       <Text style={styles.sectionTitle}>Specialist</Text>
 
-      {/* List */}
       <FlatList
         data={filtered}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderDoctor}
-        contentContainerStyle={{ paddingBottom: 16 }}
         showsVerticalScrollIndicator={false}
       />
 
-      {/* Footer */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          This is a screening tool only. Consult a healthcare professional for
-          diagnosis.
+          This is a screening tool only. Consult a healthcare professional for diagnosis.
         </Text>
       </View>
     </SafeAreaView>
   );
 };
 
-export default specialist;
+export default Specialist;
+
 
 const styles = StyleSheet.create({
   page: { flex: 1, backgroundColor: "#FFFFFF" },
@@ -283,4 +547,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   footerText: { fontSize: 12, opacity: 0.75, textAlign: "center" },
+
+  avatarPlaceholder: {
+  width: 84,
+  height: 84,
+  borderRadius: 42,
+  marginLeft: 26,
+  backgroundColor: "#88C8FF",
+  alignItems: "center",
+  justifyContent: "center",
+},
+
+avatarText: {
+  fontSize: 32,
+  fontWeight: "800",
+  color: "#fff",
+},
 });

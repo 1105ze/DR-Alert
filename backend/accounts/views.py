@@ -180,6 +180,14 @@ def profile(request):
             "date_of_birth": user.date_of_birth,
         }
 
+        if user.profile_image:
+            data["profile_image"] = (
+                "data:image/jpeg;base64,"
+                + base64.b64encode(user.profile_image).decode()
+            )
+        else:
+            data["profile_image"] = None
+
         if user.role == "doctor":
             doctor = Doctor.objects.get(user=user)
 
@@ -208,6 +216,13 @@ def profile(request):
             "date_of_birth", user.date_of_birth
         )
         user.email = request.data.get("email", user.email)
+
+        profile_image = request.data.get("profile_image")
+        if profile_image:
+            image_bytes = base64.b64decode(profile_image)
+            user.profile_image = image_bytes
+            user.profile_image_size = len(image_bytes)
+
         user.save()
 
         if user.role == "doctor":
@@ -279,5 +294,33 @@ def get_notifications(request):
         }
         for n in notifications
     ]
+
+    return Response(data)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def verified_doctors(request):
+    doctors = Doctor.objects.filter(
+        verification__status="verified"
+    ).select_related("user")
+
+    data = []
+    for d in doctors:
+        if d.user.profile_image:
+            profile_image = (
+                "data:image/jpeg;base64,"
+                + base64.b64encode(d.user.profile_image).decode()
+            )
+        else:
+            profile_image = None
+
+        data.append({
+            "id": d.id,
+            "name": d.user.username,
+            "email": d.user.email,
+            "specialization": d.specialization,
+            "profile_image": profile_image,  # ✅ ADD THIS
+        })
 
     return Response(data)

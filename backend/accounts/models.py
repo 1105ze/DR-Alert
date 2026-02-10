@@ -23,8 +23,12 @@ class User(AbstractUser):
     license_image = models.BinaryField(null=True, blank=True)
     license_image_size = models.IntegerField(null=True, blank=True)
 
+    profile_image = models.BinaryField(null=True, blank=True)
+    profile_image_size = models.IntegerField(null=True, blank=True)
+
     def __str__(self):
         return self.username
+    
 
 
 class Patient(models.Model):
@@ -47,7 +51,7 @@ class Doctor(models.Model):
 
     license_image = models.BinaryField(null=True, blank=True)
     license_image_size = models.IntegerField(null=True, blank=True)
-
+    
 
 
     def __str__(self):

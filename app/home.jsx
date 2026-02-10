@@ -72,6 +72,33 @@ const home = () => {
     loadRecentUploads();
     }, []);
 
+    const [profileImage, setProfileImage] = useState(null);
+    useEffect(() => {
+        const loadProfileImage = async () => {
+            const token = await AsyncStorage.getItem("accessToken");
+            if (!token) return;
+
+            const res = await fetch(`${API_BASE_URL}/api/accounts/profile/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            });
+
+            if (res.ok) {
+            const data = await res.json();
+            if (data.profile_image) {
+                setProfileImage(
+                data.profile_image.startsWith("data:")
+                    ? data.profile_image
+                    : `data:image/jpeg;base64,${data.profile_image}`
+                );
+            }
+            }
+        };
+
+        loadProfileImage();
+        }, []);
+
     const adListRef = useRef(null);
     const [activeAdIndex, setActiveAdIndex] = useState(0);
 
@@ -89,7 +116,14 @@ const home = () => {
                     <View style={styles.topSection}>
                         <View style={styles.header}>
                             <TouchableOpacity style={styles.profile} onPress={() => router.push('/profile')}>
-                                <Image source={require('../assets/people_icon.png')} style={styles.profileImage} />
+                                <Image
+                                    source={
+                                        profileImage
+                                        ? { uri: profileImage }
+                                        : require("../assets/people_icon.png")
+                                    }
+                                    style={styles.profileImage}
+                                    />
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.notification} onPress={() => router.push('/notificationscreen')}>

@@ -3,22 +3,93 @@ import React from 'react'
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
+import * as ImagePicker from "expo-image-picker";
+import { API_BASE_URL } from "../config";
+import { Alert } from "react-native";
 
 const profile = () => {
     const router = useRouter();
     const [notifEnabled, setNotifEnabled] = React.useState(true);
     const [user, setUser] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
+    useEffect(() => {
+        const loadProfile = async () => {
+            try {
+            const token = await AsyncStorage.getItem("accessToken");
+            if (!token) return;
 
-    // useEffect(() => {
-    //   const loadUser = async () => {
-    //     const storedUser = await AsyncStorage.getItem("user");
-    //     if (storedUser) {
-    //       setUser(JSON.parse(storedUser));
-    //     }
-    //   };
-    //   loadUser();
-    // }, []);
+            const res = await fetch(`${API_BASE_URL}/api/accounts/profile/`, {
+                headers: {
+                Authorization: `Bearer ${token}`,
+                },
+            });
 
+            const data = await res.json();
+
+            if (data.profile_image) {
+                const imageUri = data.profile_image.startsWith("data:")
+                    ? data.profile_image
+                    : `data:image/jpeg;base64,${data.profile_image}`;
+
+                setProfileImage(imageUri);
+                }
+            } catch (e) {
+            console.error("Failed to load profile image", e);
+            }
+        };
+
+        loadProfile();
+        }, []);
+
+    const pickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            base64: true,
+            quality: 0.7,
+        });
+
+        if (result.canceled) return;
+
+        const base64Image = result.assets[0].base64;
+        const previewUri = `data:image/jpeg;base64,${base64Image}`;
+
+        Alert.alert(
+            "Update Profile Picture",
+            "Do you want to use this image as your profile picture?",
+            [
+            { text: "Cancel", style: "cancel" },
+            {
+                text: "Confirm",
+                onPress: async () => {
+                setProfileImage(previewUri);
+
+                try {
+                    const token = await AsyncStorage.getItem("accessToken");
+
+                    await fetch(`${API_BASE_URL}/api/accounts/profile/`, {
+                    method: "PUT",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        profile_image: base64Image,
+                    }),
+                    });
+
+                    // 🔹 update stored user cache
+                    const storedUser = JSON.parse(await AsyncStorage.getItem("user"));
+                    storedUser.profile_image = previewUri;
+                    await AsyncStorage.setItem("user", JSON.stringify(storedUser));
+
+                } catch (e) {
+                    console.error("Upload profile image failed", e);
+                }
+                },
+            },
+            ]
+        );
+        };
         useEffect(() => {
         const loadUser = async () => {
             const storedUser = await AsyncStorage.getItem("user");
@@ -51,11 +122,18 @@ const profile = () => {
                     </View>
                 
                     <View style={styles.profileWrap}>
-                        <View style={styles.profileCircle}>
-                            <Image source={require('../assets/people_icon.png')} style={styles.profileImage} />
-                        </View>
+                       <TouchableOpacity style={styles.profileCircle} onPress={pickImage}>
+                            <Image
+                                source={
+                                profileImage
+                                    ? { uri: profileImage }
+                                    : require("../assets/people_icon.png")
+                                }
+                                style={styles.profileImage}
+                            />
+                            </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.editBadge} onPress={() => router.push("/editprofile")}>
+                        <TouchableOpacity style={styles.editBadge} onPress={pickImage}>
                             <Image source={require('../assets/edit_icon.png')} style={styles.editImage} />
                         </TouchableOpacity>
                     </View>
@@ -195,13 +273,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    // profileImage: {
+    //     width: 120,
+    //     height: 120,
+    //     marginRight: 10,
+    //     resizeMode: 'contain',
+    //     marginLeft: "8",
+    // },
     profileImage: {
-        width: 120,
-        height: 120,
-        marginRight: 10,
-        resizeMode: 'contain',
-        marginLeft: "8",
-    },
+        width: 140,
+        height: 140,
+        borderRadius: 70,
+        },
+
     editBadge: {
         position: "absolute",
         right: 6,
