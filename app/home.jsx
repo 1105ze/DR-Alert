@@ -30,9 +30,9 @@ const home = () => {
 
 
     const ads = [
-        {id: "1", image: require('../assets/eye_open.png')},
-        {id: "2", image: require('../assets/eye_open.png')},
-        {id: "3", image: require('../assets/eye_open.png')},
+        {id: "1", image: require('../assets/eye_open.png'), route: "/advertisement",},
+        {id: "2", image: require('../assets/eye_open.png'), route: "/advertisement",},
+        {id: "3", image: require('../assets/eye_open.png'), route: "/advertisement",},
     ]
 
     // const recentUploads = [
