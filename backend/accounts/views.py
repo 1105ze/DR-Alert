@@ -11,6 +11,7 @@ from rest_framework.decorators import permission_classes
 from django.utils import timezone
 from .models import Notification
 from .serializers import DoctorSerializer
+from .notification_services import create_notification
 
 
 @api_view(['POST'])
@@ -342,9 +343,20 @@ def assign_doctor(request):
     except (RetinalImage.DoesNotExist, Doctor.DoesNotExist):
         return Response({"error": "Not found"}, status=404)
 
-    # store selection
+    # 🚫 If same doctor already selected → do nothing
+    if retinal_image.selected_doctor and retinal_image.selected_doctor.id == doctor.id:
+        return Response({"message": "Doctor already assigned"})
+
+    # Save selected doctor
     retinal_image.selected_doctor = doctor
     retinal_image.save()
+
+    # 🔔 Send notification ONLY once when new doctor assigned
+    create_notification(
+        receiver=doctor.user,
+        receiver_role="doctor",
+        message="A new retinal image is available for medical review."
+    )
 
     return Response({"success": True})
 
