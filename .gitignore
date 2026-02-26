@@ -3,11 +3,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-<<<<<<< HEAD
-venv/
-=======
 backend/.venv/
->>>>>>> 68f28fc0c08a7201d700079d57bbd9b1d18e011b
 *.sqlite3
 
 # macOS

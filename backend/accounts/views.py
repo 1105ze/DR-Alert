@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from django.utils import timezone
+from django.utils.timezone import localtime
 from .models import Notification
 from .serializers import DoctorSerializer
 from .notification_services import create_notification
@@ -351,11 +352,25 @@ def assign_doctor(request):
     retinal_image.selected_doctor = doctor
     retinal_image.save()
 
+    patient_name = (
+    retinal_image.patient.user.username
+    if retinal_image.patient else "Unknown"
+    )
+    
+    uploaded_time = localtime(retinal_image.created_at).strftime("%d/%m/%Y %I:%M %p")
+
+    message = (
+        f"New Case Assigned\n"
+        f"Patient: {patient_name}\n"
+        f"Uploaded: {uploaded_time}\n"
+        f"Action: Review retinal image"
+    )
+
     # 🔔 Send notification ONLY once when new doctor assigned
     create_notification(
         receiver=doctor.user,
         receiver_role="doctor",
-        message="A new retinal image is available for medical review."
+        message=message
     )
 
     return Response({"success": True})
