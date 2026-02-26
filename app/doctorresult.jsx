@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 import { API_BASE_URL } from "../config";
+import { useLocalSearchParams } from "expo-router";
 
 
 
@@ -81,6 +82,31 @@ const doctorresult = () => {
         // for now just keep UI consistent
     };
 
+    const { retinalImageId } = useLocalSearchParams();
+    const [retinaData, setRetinaData] = useState(null);
+    useEffect(() => {
+        const fetchRetina = async () => {
+            const token = await AsyncStorage.getItem("accessToken");
+            if (!token || !retinalImageId) return;
+
+            const res = await fetch(
+            `${API_BASE_URL}/api/accounts/retina/${retinalImageId}/`,
+            {
+                headers: {
+                Authorization: `Bearer ${token}`,
+                },
+            }
+            );
+
+            if (res.ok) {
+            const data = await res.json();
+            setRetinaData(data);
+            }
+        };
+
+        fetchRetina();
+        }, [retinalImageId]);
+
 
     return (
         <View style={{ flex: 1 }}>
@@ -132,7 +158,7 @@ const doctorresult = () => {
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.secondCard}>
+                {/* <View style={styles.secondCard}>
                     <Text style={styles.doctorTitle}>Doctor Specialist Verify</Text>
 
                     {!showDoctorProfile ? (
@@ -197,15 +223,22 @@ const doctorresult = () => {
                         </View>
                         </View>
                     )}
-                    </View>
+                    </View> */}
 
                     <View style={styles.imageCard}>
-                        <Image
-                            source={require("../assets/eye_open.png")} // put your image in assets
+                        {retinaData && (
+                            <Image
+                            source={{
+                                uri: `data:image/jpeg;base64,${retinaData.image_base64}`,
+                            }}
                             style={styles.fundusImage}
-                        />
+                            />
+                        )}
+
                         <Text style={styles.analyzedText}>
-                            Analyzed on 11/18/2025, 4:30:00 PM
+                            Analyzed on {retinaData 
+                                ? new Date(retinaData.created_at).toLocaleString() 
+                                : ""}
                         </Text>
                     </View>
 

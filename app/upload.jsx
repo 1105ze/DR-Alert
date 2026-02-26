@@ -51,14 +51,25 @@ const upload = () => {
     
     const handleAnalyze = async () => {
       const retinalImageId = await uploadImageToBackend();
+      if (!retinalImageId || !user) return;
 
-      if (!retinalImageId) return;
+      if (user.role === "patient") {
         router.push({
           pathname: "/result",
           params: {
             retinalImageId: String(retinalImageId),
           },
         });
+      }
+
+      if (user.role === "doctor") {
+        router.push({
+          pathname: "/doctorresult",
+          params: {
+            retinalImageId: String(retinalImageId),
+          },
+        });
+      }
     };
 
     const [imageBase64, setImageBase64] = useState(null);

@@ -364,22 +364,59 @@ def assign_doctor(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_retina_detail(request, pk):
+    user = request.user
+
     try:
-        retina = RetinalImage.objects.get(
-            id=pk,
-            patient__user=request.user
-        )
+        retina = RetinalImage.objects.get(id=pk)
     except RetinalImage.DoesNotExist:
         return Response({"error": "Not found"}, status=404)
+
+    if user.role == "patient":
+        if not retina.patient or retina.patient.user != user:
+            return Response({"error": "Unauthorized"}, status=403)
+
+    elif user.role == "doctor":
+        if not (
+            (retina.doctor and retina.doctor.user == user) or
+            (retina.selected_doctor and retina.selected_doctor.user == user)
+        ):
+            return Response({"error": "Unauthorized"}, status=403)
+
+    else:
+        return Response({"error": "Unauthorized"}, status=403)
 
     data = {
         "id": retina.id,
         "image_base64": base64.b64encode(retina.retinal_image).decode("utf-8"),
+        "created_at": retina.created_at,
         "assigned_doctor": (
             DoctorSerializer(retina.selected_doctor).data
             if retina.selected_doctor
             else None
         )
     }
+
+    return Response(data)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def doctor_review_cases(request):
+    user = request.user
+
+    if user.role != "doctor":
+        return Response([], status=403)
+
+    images = RetinalImage.objects.filter(
+        selected_doctor__user=user
+    ).select_related("patient__user").order_by("-created_at")
+
+    data = []
+    for img in images:
+        data.append({
+            "id": img.id,
+            "image_base64": base64.b64encode(img.retinal_image).decode("utf-8"),
+            "created_at": img.created_at,
+            "patient_name": img.patient.user.username if img.patient else None,
+        })
 
     return Response(data)

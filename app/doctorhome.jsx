@@ -179,7 +179,7 @@ const doctorhome = () => {
                     </View>
 
                     <View style={styles.workBar}>
-                        <TouchableOpacity style={styles.workButton} onPress={() => router.push('/doctorresult')}>
+                        <TouchableOpacity style={styles.workButton} onPress={() => router.push('/doctorworklist')}>
                             <Image source={require('../assets/file_icon.png')} style={styles.workIcon} />
                             <Text style={styles.workText}>Work</Text>
                         </TouchableOpacity>
@@ -301,7 +301,12 @@ const doctorhome = () => {
                                                     <TouchableOpacity
                                                         activeOpacity={0.9}
                                                         style={styles.recentCard}
-                                                        onPress={() => router.push("/history")}
+                                                        onPress={() =>
+                                                            router.push({
+                                                                pathname: "/doctorresult",
+                                                                params: { retinalImageId: item.id },
+                                                            })
+                                                            }
                                                     >
                                                         <Image
                                                             source={{
