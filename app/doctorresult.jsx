@@ -11,6 +11,9 @@ import { useLocalSearchParams } from "expo-router";
 const doctorresult = () => {
     const router = useRouter();
     const [user, setUser] = useState(null);
+
+    const [alreadyValidated, setAlreadyValidated] = useState(false);
+    
     useEffect(() => {
       const loadUser = async () => {
         const storedUser = await AsyncStorage.getItem("user");
@@ -20,35 +23,6 @@ const doctorresult = () => {
       };
       loadUser();
     }, []);
-
-    const doctors = [
-    {
-      id: "dr-philip",
-      name: "Dr.Philip",
-      phone: "+60 125839302",
-      exp: "10+ years experience",
-      hours: "Mon–Fri; 9:00 AM – 5:00 PM",
-      specialty: "Retina Specialist",
-      clinic: "ABC Eye Specialist Centre",
-      location: "Kuala Lumpur, Malaysia",
-      avatar: "https://i.pravatar.cc/200?img=12",
-    },
-    {
-      id: "dr-lee",
-      name: "Dr.Lee",
-      phone: "+60 1122334455",
-      exp: "8 years experience",
-      hours: "Mon–Sat; 10:00 AM – 6:00 PM",
-      specialty: "Ophthalmologist",
-      clinic: "VisionCare Clinic",
-      location: "Petaling Jaya, Malaysia",
-      avatar: "https://i.pravatar.cc/200?img=32",
-    },
-    ];
-
-    const [selectedDoctor, setSelectedDoctor] = React.useState(doctors[0]);
-    const [showDoctorModal, setShowDoctorModal] = React.useState(false);
-    const [showDoctorProfile, setShowDoctorProfile] = React.useState(false);
 
     const [profileImage, setProfileImage] = useState(null);
     useEffect(() => {
@@ -77,10 +51,72 @@ const doctorresult = () => {
         loadProfileImage();
         }, []);
    
-    const handleSaveDoctor = () => {
-        // you can replace this with API call / database save later
-        // for now just keep UI consistent
+    const [comment, setComment] = useState("");
+    const [signature, setSignature] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmitValidation = async () => {
+        if (!retinaData?.prediction_id) {
+            alert("Prediction not ready");
+            return;
+        }
+
+        if (!finalStage) {
+            alert("Please select final DR stage");
+            return;
+        }
+
+        if (!comment.trim()) {
+            alert("Please enter comment");
+            return;
+        }
+
+        if (!signature.trim()) {
+            alert("Please enter signature");
+            return;
+        }
+
+        try {
+            setIsSubmitting(true);
+
+            const token = await AsyncStorage.getItem("accessToken");
+
+            const res = await fetch(
+                `${API_BASE_URL}/api/accounts/doctor/validate/`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        prediction_id: retinaData.prediction_id,
+                        doctor_comments: comment,
+                        doctor_final_stage: finalStage,
+                        digital_signature: signature,
+                    }),
+                }
+            );
+
+            if (res.ok) {
+                alert("Validation submitted successfully");
+                // setAlreadyValidated(true);
+                router.replace("/doctorworklisthistory");
+            } else {
+                alert("Submission failed");
+            }
+        } catch (error) {
+            alert("Error submitting");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
+
+    const mockStage = "Severe";
+    const mockConfidence = 0.8;
+
+    const [finalStage, setFinalStage] = useState(null);
+    const stageOptions = ["No DR", "Mild", "Moderate", "Severe", "Proliferative"];
 
     const { retinalImageId } = useLocalSearchParams();
     const [retinaData, setRetinaData] = useState(null);
@@ -99,8 +135,15 @@ const doctorresult = () => {
             );
 
             if (res.ok) {
-            const data = await res.json();
-            setRetinaData(data);
+                const data = await res.json();
+                setRetinaData(data);
+
+                if (data.validated) {
+                    setAlreadyValidated(true);
+                    setFinalStage(data.doctor_final_stage);
+                    setComment(data.doctor_comments || "");
+                    setSignature(data.digital_signature || "");
+                }
             }
         };
 
@@ -142,8 +185,13 @@ const doctorresult = () => {
                         <Image source={require('../assets/warning_icon.png')} style={styles.warningIcon} />
                         <Text style={styles.warningText}>Prelimary AI Result</Text>
                     </View>
-                    <Text style={styles.stageText}>Severe</Text>
-                    <Text style={styles.confidenceText}>Confidence: 80%</Text>
+                    <Text style={styles.stageText}>
+                        {retinaData?.predicted_stage || mockStage}
+                    </Text>
+
+                    <Text style={styles.confidenceText}>
+                        Confidence: {((retinaData?.confidence ?? mockConfidence) * 100).toFixed(0)}%
+                    </Text>
 
                     <View style={styles.adviceColumn}>
                         <Text style={styles.adviceText}>Mild diabetic retinopathy detected. Schedule a follow-up examination within 6-12 months. Continue monitoring blood sugar levels.</Text>
@@ -158,72 +206,6 @@ const doctorresult = () => {
                     </TouchableOpacity>
                 </View>
 
-                {/* <View style={styles.secondCard}>
-                    <Text style={styles.doctorTitle}>Doctor Specialist Verify</Text>
-
-                    {!showDoctorProfile ? (
-                        <>
-                        <View style={styles.verifyRow}>
-                            <Text style={styles.chooseDoctorLabel}>Choose Doctor</Text>
-
-                            <TouchableOpacity
-                            style={styles.selectField}
-                            activeOpacity={0.85}
-                            onPress={() => setShowDoctorModal(true)}
-                            >
-                            <Text style={styles.selectText}>
-                                Default ({selectedDoctor.name})
-                            </Text>
-                            <Text style={styles.chev}>⌄</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={styles.actionRow}>
-                            <TouchableOpacity style={styles.smallBtn} onPress={handleSaveDoctor}>
-                            <Text style={styles.smallBtnText}>Save</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                            style={styles.smallBtn}
-                            onPress={() => setShowDoctorProfile(true)}
-                            >
-                            <Text style={styles.smallBtnText}>View Profile</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <Text style={styles.verifyHint}>▲ The Verification process done within 3 days</Text>
-                        <Text style={styles.verifyHint2}>
-                            The Doctor you choose will check the result
-                        </Text>
-                        </>
-                    ) : (
-                        <View style={styles.profileCard}>
-                        <Pressable
-                            style={styles.closeX}
-                            onPress={() => setShowDoctorProfile(false)}
-                        >
-                            <Text style={styles.closeXText}>✕</Text>
-                        </Pressable>
-
-                        <View style={styles.profileLeft}>
-                            <Image
-                            source={{ uri: selectedDoctor.avatar }}
-                            style={styles.docAvatar}
-                            />
-                        </View>
-
-                        <View style={styles.profileRight}>
-                            <Text style={styles.docName}>{selectedDoctor.name}</Text>
-                            <Text style={styles.docLine}>{selectedDoctor.phone}</Text>
-                            <Text style={styles.docLine}>{selectedDoctor.exp}</Text>
-                            <Text style={styles.docLine}>{selectedDoctor.hours}</Text>
-                            <Text style={styles.docLine}>{selectedDoctor.specialty}</Text>
-                            <Text style={styles.docLine}>{selectedDoctor.clinic}</Text>
-                            <Text style={styles.docLine}>{selectedDoctor.location}</Text>
-                        </View>
-                        </View>
-                    )}
-                    </View> */}
 
                     <View style={styles.imageCard}>
                         {retinaData && (
@@ -246,19 +228,65 @@ const doctorresult = () => {
                     <View style={styles.verifyBox}>
                         <Text style={styles.verifyTitle}>Doctor Specialist Verify</Text>
 
+                        <Text style={{ fontWeight: "700", marginBottom: 6 }}>
+                            Final DR Stage (Doctor Decision)
+                        </Text>
+
+                        <View style={{ marginBottom: 12 }}>
+                            {stageOptions.map((stage) => (
+                                <TouchableOpacity
+                                    key={stage}
+                                    onPress={() => !alreadyValidated && setFinalStage(stage)}
+                                    style={{
+                                        padding: 10,
+                                        borderWidth: 1,
+                                        borderColor: finalStage === stage ? "#007AFF" : "#ccc",
+                                        borderRadius: 8,
+                                        marginBottom: 6,
+                                        backgroundColor: finalStage === stage ? "#e6f2ff" : "#fff",
+                                    }}
+                                    >
+                                    <Text>{stage}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+
                         {/* Comment box */}
                         <View style={styles.commentBox}>
-                            <TextInput placeholder="Comment.." style={styles.commentInput} multiline></TextInput>
+                            <TextInput
+                                placeholder="Comment.."
+                                style={styles.commentInput}
+                                multiline
+                                value={comment}
+                                onChangeText={setComment}
+                                editable={!alreadyValidated}
+                            />
                         </View>
 
                         {/* Signature + Button */}
                         <View style={styles.signRow}>
                             <View style={styles.signatureLine}>
-                                <Text style={styles.signatureText}>Digital Signature</Text>
-                            </View>
+                                <TextInput
+                                    placeholder="Signature"
+                                    value={signature}
+                                    onChangeText={setSignature}
+                                    style={styles.signatureInput}
+                                    editable={!alreadyValidated}
+                                />
+                                </View>
 
-                            <TouchableOpacity style={styles.doneBtn}>
-                                <Text style={styles.doneBtnText}>Done Verify</Text>
+                            <TouchableOpacity
+                                style={styles.doneBtn}
+                                onPress={handleSubmitValidation}
+                                disabled={isSubmitting || alreadyValidated}
+                            >
+                                <Text style={styles.doneBtnText}>
+                                    {alreadyValidated
+                                        ? "Verified"
+                                        : isSubmitting
+                                        ? "Submitting..."
+                                        : "Done Verify"}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -593,6 +621,13 @@ profileImage: {
         borderColor: "#999",
         width: "50%",
         paddingBottom: 4,
+    },
+    signatureInput: {
+        fontSize: 20,
+        fontStyle: "italic",
+        letterSpacing: 1,
+        textAlign: "center",
+        color: "#333",
     },
     signatureText: {
         fontSize: 11,

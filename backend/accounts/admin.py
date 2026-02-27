@@ -541,8 +541,45 @@ class PredictionResultAdmin(admin.ModelAdmin):
 
 @admin.register(DoctorValidation)
 class DoctorValidationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'doctor', 'prediction', 'final_dr_stage', 'validation_date')
-    readonly_fields = ('created_at',)
+
+    list_display = (
+        'id',
+        'doctor',
+        'prediction',
+        'final_dr_stage',
+        'signature_preview',
+        'validation_date'
+    )
+
+    fields = (
+        'prediction',
+        'doctor',
+        'final_dr_stage',
+        'doctor_comments',
+        'signature_preview',
+        'validation_date',
+        'created_at'
+    )
+
+    readonly_fields = (
+        'prediction',
+        'doctor',
+        'final_dr_stage',
+        'doctor_comments',
+        'signature_preview',
+        'validation_date',
+        'created_at'
+    )
+
+    def signature_preview(self, obj):
+        if not obj.digital_signature:
+            return "No signature"
+        return format_html(
+            '<span style="font-style:italic; font-size:18px;">{}</span>',
+            obj.digital_signature
+        )
+
+    signature_preview.short_description = "Digital Signature"
 
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):

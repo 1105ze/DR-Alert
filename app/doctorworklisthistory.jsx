@@ -4,9 +4,11 @@ import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 import { API_BASE_URL } from "../config";
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 
-const doctorworklist = () => {
+const doctorworklisthistory = () => {
   const router = useRouter();
   const [user, setUser] = useState(null);
     useEffect(() => {
@@ -19,29 +21,32 @@ const doctorworklist = () => {
       loadUser();
     }, []);
 
-const [cases, setCases] = useState([]);
-    useEffect(() => {
+    const [cases, setCases] = useState([]);
+
     const loadCases = async () => {
         const token = await AsyncStorage.getItem("accessToken");
         if (!token) return;
 
         const res = await fetch(
-        `${API_BASE_URL}/api/accounts/doctor/review/`,
-        {
-            headers: {
-            Authorization: `Bearer ${token}`,
-            },
-        }
+            `${API_BASE_URL}/api/accounts/doctor/history/`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
         );
 
         if (res.ok) {
-        const data = await res.json();
-        setCases(data);
+            const data = await res.json();
+            setCases(data);
         }
     };
 
-    loadCases();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            loadCases();
+        }, [])
+    );
 
   const [profileImage, setProfileImage] = useState(null);
     useEffect(() => {
@@ -93,16 +98,17 @@ const [cases, setCases] = useState([]);
 
             <View>
                 <TouchableOpacity style={styles.back} onPress={() => router.back()}>
-                    <Text style={styles.historyText}>‹  Patient WorkList</Text>
+                    <Text style={styles.historyText}>‹ WorkList History</Text>
                 </TouchableOpacity>
             </View>
 
             <ScrollView contentContainerStyle={{ paddingBottom: 160 }}>
-              {cases.length === 0 && (
-                <Text style={{ textAlign: "center", marginTop: 40 }}>
-                    No case receive yet.
-                </Text>
-            )}
+                {cases.length === 0 && (
+                    <Text style={{ textAlign: "center", marginTop: 40 }}>
+                        No verified cases yet.
+                    </Text>
+                )}
+                
                 {cases.map(item => (
                 <TouchableOpacity
                     key={item.id}
@@ -151,7 +157,7 @@ const [cases, setCases] = useState([]);
     )
 }
 
-export default doctorworklist
+export default doctorworklisthistory
 
 const styles = StyleSheet.create({
   header: {

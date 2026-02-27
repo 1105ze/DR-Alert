@@ -184,7 +184,7 @@ const doctorhome = () => {
                             <Text style={styles.workText}>Work</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.workButton} onPress={() => router.push('/doctorreport')}>
+                        <TouchableOpacity style={styles.workButton} onPress={() => router.push('/doctorworklisthistory')}>
                             <Image source={require('../assets/file_icon.png')} style={styles.workIcon} />
                             <Text style={styles.workText}>Work History</Text>
                         </TouchableOpacity>
