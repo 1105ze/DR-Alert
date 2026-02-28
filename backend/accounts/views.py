@@ -429,6 +429,12 @@ def get_retina_detail(request, pk):
         "doctor_comments": validation.doctor_comments if validation else None,
         "digital_signature": validation.digital_signature if validation else None,
         "validation_date": validation.validation_date if validation else None,
+
+        "assigned_doctor": (
+            DoctorSerializer(retina.selected_doctor).data
+            if retina.selected_doctor
+            else None
+        ),
     }
 
     return Response(data)

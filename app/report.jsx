@@ -5,15 +5,127 @@ import { useRouter } from 'expo-router';
 const report = () => {
     const router = useRouter();
 
-  // You can replace these values with real result data (from params / state / API)
-  const stage = "Severe";
-  const confidence = "80%";
-  const finding = "Early microaneurysms present";
+  // Temporary backend simulation (until model integration)
+  const stageFromBackend = null;
+  const confidenceFromBackend = null;
+
+  // Fallback values
+  const fallbackStage = "Severe";
+  const fallbackConfidence = 80;
+
+  const stage = stageFromBackend || fallbackStage;
+  const confidence = confidenceFromBackend ?? fallbackConfidence;
 
   const onDownloadReport = () => {
     // Later: generate PDF + download/share
     Alert.alert("Download Report", "PDF download function can be connected here.");
   };
+
+  const stageTemplates = {
+    "No DR": {
+      findings: "No signs of diabetic retinopathy detected.",
+      nextSteps: [
+        "Routine eye check every 12 months",
+        "Maintain stable blood glucose level"
+      ],
+      diet: {
+        good: ["Balanced diet", "Leafy greens", "Whole grains"],
+        avoid: ["Excess sugar", "Processed snacks"]
+      },
+      exercise: [
+        "At least 150 minutes light activity weekly",
+        "Regular walking or stretching"
+      ],
+      prevention: [
+        "Annual eye screening",
+        "Monitor blood sugar regularly"
+      ]
+    },
+
+    "Mild": {
+      findings: "Mild non-proliferative diabetic retinopathy detected.",
+      nextSteps: [
+        "Follow-up every 6–12 months",
+        "Improve glucose control"
+      ],
+      diet: {
+        good: ["Omega-3 fish", "Vegetables", "Low GI food"],
+        avoid: ["Sugary drinks", "High carbohydrate snacks"]
+      },
+      exercise: [
+        "Moderate exercise 150 minutes per week",
+        "Light strength training"
+      ],
+      prevention: [
+        "Regular eye monitoring",
+        "Control blood pressure"
+      ]
+    },
+
+    "Moderate": {
+      findings: "Moderate diabetic retinopathy detected.",
+      nextSteps: [
+        "Consult ophthalmologist within 3 months",
+        "Retinal imaging follow-up required"
+      ],
+      diet: {
+        good: ["High fiber food", "Lean protein", "Green vegetables"],
+        avoid: ["Fried food", "Sweet desserts"]
+      },
+      exercise: [
+        "Regular walking or cycling",
+        "Avoid intense exercise if unstable glucose"
+      ],
+      prevention: [
+        "Strict sugar monitoring",
+        "Eye exam every 6 months"
+      ]
+    },
+
+    "Severe": {
+      findings: "Severe diabetic retinopathy detected.",
+      nextSteps: [
+        "Immediate ophthalmologist appointment",
+        "Possible treatment discussion",
+        "Retinal imaging follow-up"
+      ],
+      diet: {
+        good: ["Leafy greens", "Omega-3 rich fish", "Whole grains"],
+        avoid: ["Sugary foods", "Sweetened drinks", "Fried food"]
+      },
+      exercise: [
+        "Moderate physical activity weekly",
+        "Avoid high-intensity exercise"
+      ],
+      prevention: [
+        "Frequent eye examinations",
+        "Strict glucose control",
+        "Avoid smoking"
+      ]
+    },
+
+    "Proliferative": {
+      findings: "Proliferative diabetic retinopathy detected.",
+      nextSteps: [
+        "Urgent specialist referral",
+        "Possible laser or surgical treatment"
+      ],
+      diet: {
+        good: ["Low sugar diet", "High fiber vegetables"],
+        avoid: ["All refined sugars", "High fat food"]
+      },
+      exercise: [
+        "Light exercise only",
+        "Avoid strain or heavy lifting"
+      ],
+      prevention: [
+        "Immediate medical supervision",
+        "Frequent retinal monitoring"
+      ]
+    }
+  };
+
+  const currentTemplate = stageTemplates[stage] ?? stageTemplates["No DR"];
 
   return (
     <SafeAreaView style={styles.page}>
@@ -43,10 +155,12 @@ const report = () => {
             </View>
 
             <Text style={styles.resultStage}>{stage}</Text>
-            <Text style={styles.resultConfidence}>Confidence: {confidence}</Text>
+            <Text style={styles.resultConfidence}>
+              Confidence: {confidence}%
+            </Text>
 
             <View style={styles.findingPill}>
-              <Text style={styles.findingText}>{finding}</Text>
+              <Text style={styles.findingText}>{currentTemplate.findings}</Text>
             </View>
           </View>
 
@@ -54,11 +168,11 @@ const report = () => {
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🏥  Recommendations next steps</Text>
 
-            <Text style={styles.infoLine}>
-              Schedule an appointment with an ophthalmologist immediately
-            </Text>
-            <Text style={styles.infoLine}>Follow-up retinal imaging within 3 months</Text>
-            <Text style={styles.infoLine}>Maintain strict blood sugar control</Text>
+            {currentTemplate.nextSteps.map((item, index) => (
+              <Text key={index} style={styles.infoLine}>
+                {item}
+              </Text>
+            ))}
           </View>
 
           {/* Diet recommendations */}
@@ -66,37 +180,27 @@ const report = () => {
             <Text style={styles.infoTitle}>🥦  Diet Recommendations</Text>
 
             <View style={styles.dietRow}>
+              
               {/* Green box */}
               <View style={[styles.dietBox, styles.dietGood]}>
-                <View style={styles.dietItem}>
-                  <Text style={styles.goodIcon}>✅</Text>
-                  <Text style={styles.dietText}>Leafy greens</Text>
-                </View>
-                <View style={styles.dietItem}>
-                  <Text style={styles.goodIcon}>✅</Text>
-                  <Text style={styles.dietText}>Omega-3 rich fish</Text>
-                </View>
-                <View style={styles.dietItem}>
-                  <Text style={styles.goodIcon}>✅</Text>
-                  <Text style={styles.dietText}>Whole grains</Text>
-                </View>
+                {currentTemplate.diet.good.map((item, index) => (
+                  <View key={index} style={styles.dietItem}>
+                    <Text style={styles.goodIcon}>✅</Text>
+                    <Text style={styles.dietText}>{item}</Text>
+                  </View>
+                ))}
               </View>
 
               {/* Red box */}
               <View style={[styles.dietBox, styles.dietBad]}>
-                <View style={styles.dietItem}>
-                  <Text style={styles.badIcon}>❌</Text>
-                  <Text style={styles.dietText}>Sugary foods</Text>
-                </View>
-                <View style={styles.dietItem}>
-                  <Text style={styles.badIcon}>❌</Text>
-                  <Text style={styles.dietText}>Sweetened drinks</Text>
-                </View>
-                <View style={styles.dietItem}>
-                  <Text style={styles.badIcon}>❌</Text>
-                  <Text style={styles.dietText}>Fried food</Text>
-                </View>
+                {currentTemplate.diet.avoid.map((item, index) => (
+                  <View key={index} style={styles.dietItem}>
+                    <Text style={styles.badIcon}>❌</Text>
+                    <Text style={styles.dietText}>{item}</Text>
+                  </View>
+                ))}
               </View>
+
             </View>
           </View>
 
@@ -104,38 +208,25 @@ const report = () => {
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🚴‍♂️  Exercise Recommendations</Text>
 
-            <Text style={styles.infoLine}>150min/week moderate activity</Text>
-            <Text style={styles.infoLine}>
-              Light strength training like walking, cycling, swimming
-            </Text>
-            <Text style={styles.infoLine}>
-              Avoid intense exercise if glucose is unstable
-            </Text>
+            {currentTemplate.exercise.map((item, index) => (
+              <Text key={index} style={styles.infoLine}>
+                {item}
+              </Text>
+            ))}
           </View>
 
           {/* Prevention tips */}
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🚫  Prevention Tips</Text>
 
-            <View style={styles.tipRow}>
-              <Text style={styles.tipText}>Avoid smoking</Text>
-            </View>
-            <View style={styles.tipDivider} />
-
-            <View style={styles.tipRow}>
-              <Text style={styles.tipText}>Monitor blood glucose daily</Text>
-            </View>
-            <View style={styles.tipDivider} />
-
-            <View style={styles.tipRow}>
-              <Text style={styles.tipText}>Attend regular eye screenings</Text>
-            </View>
-            <View style={styles.tipDivider} />
-
-            <View style={styles.tipRow}>
-              <Text style={styles.tipText}>Ensure adequate sleep</Text>
-            </View>
-            <View style={styles.tipDivider} />
+            {currentTemplate.prevention.map((item, index) => (
+              <View key={index}>
+                <View style={styles.tipRow}>
+                  <Text style={styles.tipText}>{item}</Text>
+                </View>
+                <View style={styles.tipDivider} />
+              </View>
+            ))}
           </View>
 
           {/* Important */}
