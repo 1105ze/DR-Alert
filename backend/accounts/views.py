@@ -13,6 +13,7 @@ from django.utils.timezone import localtime
 from .models import Notification
 from .serializers import DoctorSerializer
 from .notification_services import create_notification
+from .reporttemplates import STAGE_TEMPLATES
 
 
 @api_view(['POST'])
@@ -81,6 +82,8 @@ def upload_retinal_image(request):
     # ===== CREATE EMPTY PREDICTION RESULT =====
     PredictionResult.objects.create(
         retinal_image=retinal_image,
+        predicted_dr_stage="Moderate",  # temporary mock
+        confidence_score=0.80,
         prediction_date=timezone.now()
     )
 
@@ -414,6 +417,28 @@ def get_retina_detail(request, pk):
             prediction=prediction
         ).first()
 
+    # ===== FIX START =====
+    if validation:
+        validated = True
+        final_stage = validation.final_dr_stage
+        report_data = validation.report_data
+    else:
+        validated = False
+        final_stage = None
+        if prediction and prediction.predicted_dr_stage:
+            report_data = STAGE_TEMPLATES.get(prediction.predicted_dr_stage)
+        else:
+            report_data = None
+    # ===== FIX END =====
+
+    # Determine uploader user
+    if retina.uploaded_by_type == "patient" and retina.patient:
+        uploader_user = retina.patient.user
+    elif retina.uploaded_by_type == "doctor" and retina.doctor:
+        uploader_user = retina.doctor.user
+    else:
+        uploader_user = None
+
     data = {
         "id": retina.id,
         "image_base64": base64.b64encode(retina.retinal_image).decode("utf-8"),
@@ -424,17 +449,25 @@ def get_retina_detail(request, pk):
         "confidence": prediction.confidence_score if prediction else None,
 
         # NEW
-        "validated": True if validation else False,
-        "doctor_final_stage": validation.final_dr_stage if validation else None,
+        "validated": validated,
+        "doctor_final_stage": final_stage,
         "doctor_comments": validation.doctor_comments if validation else None,
         "digital_signature": validation.digital_signature if validation else None,
         "validation_date": validation.validation_date if validation else None,
+        "report_data": report_data,
 
         "assigned_doctor": (
             DoctorSerializer(retina.selected_doctor).data
             if retina.selected_doctor
             else None
         ),
+        "uploader": {
+            "username": uploader_user.username if uploader_user else None,
+            "gender": uploader_user.gender if uploader_user else None,
+            "date_of_birth": uploader_user.date_of_birth if uploader_user else None,
+            "role": uploader_user.role if uploader_user else None,
+            "email": uploader_user.email if uploader_user else None,
+        } if uploader_user else None,
     }
 
     return Response(data)
@@ -538,14 +571,29 @@ def submit_doctor_validation(request):
     ).exists():
         return Response({"error": "Already validated"}, status=400)
 
-    # ✅ CREATE VALIDATION (NO BASE64)
-    DoctorValidation.objects.create(
+    # # ✅ CREATE VALIDATION (NO BASE64)
+    # DoctorValidation.objects.create(
+    #     prediction=prediction,
+    #     doctor=doctor,
+    #     final_dr_stage=final_stage,
+    #     doctor_comments=comment,
+    #     digital_signature=signature_text,   # store as text
+    #     validation_date=timezone.now()
+    # )
+
+    template = STAGE_TEMPLATES.get(final_stage)
+
+    if not template:
+        return Response({"error": "Invalid stage"}, status=400)
+
+    validation = DoctorValidation.objects.create(
         prediction=prediction,
         doctor=doctor,
         final_dr_stage=final_stage,
         doctor_comments=comment,
-        digital_signature=signature_text,   # store as text
-        validation_date=timezone.now()
+        digital_signature=signature_text,
+        validation_date=timezone.now(),
+        report_data=template
     )
 
     # Notify patient

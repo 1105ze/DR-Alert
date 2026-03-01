@@ -154,7 +154,46 @@ const result = () => {
             alert("Network error");
         }
     };
+    const [retinaData, setRetinaData] = useState(null);
+    useEffect(() => {
+        const loadRetina = async () => {
+            if (!retinalImageId) return;
 
+            const token = await AsyncStorage.getItem("accessToken");
+                if (!token) return;
+
+                const res = await fetch(
+                `${API_BASE_URL}/api/accounts/retina/${retinalImageId}/`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+                );
+
+                if (res.ok) {
+                const data = await res.json();
+                setRetinaData(data);
+                }
+            };
+
+            loadRetina();
+            }, [retinalImageId]);
+
+        const stageToShow =
+            retinaData?.validated
+            ? retinaData?.doctor_final_stage
+            : retinaData?.predicted_stage;
+
+        const isValidated = retinaData?.validated;
+
+        const adviceText = isValidated
+        ? retinaData?.report_data?.findings
+        : retinaData?.predicted_stage
+            ? `${retinaData.predicted_stage} diabetic retinopathy detected.`
+            : "Awaiting AI result.";
+
+        const validationStatusText = isValidated
+        ? "Doctor validated"
+        : "Awaiting doctor validation.";
 
 
     return (
@@ -234,18 +273,38 @@ const result = () => {
                         <Image source={require('../assets/warning_icon.png')} style={styles.warningIcon} />
                         <Text style={styles.warningText}>Prelimary AI Result</Text>
                     </View>
-                    <Text style={styles.stageText}>Severe</Text>
-                    <Text style={styles.confidenceText}>Confidence: 80%</Text>
+                    <Text style={styles.stageText}>
+                        {stageToShow || "Loading..."}
+                    </Text>
+
+                    <Text style={styles.confidenceText}>
+                        Confidence: {
+                            retinaData?.confidence != null
+                            ? Math.round(retinaData.confidence * 100)
+                            : 0
+                        }%
+                    </Text>
 
                     <View style={styles.adviceColumn}>
-                        <Text style={styles.adviceText}>Mild diabetic retinopathy detected. Schedule a follow-up examination within 6-12 months. Continue monitoring blood sugar levels.</Text>
+                        <Text style={styles.adviceText}>{adviceText}</Text>
+
+                    <Text
+                        style={{
+                        marginTop: 8,
+                        fontSize: 12,
+                        fontWeight: "600",
+                        color: isValidated ? "green" : "#444",
+                        }}
+                    >
+                        {validationStatusText}
+                    </Text>
                     </View>
 
                     <TouchableOpacity style={styles.button} onPress={() => router.push('/gradcam')} >
                         <Text style={styles.buttonText}>View AI Explanation (Grad-CAM)</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={() => router.push('/report')} >
+                    <TouchableOpacity style={styles.button} onPress={() => router.push({ pathname: "/report", params: { retinalImageId }})} >
                         <Text style={styles.buttonText}>View Report</Text>
                     </TouchableOpacity>
                 </View>
@@ -510,22 +569,23 @@ profileImage: {
         fontSize: 15,
         marginTop: 15,        
     },
-    adviceColumn: {
-        backgroundColor: '#aad5fcff',
-        borderRadius: 18,
-        marginLeft: 20,
-        marginRight: 20,
-        marginTop: 20,
-        height: 85,
-        borderWidth: 1,
-        marginBottom: 20,
-    },
-    adviceText: {
-        marginTop: 15,
-        marginLeft: 20,
-        marginRight: 20,
-        fontSize: 14,
-    },
+adviceColumn: {
+    backgroundColor: '#aad5fcff',
+    borderRadius: 18,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 20,
+    minHeight: 85,
+    borderWidth: 1,
+    marginBottom: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 15,
+},
+adviceText: {
+    fontSize: 14,
+    textAlign: "center",
+},
     button: {
         backgroundColor: '#88C8FF',
         paddingVertical: 12,
@@ -538,7 +598,7 @@ profileImage: {
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    secondCard: {
+     Card: {
         backgroundColor: '#aad5fcff',
         width: 385,
         borderRadius: 18,

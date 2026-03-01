@@ -556,6 +556,7 @@ class DoctorValidationAdmin(admin.ModelAdmin):
         'doctor',
         'final_dr_stage',
         'doctor_comments',
+        'report_data',
         'signature_preview',
         'validation_date',
         'created_at'

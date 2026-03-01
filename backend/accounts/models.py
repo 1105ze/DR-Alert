@@ -252,6 +252,8 @@ class DoctorValidation(models.Model):
         blank=True
     )
 
+    report_data = models.JSONField(null=True, blank=True)
+
     def __str__(self):
         return f"Validation #{self.id}"
 

@@ -1,131 +1,73 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, SafeAreaView, Alert } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
+import { useState, useEffect } from "react";
+import { useLocalSearchParams } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_BASE_URL } from "../config";
 
 const report = () => {
     const router = useRouter();
+    const { retinalImageId } = useLocalSearchParams();
+    const [reportData, setReportData] = useState(null);
+    const [retinaData, setRetinaData] = useState(null);
 
-  // Temporary backend simulation (until model integration)
-  const stageFromBackend = null;
-  const confidenceFromBackend = null;
+    useEffect(() => {
+      const loadReport = async () => {
+        const token = await AsyncStorage.getItem("accessToken");
+        if (!token || !retinalImageId) return;
 
-  // Fallback values
-  const fallbackStage = "Severe";
-  const fallbackConfidence = 80;
+        const res = await fetch(
+          `${API_BASE_URL}/api/accounts/retina/${retinalImageId}/`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-  const stage = stageFromBackend || fallbackStage;
-  const confidence = confidenceFromBackend ?? fallbackConfidence;
+        if (res.ok) {
+          const data = await res.json();
+          setRetinaData(data);
+          setReportData(data.report_data);
+        }
+      };
+
+      loadReport();
+    }, [retinalImageId]);
+
+    const stageToShow =
+      retinaData?.validated
+        ? retinaData?.doctor_final_stage
+        : retinaData?.predicted_stage;
+
+    const confidenceToShow =
+      retinaData?.confidence != null
+        ? Math.round(retinaData.confidence * 100)
+        : null;
+
 
   const onDownloadReport = () => {
     // Later: generate PDF + download/share
     Alert.alert("Download Report", "PDF download function can be connected here.");
   };
 
-  const stageTemplates = {
-    "No DR": {
-      findings: "No signs of diabetic retinopathy detected.",
-      nextSteps: [
-        "Routine eye check every 12 months",
-        "Maintain stable blood glucose level"
-      ],
-      diet: {
-        good: ["Balanced diet", "Leafy greens", "Whole grains"],
-        avoid: ["Excess sugar", "Processed snacks"]
-      },
-      exercise: [
-        "At least 150 minutes light activity weekly",
-        "Regular walking or stretching"
-      ],
-      prevention: [
-        "Annual eye screening",
-        "Monitor blood sugar regularly"
-      ]
-    },
+  const currentTemplate = reportData || {};
 
-    "Mild": {
-      findings: "Mild non-proliferative diabetic retinopathy detected.",
-      nextSteps: [
-        "Follow-up every 6–12 months",
-        "Improve glucose control"
-      ],
-      diet: {
-        good: ["Omega-3 fish", "Vegetables", "Low GI food"],
-        avoid: ["Sugary drinks", "High carbohydrate snacks"]
-      },
-      exercise: [
-        "Moderate exercise 150 minutes per week",
-        "Light strength training"
-      ],
-      prevention: [
-        "Regular eye monitoring",
-        "Control blood pressure"
-      ]
-    },
+  const findings = currentTemplate.findings || "No findings available.";
+  const nextSteps = currentTemplate.next_steps || [];
+  const dietGood = currentTemplate.diet?.good || [];
+  const dietAvoid = currentTemplate.diet?.avoid || [];
+  const exercise = currentTemplate.exercise || [];
+  const prevention = currentTemplate.prevention || [];
 
-    "Moderate": {
-      findings: "Moderate diabetic retinopathy detected.",
-      nextSteps: [
-        "Consult ophthalmologist within 3 months",
-        "Retinal imaging follow-up required"
-      ],
-      diet: {
-        good: ["High fiber food", "Lean protein", "Green vegetables"],
-        avoid: ["Fried food", "Sweet desserts"]
-      },
-      exercise: [
-        "Regular walking or cycling",
-        "Avoid intense exercise if unstable glucose"
-      ],
-      prevention: [
-        "Strict sugar monitoring",
-        "Eye exam every 6 months"
-      ]
-    },
-
-    "Severe": {
-      findings: "Severe diabetic retinopathy detected.",
-      nextSteps: [
-        "Immediate ophthalmologist appointment",
-        "Possible treatment discussion",
-        "Retinal imaging follow-up"
-      ],
-      diet: {
-        good: ["Leafy greens", "Omega-3 rich fish", "Whole grains"],
-        avoid: ["Sugary foods", "Sweetened drinks", "Fried food"]
-      },
-      exercise: [
-        "Moderate physical activity weekly",
-        "Avoid high-intensity exercise"
-      ],
-      prevention: [
-        "Frequent eye examinations",
-        "Strict glucose control",
-        "Avoid smoking"
-      ]
-    },
-
-    "Proliferative": {
-      findings: "Proliferative diabetic retinopathy detected.",
-      nextSteps: [
-        "Urgent specialist referral",
-        "Possible laser or surgical treatment"
-      ],
-      diet: {
-        good: ["Low sugar diet", "High fiber vegetables"],
-        avoid: ["All refined sugars", "High fat food"]
-      },
-      exercise: [
-        "Light exercise only",
-        "Avoid strain or heavy lifting"
-      ],
-      prevention: [
-        "Immediate medical supervision",
-        "Frequent retinal monitoring"
-      ]
-    }
-  };
-
-  const currentTemplate = stageTemplates[stage] ?? stageTemplates["No DR"];
+  if (!retinaData) {
+    return (
+      <SafeAreaView style={styles.page}>
+        <Text style={{ textAlign: "center", marginTop: 50 }}>
+          Loading report...
+        </Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.page}>
@@ -154,13 +96,18 @@ const report = () => {
               <Text style={styles.resultIcon}>!</Text>
             </View>
 
-            <Text style={styles.resultStage}>{stage}</Text>
-            <Text style={styles.resultConfidence}>
-              Confidence: {confidence}%
+            <Text style={styles.resultStage}>
+              {stageToShow || "Loading..."}
             </Text>
 
+            {confidenceToShow != null && (
+              <Text style={styles.resultConfidence}>
+                Confidence: {confidenceToShow}%
+              </Text>
+            )}
+
             <View style={styles.findingPill}>
-              <Text style={styles.findingText}>{currentTemplate.findings}</Text>
+              <Text style={styles.findingText}>{findings}</Text>
             </View>
           </View>
 
@@ -168,7 +115,7 @@ const report = () => {
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🏥  Recommendations next steps</Text>
 
-            {currentTemplate.nextSteps.map((item, index) => (
+            {nextSteps.map((item, index) => (
               <Text key={index} style={styles.infoLine}>
                 {item}
               </Text>
@@ -183,7 +130,7 @@ const report = () => {
               
               {/* Green box */}
               <View style={[styles.dietBox, styles.dietGood]}>
-                {currentTemplate.diet.good.map((item, index) => (
+                {dietGood.map((item, index) => (
                   <View key={index} style={styles.dietItem}>
                     <Text style={styles.goodIcon}>✅</Text>
                     <Text style={styles.dietText}>{item}</Text>
@@ -193,7 +140,7 @@ const report = () => {
 
               {/* Red box */}
               <View style={[styles.dietBox, styles.dietBad]}>
-                {currentTemplate.diet.avoid.map((item, index) => (
+                {dietAvoid.map((item, index) => (
                   <View key={index} style={styles.dietItem}>
                     <Text style={styles.badIcon}>❌</Text>
                     <Text style={styles.dietText}>{item}</Text>
@@ -208,7 +155,7 @@ const report = () => {
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🚴‍♂️  Exercise Recommendations</Text>
 
-            {currentTemplate.exercise.map((item, index) => (
+            {exercise.map((item, index) => (
               <Text key={index} style={styles.infoLine}>
                 {item}
               </Text>
@@ -219,7 +166,7 @@ const report = () => {
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🚫  Prevention Tips</Text>
 
-            {currentTemplate.prevention.map((item, index) => (
+            {prevention.map((item, index) => (
               <View key={index}>
                 <View style={styles.tipRow}>
                   <Text style={styles.tipText}>{item}</Text>

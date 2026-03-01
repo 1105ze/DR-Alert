@@ -1,19 +1,58 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, SafeAreaView, Alert } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
+import { useLocalSearchParams } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config";
 
 const doctorreport = () => {
-    const router = useRouter();
+  const router = useRouter();
 
-  // You can replace these values with real result data (from params / state / API)
-  const stage = "Severe";
-  const confidence = "80%";
-  const finding = "Early microaneurysms present";
+  const { retinalImageId } = useLocalSearchParams();
+  const [retinaData, setRetinaData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = await AsyncStorage.getItem("accessToken");
+      if (!token || !retinalImageId) return;
+
+      const res = await fetch(
+        `${API_BASE_URL}/api/accounts/retina/${retinalImageId}/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        setRetinaData(data);
+      }
+    };
+
+    fetchData();
+  }, [retinalImageId]);
+
+  const isValidated = retinaData?.validated;
+
+  const stage = isValidated
+    ? retinaData?.doctor_final_stage
+    : retinaData?.predicted_stage;
+
+  const report = retinaData?.report_data ?? null;
+
+  const confidence = retinaData?.confidence
+    ? (retinaData.confidence * 100).toFixed(0)
+    : null;
+
 
   const onDownloadReport = () => {
     // Later: generate PDF + download/share
     Alert.alert("Download Report", "PDF download function can be connected here.");
   };
+
+  const uploader = retinaData?.uploader;
+
 
   return (
     <SafeAreaView style={styles.page}>
@@ -39,12 +78,27 @@ const doctorreport = () => {
 
             {/* User Information */}
             <View style={styles.profileCard}>
-                <Text style={styles.profileLine}>Username: John Smith</Text>
-                <Text style={styles.profileLine}>Gender: Male</Text>
-                <Text style={styles.profileLine}>Date of Birth: 1980 Dec 12th</Text>
-                <Text style={styles.profileLine}>Occupation: IT</Text>
-                <Text style={styles.profileLine}>Email: john@gmail.com</Text>
-                <Text style={styles.profileLine}>Contact: 012-3456789</Text>
+              <Text style={styles.profileLine}>
+                Username: {uploader?.username || "--"}
+              </Text>
+
+              <Text style={styles.profileLine}>
+                Gender: {uploader?.gender || "--"}
+              </Text>
+
+              <Text style={styles.profileLine}>
+                Date of Birth: {uploader?.date_of_birth
+                  ? new Date(uploader.date_of_birth).toLocaleDateString()
+                  : "--"}
+              </Text>
+
+              <Text style={styles.profileLine}>
+                Role: {uploader?.role || "--"}
+              </Text>
+
+              <Text style={styles.profileLine}>
+                Email: {uploader?.email || "--"}
+              </Text>
             </View>
 
             {/* Medical & Vision */}
@@ -66,10 +120,12 @@ const doctorreport = () => {
             </View>
 
             <Text style={styles.resultStage}>{stage}</Text>
-            <Text style={styles.resultConfidence}>Confidence: {confidence}</Text>
+            <Text style={styles.resultConfidence}>
+              Confidence: {confidence}%
+            </Text>
 
             <View style={styles.findingPill}>
-              <Text style={styles.findingText}>{finding}</Text>
+              <Text style={styles.findingText}>{report?.findings}</Text>
             </View>
           </View>
 
@@ -77,11 +133,11 @@ const doctorreport = () => {
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🏥  Recommendations next steps</Text>
 
-            <Text style={styles.infoLine}>
-              Schedule an appointment with an ophthalmologist immediately
-            </Text>
-            <Text style={styles.infoLine}>Follow-up retinal imaging within 3 months</Text>
-            <Text style={styles.infoLine}>Maintain strict blood sugar control</Text>
+            {report?.next_steps?.map((item, index) => (
+              <Text key={index} style={styles.infoLine}>
+                {item}
+              </Text>
+            ))}
           </View>
 
           {/* Diet recommendations */}
@@ -91,34 +147,22 @@ const doctorreport = () => {
             <View style={styles.dietRow}>
               {/* Green box */}
               <View style={[styles.dietBox, styles.dietGood]}>
-                <View style={styles.dietItem}>
-                  <Text style={styles.goodIcon}>✅</Text>
-                  <Text style={styles.dietText}>Leafy greens</Text>
-                </View>
-                <View style={styles.dietItem}>
-                  <Text style={styles.goodIcon}>✅</Text>
-                  <Text style={styles.dietText}>Omega-3 rich fish</Text>
-                </View>
-                <View style={styles.dietItem}>
-                  <Text style={styles.goodIcon}>✅</Text>
-                  <Text style={styles.dietText}>Whole grains</Text>
-                </View>
+                {report?.diet?.good?.map((item, index) => (
+                  <View key={index} style={styles.dietItem}>
+                    <Text style={styles.goodIcon}>✅</Text>
+                    <Text style={styles.dietText}>{item}</Text>
+                  </View>
+                ))}
               </View>
 
               {/* Red box */}
               <View style={[styles.dietBox, styles.dietBad]}>
-                <View style={styles.dietItem}>
-                  <Text style={styles.badIcon}>❌</Text>
-                  <Text style={styles.dietText}>Sugary foods</Text>
-                </View>
-                <View style={styles.dietItem}>
-                  <Text style={styles.badIcon}>❌</Text>
-                  <Text style={styles.dietText}>Sweetened drinks</Text>
-                </View>
-                <View style={styles.dietItem}>
-                  <Text style={styles.badIcon}>❌</Text>
-                  <Text style={styles.dietText}>Fried food</Text>
-                </View>
+                {report?.diet?.avoid?.map((item, index) => (
+                  <View key={index} style={styles.dietItem}>
+                    <Text style={styles.badIcon}>❌</Text>
+                    <Text style={styles.dietText}>{item}</Text>
+                  </View>
+                ))}
               </View>
             </View>
           </View>
@@ -127,38 +171,25 @@ const doctorreport = () => {
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🚴‍♂️  Exercise Recommendations</Text>
 
-            <Text style={styles.infoLine}>150min/week moderate activity</Text>
-            <Text style={styles.infoLine}>
-              Light strength training like walking, cycling, swimming
-            </Text>
-            <Text style={styles.infoLine}>
-              Avoid intense exercise if glucose is unstable
-            </Text>
+            {report?.exercise?.map((item, index) => (
+              <Text key={index} style={styles.infoLine}>
+                {item}
+              </Text>
+            ))}
           </View>
 
           {/* Prevention tips */}
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🚫  Prevention Tips</Text>
 
-            <View style={styles.tipRow}>
-              <Text style={styles.tipText}>Avoid smoking</Text>
-            </View>
-            <View style={styles.tipDivider} />
-
-            <View style={styles.tipRow}>
-              <Text style={styles.tipText}>Monitor blood glucose daily</Text>
-            </View>
-            <View style={styles.tipDivider} />
-
-            <View style={styles.tipRow}>
-              <Text style={styles.tipText}>Attend regular eye screenings</Text>
-            </View>
-            <View style={styles.tipDivider} />
-
-            <View style={styles.tipRow}>
-              <Text style={styles.tipText}>Ensure adequate sleep</Text>
-            </View>
-            <View style={styles.tipDivider} />
+            {report?.prevention?.map((item, index) => (
+              <View key={index}>
+                <View style={styles.tipRow}>
+                  <Text style={styles.tipText}>{item}</Text>
+                </View>
+                <View style={styles.tipDivider} />
+              </View>
+            ))}
           </View>
 
           {/* Important */}

@@ -112,9 +112,6 @@ const doctorresult = () => {
         }
     };
 
-    const mockStage = "Severe";
-    const mockConfidence = 0.8;
-
     const [finalStage, setFinalStage] = useState(null);
     const stageOptions = ["No DR", "Mild", "Moderate", "Severe", "Proliferative"];
 
@@ -149,6 +146,21 @@ const doctorresult = () => {
 
         fetchRetina();
         }, [retinalImageId]);
+
+    const isValidated = retinaData?.validated;
+
+    // const adviceText = isValidated
+    //     ? retinaData?.report_data?.findings || "Doctor report not available."
+    //     : retinaData?.predicted_stage
+    //         ? `${retinaData.predicted_stage} diabetic retinopathy detected.`
+    //         : "Awaiting AI result.";
+    const adviceText = retinaData?.predicted_stage
+    ? `${retinaData.predicted_stage} diabetic retinopathy detected.`
+    : "Awaiting AI result.";
+
+    const validationStatusText = isValidated
+        ? "Doctor validated"
+        : "Waiting doctor to validate.";
 
 
     return (
@@ -186,22 +198,38 @@ const doctorresult = () => {
                         <Text style={styles.warningText}>Prelimary AI Result</Text>
                     </View>
                     <Text style={styles.stageText}>
-                        {retinaData?.predicted_stage || mockStage}
+                        {retinaData?.predicted_stage || "Loading..."}
                     </Text>
 
                     <Text style={styles.confidenceText}>
-                        Confidence: {((retinaData?.confidence ?? mockConfidence) * 100).toFixed(0)}%
+                        {retinaData?.confidence !== null && retinaData?.confidence !== undefined
+                            ? `Confidence: ${(retinaData.confidence * 100).toFixed(0)}%`
+                            : "Confidence: --"}
                     </Text>
 
                     <View style={styles.adviceColumn}>
-                        <Text style={styles.adviceText}>Mild diabetic retinopathy detected. Schedule a follow-up examination within 6-12 months. Continue monitoring blood sugar levels.</Text>
-                    </View>
+                        <Text style={styles.adviceText}>
+                            {adviceText}
+                        </Text>
+
+                        <Text
+                            style={{
+                            marginTop: 8,
+                            fontSize: 12,
+                            fontWeight: "600",
+                            textAlign: "center",
+                            color: isValidated ? "green" : "#444",
+                            }}
+                        >
+                            {validationStatusText}
+                        </Text>
+                        </View>
 
                     <TouchableOpacity style={styles.button} onPress={() => router.push('/gradcam')} >
                         <Text style={styles.buttonText}>View AI Explanation (Grad-CAM)</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={() => router.push('/doctorreport')} >
+                    <TouchableOpacity style={styles.button} onPress={() => router.push({ pathname: "/doctorreport", params: { retinalImageId },})} >
                         <Text style={styles.buttonText}>View Report</Text>
                     </TouchableOpacity>
                 </View>
@@ -429,22 +457,23 @@ profileImage: {
         fontSize: 15,
         marginTop: 15,        
     },
-    adviceColumn: {
-        backgroundColor: '#aad5fcff',
-        borderRadius: 18,
-        marginLeft: 20,
-        marginRight: 20,
-        marginTop: 20,
-        height: 85,
-        borderWidth: 1,
-        marginBottom: 20,
-    },
-    adviceText: {
-        marginTop: 15,
-        marginLeft: 20,
-        marginRight: 20,
-        fontSize: 14,
-    },
+adviceColumn: {
+    backgroundColor: '#aad5fcff',
+    borderRadius: 18,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 20,
+    minHeight: 85,
+    borderWidth: 1,
+    marginBottom: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 15,
+},
+adviceText: {
+    fontSize: 14,
+    textAlign: "center",
+},
     button: {
         backgroundColor: '#88C8FF',
         paddingVertical: 12,
