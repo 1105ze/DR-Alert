@@ -177,11 +177,30 @@ const result = () => {
 
             loadRetina();
             }, [retinalImageId]);
+        
+        const getStageColor = (stage) => {
+            switch (stage) {
+                case "No DR":
+                    return "#4CAF50";
+                case "Mild":
+                    return "#6BC6C3";
+                case "Moderate":
+                    return "#FFC107";
+                case "Severe":
+                    return "#d1a934";
+                case "Proliferative":
+                    return "#F44336";
+                default:
+                    return "#fe9696ff";
+            }
+        };
 
         const stageToShow =
             retinaData?.validated
             ? retinaData?.doctor_final_stage
             : retinaData?.predicted_stage;
+
+        const cardColor = getStageColor(stageToShow);
 
         const isValidated = retinaData?.validated;
 
@@ -194,6 +213,8 @@ const result = () => {
         const validationStatusText = isValidated
         ? "Doctor validated"
         : "Awaiting doctor validation.";
+
+        
 
 
     return (
@@ -268,7 +289,7 @@ const result = () => {
                 )}
 
             <ScrollView style={styles.scroll}>
-                <View style={styles.firstCard}>
+                <View style={[styles.firstCard, { backgroundColor: cardColor }]}>
                     <View style={styles.warningSection}>
                         <Image source={require('../assets/warning_icon.png')} style={styles.warningIcon} />
                         <Text style={styles.warningText}>Prelimary AI Result</Text>

@@ -147,16 +147,36 @@ const doctorresult = () => {
         fetchRetina();
         }, [retinalImageId]);
 
+    const getStageColor = (stage) => {
+            switch (stage) {
+                case "No DR":
+                    return "#4CAF50";
+                case "Mild":
+                    return "#6BC6C3";
+                case "Moderate":
+                    return "#d1a934";
+                case "Severe":
+                    return "#d16d37";
+                case "Proliferative":
+                    return "#F44336";
+                default:
+                    return "#fe9696ff";
+            }
+        };
+    
+    const stageToShow = retinaData?.validated
+        ? retinaData?.doctor_final_stage
+        : retinaData?.predicted_stage;
+        
+    const cardColor = getStageColor(stageToShow);
+
     const isValidated = retinaData?.validated;
 
-    // const adviceText = isValidated
-    //     ? retinaData?.report_data?.findings || "Doctor report not available."
-    //     : retinaData?.predicted_stage
-    //         ? `${retinaData.predicted_stage} diabetic retinopathy detected.`
-    //         : "Awaiting AI result.";
-    const adviceText = retinaData?.predicted_stage
-    ? `${retinaData.predicted_stage} diabetic retinopathy detected.`
-    : "Awaiting AI result.";
+    const adviceText = retinaData?.validated
+        ? `${retinaData.doctor_final_stage} diabetic retinopathy confirmed.`
+        : retinaData?.predicted_stage
+        ? `${retinaData.predicted_stage} diabetic retinopathy detected.`
+        : "Awaiting AI result.";
 
     const validationStatusText = isValidated
         ? "Doctor validated"
@@ -192,7 +212,7 @@ const doctorresult = () => {
             </View>
 
             <ScrollView>
-                <View style={styles.firstCard}>
+                <View style={[styles.firstCard, { backgroundColor: cardColor }]}>
                     <View style={styles.warningSection}>
                         <Image source={require('../assets/warning_icon.png')} style={styles.warningIcon} />
                         <Text style={styles.warningText}>Prelimary AI Result</Text>
@@ -209,7 +229,23 @@ const doctorresult = () => {
 
                     <View style={styles.adviceColumn}>
                         <Text style={styles.adviceText}>
-                            {adviceText}
+                            <Text
+                                style={{
+                                    fontWeight: "800",
+                                    color: getStageColor(
+                                    retinaData?.validated
+                                        ? retinaData?.doctor_final_stage
+                                        : retinaData?.predicted_stage
+                                    ),
+                                }}
+                                >
+                                {retinaData?.validated
+                                    ? retinaData?.doctor_final_stage
+                                    : retinaData?.predicted_stage}
+                            </Text>
+                            {" "}
+                            diabetic retinopathy{" "}
+                            {retinaData?.validated ? "confirmed." : "detected."}
                         </Text>
 
                         <Text
@@ -448,10 +484,12 @@ profileImage: {
         marginLeft: 20,
         marginTop: 15,
     },
-    stageText: {
-        textAlign: 'center',
-        fontSize: 15,
-    },
+stageText: {
+    textAlign: 'center',
+    fontSize: 22,
+    fontWeight: '800',
+    marginTop: 10,
+},
     confidenceText: {
         textAlign: 'center',
         fontSize: 15,

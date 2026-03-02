@@ -6,53 +6,10 @@ import { useState, useEffect } from 'react';
 import { API_BASE_URL } from "../config";
 
 
-const historyData = [
-  {
-    id: '1',
-    result: 'Normal',
-    color: '#4CAF50',
-    image: require('../assets/eye_open.png'),
-    time: '11/18/2025, 4:30:00 PM',
-    name: 'John Wick    P0115',
-  },
-  {
-    id: '2',
-    result: 'Mild',
-    color: '#6BC6C3',
-    image: require('../assets/eye_open.png'),
-    time: '11/18/2025, 4:30:00 PM',
-    name: 'Sarah Han    P0282',
-  },
-  {
-    id: '3',
-    result: 'Moderate',
-    color: '#FFC107',
-    image: require('../assets/eye_open.png'),
-    time: '11/18/2025, 4:30:00 PM',
-    name: 'Darren Liu    P1519',
-  },
-  {
-    id: '4',
-    result: 'Severe',
-    color: '#fe9696ff',
-    image: require('../assets/eye_open.png'),
-    time: '11/18/2025, 4:30:00 PM',
-    name: 'John Smith    P0671',
-  },
-  {
-    id: '5',
-    result: 'Proliferatve',
-    color: '#F44336',
-    image: require('../assets/eye_open.png'),
-    time: '11/18/2025, 4:30:00 PM',
-    name: 'Wong How    P0008',
-  },
-  
-]
-
-const doctorhistory = () => {
+const history = () => {
   const router = useRouter();
   const [user, setUser] = useState(null);
+
     useEffect(() => {
       const loadUser = async () => {
         const storedUser = await AsyncStorage.getItem("user");
@@ -89,10 +46,61 @@ const doctorhistory = () => {
 
         loadProfileImage();
         }, []);
+
+  const getColor = (stage) => {
+      switch (stage) {
+        case "No DR":
+          return "#4CAF50";
+        case "Mild":
+          return "#6BC6C3";
+        case "Moderate":
+          return "#FFC107";
+        case "Severe":
+          return "#d16d37";
+        case "Proliferative":
+          return "#F44336";
+        default:
+          return "#999";
+      }
+    };
+
+  const [historyData, setHistoryData] = useState([]);
+
+    useEffect(() => {
+      const loadHistory = async () => {
+        const token = await AsyncStorage.getItem("accessToken");
+        if (!token) return;
+
+        const res = await fetch(`${API_BASE_URL}/api/accounts/retina/recent/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+
+          const formatted = data.map(item => ({
+            id: item.id.toString(),
+            result: item.predicted_stage,
+            color: getColor(item.predicted_stage),
+            image: {
+              uri: `data:image/jpeg;base64,${item.image_base64}`,
+            },
+            time: new Date(item.created_at).toLocaleString(),
+          }));
+          setHistoryData(formatted);
+        }
+      };
+
+      loadHistory();
+    }, []);
+
+
     return (
         <View>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.profile} onPress={() => router.push('/profile')}>
+                <TouchableOpacity style={styles.profile} onPress={() => router.push('/home')}>
                     <Image
                       source={
                           profileImage
@@ -112,32 +120,38 @@ const doctorhistory = () => {
             </View>
 
             <View>
-                <TouchableOpacity style={styles.back} onPress={() => router.back()}>
+                <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
                     <Text style={styles.historyText}>‹   Detection History</Text>
                 </TouchableOpacity>
             </View>
 
             <ScrollView contentContainerStyle={{ paddingBottom: 160 }}>
                     {historyData.map(item => (
-                    <TouchableOpacity key={item.id} style={[styles.card, { borderColor: item.color }]} onPress={() => router.push('/doctorresult')}>
+                    <TouchableOpacity
+                        key={item.id}
+                        style={[styles.card, { borderColor: item.color }]}
+                        onPress={() => router.push({
+                          pathname: "/doctorresult",
+                          params: { retinalImageId: item.id }
+                        })}
+                    >
                         <Image source={item.image} style={styles.cardImage} />
 
                         <View style={styles.cardContent}>
-                            <View style={[styles.badge, { borderColor: item.color }]}>
-                                <Text style={[styles.badgeText, { color: item.color }]}>
-                                {item.result}
-                                </Text>
-                            </View>
+                        <View style={[styles.badge, { borderColor: item.color }]}>
+                            <Text style={[styles.badgeText, { color: item.color }]}>
+                            {item.result}
+                            </Text>
+                        </View>
 
-                            <Text style={styles.time}>{item.time}</Text>
-                            <Text style={styles.name}>{item.name}</Text>
+                        <Text style={styles.time}>{item.time}</Text>
                         </View>
 
                         <Text style={[styles.arrow, { color: item.color }]}>›</Text>
                     </TouchableOpacity>
                     ))}            
                     
-                    <TouchableOpacity style={styles.analysisButton} onPress={() => router.push('/upload')} >
+                    <TouchableOpacity style={styles.analysisButton} onPress={() => router.push('/upload')}>
                         <Image source={require('../assets/upload_icon.png')} style={styles.uploadIcon} />
                         <Text style={styles.analysisText}>New Analysis</Text>
                     </TouchableOpacity>
@@ -150,7 +164,7 @@ const doctorhistory = () => {
     )
 }
 
-export default doctorhistory
+export default history
 
 const styles = StyleSheet.create({
   header: {
@@ -175,7 +189,7 @@ const styles = StyleSheet.create({
   //   resizeMode: 'contain',
   //   marginLeft: "8",
   // },
-        profile: {
+  profile: {
   width: 56,
   height: 56,
   borderRadius: 28,
@@ -254,10 +268,7 @@ profileImage: {
   time: {
     marginTop: 6,
     fontSize: 12,
-  },
-  name: {
-    marginTop: 3,
-    fontsize: 12,
+    color: '#555',
   },
   arrow: {
     fontSize: 26,
@@ -277,7 +288,7 @@ profileImage: {
     width: 30,
     height: 30,
     resizeMode: 'contain',
-    marginLeft: 130,
+    marginLeft: 130
   },
   analysisText: {
     fontWeight: 'bold',

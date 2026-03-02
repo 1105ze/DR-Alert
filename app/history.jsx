@@ -6,45 +6,6 @@ import { useState, useEffect } from 'react';
 import { API_BASE_URL } from "../config";
 
 
-const historyData = [
-  {
-    id: '1',
-    result: 'Normal',
-    color: '#4CAF50',
-    image: require('../assets/eye_open.png'),
-    time: '11/18/2025, 4:30:00 PM',
-  },
-  {
-    id: '2',
-    result: 'Mild',
-    color: '#6BC6C3',
-    image: require('../assets/eye_open.png'),
-    time: '11/18/2025, 4:30:00 PM',
-  },
-  {
-    id: '3',
-    result: 'Moderate',
-    color: '#FFC107',
-    image: require('../assets/eye_open.png'),
-    time: '11/18/2025, 4:30:00 PM',
-  },
-  {
-    id: '4',
-    result: 'Severe',
-    color: '#FF9800',
-    image: require('../assets/eye_open.png'),
-    time: '11/18/2025, 4:30:00 PM',
-  },
-  {
-    id: '5',
-    result: 'Proliferative',
-    color: '#F44336',
-    image: require('../assets/eye_open.png'),
-    time: '11/18/2025, 4:30:00 PM',
-  },
-  
-]
-
 const history = () => {
   const router = useRouter();
   const [user, setUser] = useState(null);
@@ -86,6 +47,56 @@ const history = () => {
         loadProfileImage();
         }, []);
 
+  const getColor = (stage) => {
+      switch (stage) {
+        case "No DR":
+          return "#4CAF50";
+        case "Mild":
+          return "#6BC6C3";
+        case "Moderate":
+          return "#FFC107";
+        case "Severe":
+          return "#d16d37";
+        case "Proliferative":
+          return "#F44336";
+        default:
+          return "#999";
+      }
+    };
+
+  const [historyData, setHistoryData] = useState([]);
+
+    useEffect(() => {
+      const loadHistory = async () => {
+        const token = await AsyncStorage.getItem("accessToken");
+        if (!token) return;
+
+        const res = await fetch(`${API_BASE_URL}/api/accounts/retina/recent/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+
+          const formatted = data.map(item => ({
+            id: item.id.toString(),
+            result: item.predicted_stage,
+            color: getColor(item.predicted_stage),
+            image: {
+              uri: `data:image/jpeg;base64,${item.image_base64}`,
+            },
+            time: new Date(item.created_at).toLocaleString(),
+          }));
+          setHistoryData(formatted);
+        }
+      };
+
+      loadHistory();
+    }, []);
+
+
     return (
         <View>
             <View style={styles.header}>
@@ -119,7 +130,10 @@ const history = () => {
                     <TouchableOpacity
                         key={item.id}
                         style={[styles.card, { borderColor: item.color }]}
-                        onPress={() => router.push('/result')}
+                        onPress={() => router.push({
+                          pathname: "/result",
+                          params: { retinalImageId: item.id }
+                        })}
                     >
                         <Image source={item.image} style={styles.cardImage} />
 

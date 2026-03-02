@@ -72,6 +72,7 @@ def upload_retinal_image(request):
         retinal_image = RetinalImage.objects.create(
             uploaded_by_type="doctor",
             doctor=doctor,
+            selected_doctor=doctor,
             retinal_image=image_bytes,
             retinal_image_size=len(image_bytes),
         )
@@ -82,7 +83,7 @@ def upload_retinal_image(request):
     # ===== CREATE EMPTY PREDICTION RESULT =====
     PredictionResult.objects.create(
         retinal_image=retinal_image,
-        predicted_dr_stage="Moderate",  # temporary mock
+        predicted_dr_stage="Mild",  # temporary mock
         confidence_score=0.80,
         prediction_date=timezone.now()
     )
@@ -227,22 +228,45 @@ def recent_retinal_images(request):
     if user.role == "patient":
         images = RetinalImage.objects.filter(
             patient__user=user
+        ).prefetch_related(
+            "predictions",
+            "predictions__validations"
         ).order_by("-created_at")[:5]
 
     elif user.role == "doctor":
         images = RetinalImage.objects.filter(
             doctor__user=user
+        ).prefetch_related(
+            "predictions",
+            "predictions__validations"
         ).order_by("-created_at")[:5]
 
     else:
         return Response([])
 
     data = []
+
     for img in images:
+        prediction = img.predictions.order_by("-prediction_date").first()
+
+        validated = False
+        stage_to_show = None
+
+        if prediction:
+            validation = prediction.validations.order_by("-validation_date").first()
+
+            if validation:
+                validated = True
+                stage_to_show = validation.final_dr_stage
+            else:
+                stage_to_show = prediction.predicted_dr_stage
+
         data.append({
             "id": img.id,
             "image_base64": base64.b64encode(img.retinal_image).decode("utf-8"),
             "created_at": img.created_at,
+            "predicted_stage": stage_to_show,
+            "validated": validated
         })
 
     return Response(data)
@@ -357,43 +381,6 @@ def assign_doctor(request):
     return Response({"success": True})
 
 
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def get_retina_detail(request, pk):
-#     user = request.user
-
-#     try:
-#         retina = RetinalImage.objects.get(id=pk)
-#     except RetinalImage.DoesNotExist:
-#         return Response({"error": "Not found"}, status=404)
-
-#     if user.role == "patient":
-#         if not retina.patient or retina.patient.user != user:
-#             return Response({"error": "Unauthorized"}, status=403)
-
-#     elif user.role == "doctor":
-#         if not (
-#             (retina.doctor and retina.doctor.user == user) or
-#             (retina.selected_doctor and retina.selected_doctor.user == user)
-#         ):
-#             return Response({"error": "Unauthorized"}, status=403)
-
-#     else:
-#         return Response({"error": "Unauthorized"}, status=403)
-
-#     data = {
-#         "id": retina.id,
-#         "image_base64": base64.b64encode(retina.retinal_image).decode("utf-8"),
-#         "created_at": retina.created_at,
-#         "assigned_doctor": (
-#             DoctorSerializer(retina.selected_doctor).data
-#             if retina.selected_doctor
-#             else None
-#         )
-#     }
-
-#     return Response(data)
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_retina_detail(request, pk):
@@ -472,28 +459,6 @@ def get_retina_detail(request, pk):
 
     return Response(data)
 
-# @api_view(["GET"])
-# @permission_classes([IsAuthenticated])
-# def doctor_review_cases(request):
-#     user = request.user
-
-#     if user.role != "doctor":
-#         return Response([], status=403)
-
-#     images = RetinalImage.objects.filter(
-#         selected_doctor__user=user
-#     ).select_related("patient__user").order_by("-created_at")
-
-#     data = []
-#     for img in images:
-#         data.append({
-#             "id": img.id,
-#             "image_base64": base64.b64encode(img.retinal_image).decode("utf-8"),
-#             "created_at": img.created_at,
-#             "patient_name": img.patient.user.username if img.patient else None,
-#         })
-
-#     return Response(data)
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
@@ -506,7 +471,8 @@ def doctor_review_cases(request):
     doctor = Doctor.objects.get(user=user)
 
     images = RetinalImage.objects.filter(
-        selected_doctor=doctor
+        selected_doctor=doctor,
+        uploaded_by_type="patient"
     ).exclude(
         predictions__validations__doctor=doctor
     ).select_related(
@@ -620,6 +586,7 @@ def doctor_history_cases(request):
 
     images = RetinalImage.objects.filter(
         selected_doctor=doctor,
+        uploaded_by_type="patient",
         predictions__validations__doctor=doctor
     ).select_related(
         "patient__user"
