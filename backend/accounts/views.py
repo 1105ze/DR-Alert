@@ -596,14 +596,14 @@ def submit_doctor_validation(request):
         report_data=template
     )
 
-    # Notify patient
-    retinal = prediction.retinal_image
-    if retinal.patient:
-        create_notification(
-            receiver=retinal.patient.user,
-            receiver_role="patient",
-            message="Your case has been reviewed by doctor."
-        )
+    # # Notify patient
+    # retinal = prediction.retinal_image
+    # if retinal.patient:
+    #     create_notification(
+    #         receiver=retinal.patient.user,
+    #         receiver_role="patient",
+    #         message="Your case has been reviewed by doctor."
+    #     )
 
     return Response({"message": "Validation submitted"})
 

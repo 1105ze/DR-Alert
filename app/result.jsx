@@ -398,14 +398,21 @@ const result = () => {
                     </View>
 
                     <View style={styles.imageCard}>
-                        <Image
-                            source={require("../assets/eye_open.png")} // put your image in assets
+                        {retinaData && (
+                            <Image
+                            source={{
+                                uri: `data:image/jpeg;base64,${retinaData.image_base64}`,
+                            }}
                             style={styles.fundusImage}
-                        />
+                            />
+                        )}
+
                         <Text style={styles.analyzedText}>
-                            Analyzed on 11/18/2025, 4:30:00 PM
+                            Analyzed on {retinaData 
+                                ? new Date(retinaData.created_at).toLocaleString() 
+                                : ""}
                         </Text>
-                        </View>
+                    </View>
 
                         {/* Meaning card */}
                         <View style={styles.meaningCard}>

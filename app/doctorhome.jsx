@@ -172,10 +172,10 @@ const doctorhome = () => {
                             <Text style={styles.navigationText}>View History</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/specialist')} >
+                        {/* <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/specialist')} >
                             <Image source={require('../assets/specialist_icon.png')} style={styles.navigationImage} />
                             <Text style={styles.navigationText}>Specialist</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
 
                     <View style={styles.workBar}>
