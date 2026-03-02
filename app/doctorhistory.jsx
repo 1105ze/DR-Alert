@@ -52,7 +52,7 @@ const history = () => {
         case "No DR":
           return "#4CAF50";
         case "Mild":
-          return "#6BC6C3";
+          return "#13a09b";
         case "Moderate":
           return "#FFC107";
         case "Severe":

@@ -69,6 +69,18 @@ const [cases, setCases] = useState([]);
 
         loadProfileImage();
         }, []);
+
+    const getStageColor = (stage) => {
+      switch (stage) {
+        case "No DR": return "#4CAF50";
+        case "Mild": return "#13a09b";
+        case "Moderate": return "#FFC107";
+        case "Severe": return "#d16d37";
+        case "Proliferative": return "#F44336";
+        default: return "#000";
+      }
+    };
+
     return (
         <View>
             <View style={styles.header}>
@@ -122,16 +134,27 @@ const [cases, setCases] = useState([]);
                     />
 
                     <View style={styles.cardContent}>
-                    <Text style={styles.time}>
-                        {new Date(item.created_at).toLocaleString()}
-                    </Text>
-                    <Text style={styles.name}>
-                        {item.patient_name ? item.patient_name : "Unknown Patient"}
-                    </Text>
+                      <Text style={styles.time}>
+                          {new Date(item.created_at).toLocaleString()}
+                      </Text>
 
-                        <Text style={styles.name}>
-                        Case ID: {item.id}
-                        </Text>
+                      <Text style={styles.name}>
+                          {item.patient_name ? item.patient_name : "Unknown Patient"}
+                      </Text>
+
+                      <Text style={styles.name}>
+                          Case ID: {item.id}
+                      </Text>
+
+                      <Text
+                        style={[
+                          styles.stage,
+                          { color: getStageColor(item.predicted_stage) }
+                        ]}
+                      >
+                        Stage: {item.predicted_stage || "Pending AI"}
+                      </Text>
+
                     </View>
 
                     <Text style={styles.arrow}>›</Text>
@@ -288,5 +311,10 @@ profileImage: {
     textAlign: 'center',
     marginTop: 90,
     marginBottom: 10,
-  }
+  },
+  stage: {
+  marginTop: 3,
+  fontSize: 13,
+  fontWeight: "700",
+},
 })

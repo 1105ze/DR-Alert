@@ -183,7 +183,7 @@ const result = () => {
                 case "No DR":
                     return "#4CAF50";
                 case "Mild":
-                    return "#6BC6C3";
+                    return "#13a09b";
                 case "Moderate":
                     return "#FFC107";
                 case "Severe":
@@ -307,7 +307,19 @@ const result = () => {
                     </Text>
 
                     <View style={styles.adviceColumn}>
-                        <Text style={styles.adviceText}>{adviceText}</Text>
+                        <Text style={styles.adviceText}>
+                            <Text
+                                style={{
+                                fontWeight: "800",
+                                color: getStageColor(stageToShow),
+                                }}
+                            >
+                                {stageToShow}
+                            </Text>
+                            {" "}
+                            diabetic retinopathy{" "}
+                            {isValidated ? "confirmed." : "detected."}
+                        </Text>
 
                     <Text
                         style={{
@@ -588,10 +600,12 @@ profileImage: {
         marginLeft: 20,
         marginTop: 15,
     },
-    stageText: {
-        textAlign: 'center',
-        fontSize: 15,
-    },
+stageText: {
+    textAlign: 'center',
+    fontSize: 22,
+    fontWeight: '800',
+    marginTop: 10,
+},
     confidenceText: {
         textAlign: 'center',
         fontSize: 15,

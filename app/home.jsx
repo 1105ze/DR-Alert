@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from "../config";
+import { Dimensions } from "react-native";
 
 const home = () => {
     const router = useRouter();
@@ -30,23 +31,11 @@ const home = () => {
 
 
     const ads = [
-        {id: "1", image: require('../assets/eye_open.png'), route: "/advertisement",},
-        {id: "2", image: require('../assets/eye_open.png'), route: "/advertisement",},
-        {id: "3", image: require('../assets/eye_open.png'), route: "/advertisement",},
+        {id: "1", image: require("../assets/retinal.png"), route: "/advertisement",},
+        {id: "2", image: require("../assets/retinal_image.jpg"), route: "/advertisement",},
+        {id: "3", image: require("../assets/retinal.png"), route: "/advertisement",},
     ]
 
-    // const recentUploads = [
-    //     {
-    //         id: "r1",
-    //         image: require("../assets/eye_open.png"),
-    //         time: "Uploaded by 3/12/2025 8:00:00 P.M.",
-    //     },
-    //     {
-    //         id: "r2",
-    //         image: require("../assets/eye_open.png"),
-    //         time: "Uploaded by 2/12/2025 9:10:00 A.M.",
-    //     },
-    // ];
     const [recentUploads, setRecentUploads] = useState([]);
 
     useEffect(() => {
@@ -101,8 +90,9 @@ const home = () => {
 
     const adListRef = useRef(null);
     const [activeAdIndex, setActiveAdIndex] = useState(0);
+    const SCREEN_WIDTH = Dimensions.get("window").width;
 
-    const AD_CARD_WIDTH = 395;
+    const AD_CARD_WIDTH = SCREEN_WIDTH - 40;
 
     const onAdScroll = (e) => {
     const x = e.nativeEvent.contentOffset.x;
@@ -141,7 +131,7 @@ const home = () => {
                             <Text style={styles.navigationText}>Upload Image</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/mainhistory')} >
+                        <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/history')} >
                             <Image source={require('../assets/clock_icon.png')} style={styles.navigationImage} />
                             <Text style={styles.navigationText}>View History</Text>
                         </TouchableOpacity>
@@ -203,7 +193,7 @@ const home = () => {
                     <View style={styles.recentText}>
                         <Text style={styles.recentuploadText}>Recent Upload</Text>
     
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push("/history")}>
                             <Text style={styles.seeAll}>See all</Text>
                         </TouchableOpacity>
                     </View>
@@ -388,19 +378,18 @@ const styles = StyleSheet.create({
         marginTop: 65,
         marginLeft: 30, 
     },
-    adsList: {
-        marginTop: 12,
-        marginHorizontal: 20,
-        borderRadius: 18,
-        borderWidth: 2,
-        borderColor: "#6AAEF8",
-        overflow: "hidden",
-        backgroundColor: "#fff",
-        paddingVertical: 10,        
-    },
+adsList: {
+  marginTop: 12,
+  marginHorizontal: 20,
+  borderRadius: 18,
+  borderWidth: 2,
+  borderColor: "#6AAEF8",
+  overflow: "hidden",
+  backgroundColor: "#fff",
+},
     adsImage: {
         width: "100%",
-        height: "200",
+        height: 200,
         resizeMode: "cover",    
     },
     adsArrow: {

@@ -152,7 +152,7 @@ const doctorresult = () => {
                 case "No DR":
                     return "#4CAF50";
                 case "Mild":
-                    return "#6BC6C3";
+                    return "#13a09b";
                 case "Moderate":
                     return "#d1a934";
                 case "Severe":
@@ -171,12 +171,6 @@ const doctorresult = () => {
     const cardColor = getStageColor(stageToShow);
 
     const isValidated = retinaData?.validated;
-
-    const adviceText = retinaData?.validated
-        ? `${retinaData.doctor_final_stage} diabetic retinopathy confirmed.`
-        : retinaData?.predicted_stage
-        ? `${retinaData.predicted_stage} diabetic retinopathy detected.`
-        : "Awaiting AI result.";
 
     const validationStatusText = isValidated
         ? "Doctor validated"
