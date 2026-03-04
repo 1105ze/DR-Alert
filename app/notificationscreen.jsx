@@ -173,20 +173,39 @@ import { API_BASE_URL } from "../config";
                 onPress={async () => {
                   const token = await AsyncStorage.getItem("accessToken");
 
-                  await fetch(`${API_BASE_URL}/api/accounts/notifications/${item.id}/read/`,
-                    {
-                      method: "POST",
-                      headers: {
-                        Authorization: `Bearer ${token}`,
-                      },
-                    }
-                  );
+                  await fetch(`${API_BASE_URL}/api/accounts/notifications/${item.id}/read/`, {
+                    method: "POST",
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  });
 
                   setNotifications((prev) =>
                     prev.map((n) =>
                       n.id === item.id ? { ...n, is_read: true } : n
                     )
                   );
+
+                  // Navigation logic
+                  if (
+                    item.target_page === "ai_prediction_ready" ||
+                    item.target_page === "doctor_validation_completed" ||
+                    item.target_page === "doctor_comment_added"
+                  ) {
+                    router.push({
+                      pathname: "/result",
+                      params: { retinalImageId: item.target_id }
+                    });
+                  }
+                  if (item.target_page === "doctor_review_case") {
+                    router.push({
+                      pathname: "/doctorresult",
+                      params: { retinalImageId: item.target_id }
+                    });
+                  }
+                  if (item.target_page === "doctor_verified") {
+                    router.push("/profile");
+                  }
                 }}
               >
                 <Image

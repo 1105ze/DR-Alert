@@ -20,7 +20,9 @@ def notify_patient_prediction_ready(sender, instance, created, **kwargs):
         create_notification(
             receiver=retinal_image.patient.user,
             receiver_role='patient',
-            message="Your retinal image has been analyzed. A preliminary result is available."
+            message="Your retinal image has been analyzed. A preliminary result is available.",
+            target_page="ai_prediction_ready",
+            target_id=retinal_image.id
         )
 
 @receiver(post_save, sender=DoctorValidation)
@@ -35,7 +37,9 @@ def notify_patient_doctor_validation(sender, instance, created, **kwargs):
         create_notification(
             receiver=retinal_image.patient.user,
             receiver_role='patient',
-            message="A doctor has reviewed your retinal image and provided a diagnosis."
+            message="A doctor has reviewed your retinal image and provided a diagnosis.",
+            target_page="doctor_validation_completed",
+            target_id=retinal_image.id
         )
 
 @receiver(pre_save, sender=DoctorValidation)
@@ -57,7 +61,9 @@ def notify_patient_doctor_comment(sender, instance, created, **kwargs):
             create_notification(
                 receiver=retinal_image.patient.user,
                 receiver_role='patient',
-                message="The doctor has added medical notes to your diagnosis."
+                message="The doctor has added medical notes to your diagnosis.",
+                target_page="doctor_comment_added",
+                target_id=retinal_image.id
             )
 
 
@@ -80,14 +86,16 @@ def notify_doctor_approved_or_rejected(sender, instance, **kwargs):
         create_notification(
             receiver=doctor_user,
             receiver_role='doctor',
-            message="Your doctor account has been approved. You can now access patient cases."
+            message="Your doctor account has been approved. You can now access patient cases.",
+            target_page="doctor_verified"
         )
 
     elif instance.status == 'rejected':
         create_notification(
             receiver=doctor_user,
             receiver_role='doctor',
-            message="Your doctor account has been rejected. Please contact the administrator."
+            message="Your doctor account has been rejected. Please contact the administrator.",
+            target_page="doctor_rejected"
         )
 
 

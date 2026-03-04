@@ -278,6 +278,8 @@ class Notification(models.Model):
     message = models.TextField()
     is_read = models.BooleanField(default=False)
     sent_at = models.DateTimeField(auto_now_add=True)
+    target_page = models.CharField(max_length=100, null=True, blank=True)
+    target_id = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.receiver_role} | {self.message[:30]}"

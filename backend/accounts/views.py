@@ -299,6 +299,8 @@ def get_notifications(request):
             "is_read": n.is_read,
             "sent_at": n.sent_at,
             "receiver_role": n.receiver_role,
+            "target_page": n.target_page,   # ADD
+            "target_id": n.target_id,
         }
         for n in notifications
     ]
@@ -375,7 +377,9 @@ def assign_doctor(request):
     create_notification(
         receiver=doctor.user,
         receiver_role="doctor",
-        message=message
+        message=message,
+        target_page="doctor_review_case",
+        target_id=retinal_image.id
     )
 
     return Response({"success": True})
