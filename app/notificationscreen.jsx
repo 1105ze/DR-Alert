@@ -54,28 +54,48 @@ import { API_BASE_URL } from "../config";
         const data = await res.json();
         setNotifications(data);
 
-        // 👇 AUTO mark unread as read when page opens
-        const unread = data.filter((n) => !n.is_read);
+        const fetchNotifications = async () => {
+          const token = await AsyncStorage.getItem("accessToken");
+          if (!token) return;
 
-        await Promise.all(
-          unread.map((n) =>
-            fetch(
-              `${API_BASE_URL}/api/accounts/notifications/${n.id}/read/`,
-              {
-                method: "POST",
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            )
-          )
-        );
+          const res = await fetch(
+            `${API_BASE_URL}/api/accounts/notifications/`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (res.ok) {
+            const data = await res.json();
+            setNotifications(data);
+          }
+        };
+
+        // 👇 AUTO mark unread as read when page opens
+        // const unread = data.filter((n) => !n.is_read);
+
+        // await Promise.all(
+        //   unread.map((n) =>
+        //     fetch(
+        //       `${API_BASE_URL}/api/accounts/notifications/${n.id}/read/`,
+        //       {
+        //         method: "POST",
+        //         headers: {
+        //           Authorization: `Bearer ${token}`,
+        //         },
+        //       }
+        //     )
+        //   )
+        // );
 
         // update UI
-        setNotifications((prev) =>
-          prev.map((n) => ({ ...n, is_read: true }))
-        );
+        // setNotifications((prev) =>
+        //   prev.map((n) => ({ ...n, is_read: true }))
+        // );
       };
+      
 
       fetchNotifications();
     }, []);
@@ -115,7 +135,7 @@ import { API_BASE_URL } from "../config";
     };
 
     return (
-      <View>
+       <View style={{ flex: 1 }}>
           <View style={styles.header}>
               <TouchableOpacity style={styles.profile} onPress={() => router.push('/home')}>
                   <Image
@@ -142,13 +162,13 @@ import { API_BASE_URL } from "../config";
               </TouchableOpacity>
           </View>
 
-          <ScrollView>
+          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 40 }}>
             {notifications.map((item) => (
               <TouchableOpacity
                 key={item.id}
                 style={[
                   styles.card,
-                  item.is_read && styles.grayCard
+                  item.is_read ? styles.readCard : styles.unreadCard
                 ]}
                 onPress={async () => {
                   const token = await AsyncStorage.getItem("accessToken");
@@ -175,7 +195,7 @@ import { API_BASE_URL } from "../config";
                 />
 
                 <View>
-                  <Text style={styles.topic}>
+                  <Text style={[ styles.topic, !item.is_read && styles.unreadText]} >
                     {item.receiver_role === "doctor"
                       ? "Doctor Notification"
                       : "Patient Notification"}
@@ -234,12 +254,12 @@ const styles = StyleSheet.create({
   backgroundColor: "#aad5fc",
   justifyContent: "center",
   alignItems: "center",
-  overflow: "hidden",   // 🔥 REQUIRED for circle
+  overflow: "hidden",   
 },
 profileImage: {
   width: "100%",
   height: "100%",
-  resizeMode: "cover",  // 🔥 REQUIRED
+  resizeMode: "cover",  
 },
   Texttitle: {
     flex: 1,
@@ -327,11 +347,22 @@ profileImage: {
     paddingVertical: 10,
     alignItems: 'center',
     marginVertical: 12,
-    marginLeft: 120,
-    marginRight: 120,
-    marginTop: 180,
+    marginLeft: 100,
+    marginRight: 100,
     flexDirection: 'row'
   },
+//   markRead: {
+//   borderWidth: 2,
+//   borderColor: '#4da3ff',
+//   borderRadius: 30,
+//   paddingVertical: 12,
+//   paddingHorizontal: 28,
+//   alignSelf: "center",
+//   flexDirection: 'row',
+//   alignItems: 'center',
+//   justifyContent: 'center',
+//   backgroundColor: "#fff",
+// },
   markReadText: {
     color: '#4da3ff',
     fontWeight: '600',
@@ -344,4 +375,17 @@ profileImage: {
     marginLeft: 20,
     tintColor: '#4da3ff',
   },
+  unreadCard: {
+  backgroundColor: "#EAF4FF",
+  borderLeftWidth: 5,
+  borderLeftColor: "#2E7BEA",
+},
+
+readCard: {
+  backgroundColor: "#f3f3f3",
+  opacity: 0.85,
+},
+unreadText: {
+  color: "#2E7BEA",
+},
 })
