@@ -332,6 +332,18 @@ const result = () => {
                     </Text>
                     </View>
 
+                    {isValidated && retinaData?.doctor_comments && (
+                        <View style={styles.commentBlock}>
+                            <Text style={styles.commentTitle}>
+                                Doctor Comment :
+                            </Text>
+
+                            <Text style={styles.commentParagraph}>
+                                {retinaData.doctor_comments}
+                            </Text>
+                        </View>
+                    )}
+
                     <TouchableOpacity style={styles.button} onPress={() => router.push('/gradcam')} >
                         <Text style={styles.buttonText}>View AI Explanation (Grad-CAM)</Text>
                     </TouchableOpacity>
@@ -340,6 +352,7 @@ const result = () => {
                         <Text style={styles.buttonText}>View Report</Text>
                     </TouchableOpacity>
                 </View>
+                
 
                 <View style={styles.secondCard}>
                     <Text style={styles.doctorTitle}>Doctor Specialist Verify</Text>
@@ -820,5 +833,25 @@ adviceText: {
         textAlign: 'center',
         marginTop: 90,
         marginBottom: 10,
-    }
+    },
+commentBlock: {
+    marginTop: 18,
+    marginHorizontal: 25,
+    paddingTop: 14,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(0,0,0,0.2)",
+    marginBottom: 20,
+},
+
+commentTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    marginBottom: 6,
+},
+
+commentParagraph: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: "#222",
+},
 })

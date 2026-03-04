@@ -610,3 +610,13 @@ def doctor_history_cases(request):
         })
 
     return Response(data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def unread_notification_count(request):
+    count = Notification.objects.filter(
+        receiver=request.user,
+        is_read=False
+    ).count()
+
+    return Response({"unread_count": count})

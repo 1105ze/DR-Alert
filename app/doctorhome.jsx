@@ -4,6 +4,8 @@ import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from "../config";
 import { Dimensions } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 
 const doctorhome = () => {
     const router = useRouter();
@@ -33,6 +35,31 @@ const doctorhome = () => {
         {id: "2", image: require("../assets/retinal_image.jpg"), route: "/advertisement",},
         {id: "3", image: require("../assets/retinal.png"), route: "/advertisement",},
     ]
+
+    const [unreadCount, setUnreadCount] = useState(0);
+    
+        useFocusEffect(
+            useCallback(() => {
+                const checkUnread = async () => {
+                    const token = await AsyncStorage.getItem("accessToken");
+                    if (!token) return;
+
+                    const res = await fetch(
+                        `${API_BASE_URL}/api/accounts/notifications/unread-count/`,
+                        {
+                            headers: { Authorization: `Bearer ${token}` },
+                        }
+                    );
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        setUnreadCount(data.unread_count);
+                    }
+                };
+
+                checkUnread();
+            }, [])
+        );
 
     const [pendingList, setPendingList] = useState([]);
     useEffect(() => {
@@ -154,9 +181,23 @@ const doctorhome = () => {
                                     />
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.notification} onPress={() => router.push('/notificationscreen')}>
-                                <Image source={require('../assets/notification_icon.png')} style={styles.notificationIcon} />
-                            </TouchableOpacity>
+                            <View style={styles.notificationWrapper}>
+                                <TouchableOpacity onPress={() => router.push("/notificationscreen")}>
+                                    <Image
+                                        source={require("../assets/notification_icon.png")}
+                                        style={styles.notificationIcon}
+                                    />
+                                </TouchableOpacity>
+
+                                {unreadCount > 0 && (
+                                    <View style={styles.badge}>
+                                        <Text style={styles.badgeText}>
+                                            {unreadCount > 9 ? "9+" : unreadCount}
+                                        </Text>
+                                    </View>
+                                )}
+                            </View>
+
                         </View>
                         <Text style={styles.name}>
                             Hey, {user ? user.username : ""}
@@ -423,23 +464,6 @@ const styles = StyleSheet.create({
     height: "100%",
     borderRadius: 32,
     resizeMode: "cover",
-    },
-
-    // profileImage: {
-    //     width: 38,
-    //     height: 38,
-    //     marginRight: 10,
-    //     resizeMode: 'contain',
-    //     marginLeft: "8",
-    // },
-    notification: {
-        paddingVertical: 15,
-        marginRight: 15,
-    },
-    notificationIcon: {
-        width: 30,
-        height: 30,
-        resizeMode: 'contain',
     },
     name: {
         fontSize: 40,
@@ -770,5 +794,36 @@ worklistStage: {
 worklistArrow: {
   fontSize: 26,
   fontWeight: "bold",
+},
+notificationWrapper: {
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
+},
+
+notificationIcon: {
+    width: 30,
+    height: 30,
+    resizeMode: "contain",
+},
+badge: {
+    position: "absolute",
+    top: -6,
+    right: -8,
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: "#FF3B30",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 4,
+    borderWidth: 1.5,
+    borderColor: "#fff",
+},
+
+badgeText: {
+    color: "#fff",
+    fontSize: 11,
+    fontWeight: "700",
 },
 })
