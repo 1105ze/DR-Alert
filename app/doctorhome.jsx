@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from "../config";
+import { Dimensions } from "react-native";
 
 const doctorhome = () => {
     const router = useRouter();
@@ -28,50 +29,33 @@ const doctorhome = () => {
         }, []);
 
     const ads = [
-        {id: "1", image: require('../assets/eye_open.png')},
-        {id: "2", image: require('../assets/eye_open.png')},
-        {id: "3", image: require('../assets/eye_open.png')},
+        {id: "1", image: require("../assets/retinal.png"), route: "/advertisement",},
+        {id: "2", image: require("../assets/retinal_image.jpg"), route: "/advertisement",},
+        {id: "3", image: require("../assets/retinal.png"), route: "/advertisement",},
     ]
 
-    const pendingList = [
-        {
-            id: "p1",
-            name: "Aaron Chiah",
-            code: "P1987",
-            status: "Severe",
-            color: "#FF6B4A",
-            time: "Uploaded 2 hours ago",
-        },
-        {
-            id: "p2",
-            name: "Sarah Johns",
-            code: "P0061",
-            status: "Moderate",
-            color: "#F6B800",
-            time: "Uploaded 15 hours ago",
-        },
-        {
-            id: "p3",
-            name: "Arpon Wang",
-            code: "P2657",
-            status: "Mild",
-            color: "#5EC2B7",
-            time: "Uploaded 1 day ago",
-        },
-    ];
+    const [pendingList, setPendingList] = useState([]);
+    useEffect(() => {
+        const loadPending = async () => {
+            const token = await AsyncStorage.getItem("accessToken");
+            if (!token) return;
 
-    // const recentUploads = [
-    //     {
-    //         id: "r1",
-    //         image: require("../assets/eye_open.png"),
-    //         time: "Uploaded by 3/12/2025 8:00:00 P.M.",
-    //     },
-    //     {
-    //         id: "r2",
-    //         image: require("../assets/eye_open.png"),
-    //         time: "Uploaded by 2/12/2025 9:10:00 A.M.",
-    //     },
-    // ];
+            const res = await fetch(
+            `${API_BASE_URL}/api/accounts/doctor/review/`,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+            );
+
+            if (res.ok) {
+            const data = await res.json();
+            setPendingList(data);
+            }
+        };
+
+        loadPending();
+        }, []);
+
     const [recentUploads, setRecentUploads] = useState([]);
 
     useEffect(() => {
@@ -127,13 +111,31 @@ const doctorhome = () => {
 
     const adListRef = useRef(null);
     const [activeAdIndex, setActiveAdIndex] = useState(0);
+    const SCREEN_WIDTH = Dimensions.get("window").width;
 
-    const AD_CARD_WIDTH = 395; // or any fixed width you want
+    const AD_CARD_WIDTH = SCREEN_WIDTH - 40;
 
     const onAdScroll = (e) => {
     const x = e.nativeEvent.contentOffset.x;
     const index = Math.round(x / AD_CARD_WIDTH);
     setActiveAdIndex(index);
+    };
+
+    const getStageColor = (stage) => {
+        switch (stage) {
+            case "No DR":
+            return "#4CAF50";
+            case "Mild":
+            return "#13a09b";
+            case "Moderate":
+            return "#FFC107";
+            case "Severe":
+            return "#d16d37";
+            case "Proliferative":
+            return "#F44336";
+            default:
+            return "#999";
+        }
     };
 
         return (
@@ -172,10 +174,6 @@ const doctorhome = () => {
                             <Text style={styles.navigationText}>View History</Text>
                         </TouchableOpacity>
 
-                        {/* <TouchableOpacity style={styles.navigationButton} onPress={() => router.push('/specialist')} >
-                            <Image source={require('../assets/specialist_icon.png')} style={styles.navigationImage} />
-                            <Text style={styles.navigationText}>Specialist</Text>
-                        </TouchableOpacity> */}
                     </View>
 
                     <View style={styles.workBar}>
@@ -214,11 +212,15 @@ const doctorhome = () => {
                                     });
                                 }, 300);
                             }}
-                            renderItem={({item}) => (
-                                <View style={{width: AD_CARD_WIDTH}}>
+                            renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    style={{ width: AD_CARD_WIDTH }}
+                                    activeOpacity={0.9}
+                                    onPress={() => router.push(item.route)}
+                                >
                                     <Image source={item.image} style={styles.adsImage} />
-                                </View>
-                            )}
+                                </TouchableOpacity>
+                                )}
                         />
                     </View>
 
@@ -236,28 +238,66 @@ const doctorhome = () => {
 
                     <View style={styles.pendingHeader}>
                         <Text style={styles.pendingTitle}>Pending Verification</Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push('/doctorworklist')}>
                             <Text style={styles.PVseeAll}>See All</Text>
                         </TouchableOpacity>
                     </View>
 
                     <View style={styles.pendingBox}>
-                        {pendingList.map((item) => (
-                            <View key={item.id} style={styles.pendingCard}>
-                            <View>
-                                <Text style={styles.pendingName}>{item.name}</Text>
-                                <Text style={styles.pendingCode}>{item.code}</Text>
-                            </View>
+                        {pendingList.length === 0 ? (
+                            <Text style={{ textAlign: "center", color: "#666" }}>
+                                No pending cases
+                            </Text>
+                            ) : (
+                            pendingList.slice(0, 3).map((item) => {
+                                const stageColor = getStageColor(item.predicted_stage);
 
-                            <View style={[styles.statusPill, { borderColor: item.color }]}>
-                                <Text style={[styles.statusText, { color: item.color }]}>
-                                {item.status}
-                                </Text>
-                            </View>
+                                return (
+                                <TouchableOpacity
+                                    key={item.id}
+                                    style={styles.worklistCard}
+                                    onPress={() =>
+                                        router.push({
+                                        pathname: "/doctorresult",
+                                        params: { retinalImageId: item.id },
+                                        })
+                                    }
+                                    >
+                                    <Image
+                                        source={{
+                                        uri: `data:image/jpeg;base64,${item.image_base64}`,
+                                        }}
+                                        style={styles.worklistImage}
+                                    />
 
-                            <Text style={styles.pendingTime}>{item.time}</Text>
-                            </View>
-                        ))}
+                                    <View style={styles.worklistContent}>
+                                        <Text style={styles.worklistTime}>
+                                        {new Date(item.created_at).toLocaleString()}
+                                        </Text>
+
+                                        <Text style={styles.worklistName}>
+                                        {item.patient_name || "Unknown Patient"}
+                                        </Text>
+
+                                        <Text style={styles.worklistId}>
+                                        Case ID: {item.id}
+                                        </Text>
+
+                                        <Text
+                                        style={[
+                                            styles.worklistStage,
+                                            { color: stageColor }
+                                        ]}
+                                        >
+                                        Stage: {item.predicted_stage || "Pending AI"}
+                                        </Text>
+                                    </View>
+
+                                    <Text style={styles.worklistArrow}>›</Text>
+                                    </TouchableOpacity>
+                                );
+                            })
+                            )}
                     </View>
 
                     <View style={styles.recentText}>
@@ -323,26 +363,6 @@ const doctorhome = () => {
                                                 )}
                                             />
                                         )}
-
-                    {/* <FlatList
-                        data={recentUploads}
-                        keyExtractor={(item) => item.id.toString()}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity style={styles.recentCard}>
-                            <Image
-                                source={{ uri: `data:image/jpeg;base64,${item.image_base64}` }}
-                                style={styles.recentImage}
-                            />
-                            <View style={styles.recentOverlay}>
-                                <Text style={styles.recentOverlayText}>
-                                Uploaded on {new Date(item.created_at).toLocaleString()}
-                                </Text>
-                            </View>
-                            </TouchableOpacity>
-                        )}
-                        /> */}
 
 
                     <TouchableOpacity style={styles.signoutButton} onPress={() => router.push("/firstpage")}>
@@ -454,7 +474,7 @@ const styles = StyleSheet.create({
         tintColor: "#2E7BEA",
     },
     navigationText: {
-        textAligh: "center",
+        textAlign: "center",
         fontWeight: "700",
     },
     workBar: {
@@ -494,19 +514,18 @@ const styles = StyleSheet.create({
         marginTop: 35,
         marginLeft: 30, 
     },
-    adsList: {
-        marginTop: 12,
-        marginHorizontal: 20,
-        borderRadius: 18,
-        borderWidth: 2,
-        borderColor: "#6AAEF8",
-        overflow: "hidden",
-        backgroundColor: "#fff",
-        paddingVertical: 10,        
-    },
+adsList: {
+  marginTop: 12,
+  marginHorizontal: 20,
+  borderRadius: 18,
+  borderWidth: 2,
+  borderColor: "#6AAEF8",
+  overflow: "hidden",
+  backgroundColor: "#fff",
+},
     adsImage: {
         width: "100%",
-        height: "200",
+        height: 200,
         resizeMode: "cover",    
     },
     adsArrow: {
@@ -707,4 +726,49 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "700",
     },
+    worklistCard: {
+  flexDirection: "row",
+  borderWidth: 2,
+  borderRadius: 14,
+  padding: 20,
+  marginBottom: 12,
+  alignItems: "center",
+  backgroundColor: "#fff",
+},
+
+worklistImage: {
+  width: 60,
+  height: 60,
+  borderRadius: 10,
+},
+
+worklistContent: {
+  flex: 1,
+  marginLeft: 12,
+},
+
+worklistTime: {
+  fontSize: 12,
+},
+
+worklistName: {
+  fontSize: 13,
+  marginTop: 4,
+},
+
+worklistId: {
+  fontSize: 13,
+  marginTop: 2,
+},
+
+worklistStage: {
+  fontSize: 14,
+  fontWeight: "700",
+  marginTop: 4,
+},
+
+worklistArrow: {
+  fontSize: 26,
+  fontWeight: "bold",
+},
 })

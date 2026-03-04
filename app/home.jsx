@@ -395,7 +395,7 @@ adsList: {
     adsArrow: {
         position: "absolute",
         right: 6,
-        top: 40,
+        top: 10,
         width: 34,
         height: 34,
         borderRadius: 17,

@@ -83,7 +83,7 @@ def upload_retinal_image(request):
     # ===== CREATE EMPTY PREDICTION RESULT =====
     PredictionResult.objects.create(
         retinal_image=retinal_image,
-        predicted_dr_stage="Mild",  # temporary mock
+        predicted_dr_stage="Moderate",  # temporary mock
         confidence_score=0.80,
         prediction_date=timezone.now()
     )

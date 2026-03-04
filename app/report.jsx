@@ -69,6 +69,24 @@ const report = () => {
     );
   }
 
+  const getStageColor = (stage) => {
+    switch (stage) {
+      case "No DR":
+        return "#4CAF50";
+      case "Mild":
+        return "#13a09b";
+      case "Moderate":
+        return "#FFC107";
+      case "Severe":
+        return "#d16d37";
+      case "Proliferative":
+        return "#F44336";
+    }
+  };
+
+  const stageColor = getStageColor(stageToShow);
+
+
   return (
     <SafeAreaView style={styles.page}>
       {/* Header */}
@@ -91,8 +109,13 @@ const report = () => {
         {/* Main container card (light background) */}
         <View style={styles.containerCard}>
           {/* Result block (pink) */}
-          <View style={styles.resultCard}>
-            <View style={styles.resultIconCircle}>
+          <View style={[styles.resultCard, { backgroundColor: stageColor }]}>
+            <View
+              style={[
+                styles.resultIconCircle,
+                { backgroundColor: stageColor },
+              ]}
+            >
               <Text style={styles.resultIcon}>!</Text>
             </View>
 
@@ -107,7 +130,11 @@ const report = () => {
             )}
 
             <View style={styles.findingPill}>
-              <Text style={styles.findingText}>{findings}</Text>
+              <Text style={styles.findingText}>
+                {retinaData?.validated
+                  ? `${stageToShow} diabetic retinopathy confirmed.`
+                  : `${stageToShow} diabetic retinopathy detected.`}
+              </Text>
             </View>
           </View>
 
@@ -244,7 +271,6 @@ const styles = StyleSheet.create({
   },
 
   resultCard: {
-    backgroundColor: "#F29292",
     borderRadius: 18,
     paddingVertical: 18,
     paddingHorizontal: 16,
@@ -262,7 +288,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   resultIcon: { fontSize: 26, fontWeight: "900", color: "#111" },
-  resultStage: { fontSize: 18, fontWeight: "400", marginTop: 6 },
+  resultStage: {
+    fontSize: 22,
+    fontWeight: "800",
+    marginTop: 6,
+  },
   resultConfidence: { fontSize: 16, marginTop: 10 },
   findingPill: {
     backgroundColor: "#BFE1FF",

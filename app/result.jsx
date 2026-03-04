@@ -187,11 +187,10 @@ const result = () => {
                 case "Moderate":
                     return "#FFC107";
                 case "Severe":
-                    return "#d1a934";
+                    return "#d16d37";
                 case "Proliferative":
                     return "#F44336";
-                default:
-                    return "#fe9696ff";
+            
             }
         };
 
@@ -579,7 +578,6 @@ profileImage: {
         padingBottom: 50,
     },
     firstCard: {
-        backgroundColor: '#fe9696ff',
         width: 385,
         borderRadius: 18,
         marginLeft: 30,

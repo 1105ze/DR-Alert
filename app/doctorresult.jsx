@@ -154,13 +154,11 @@ const doctorresult = () => {
                 case "Mild":
                     return "#13a09b";
                 case "Moderate":
-                    return "#d1a934";
+                    return "#FFC107";
                 case "Severe":
                     return "#d16d37";
                 case "Proliferative":
                     return "#F44336";
-                default:
-                    return "#fe9696ff";
             }
         };
     
@@ -457,7 +455,6 @@ profileImage: {
         fontSize: 20,
     },
     firstCard: {
-        backgroundColor: '#fe9696ff',
         width: 385,
         borderRadius: 18,
         marginLeft: 30,
