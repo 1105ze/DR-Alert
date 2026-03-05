@@ -573,15 +573,6 @@ def submit_doctor_validation(request):
         report_data=template
     )
 
-    # # Notify patient
-    # retinal = prediction.retinal_image
-    # if retinal.patient:
-    #     create_notification(
-    #         receiver=retinal.patient.user,
-    #         receiver_role="patient",
-    #         message="Your case has been reviewed by doctor."
-    #     )
-
     return Response({"message": "Validation submitted"})
 
 
@@ -610,6 +601,13 @@ def doctor_history_cases(request):
     for img in images:
         prediction = img.predictions.first()
 
+        validation = None
+        if prediction:
+            validation = DoctorValidation.objects.filter(
+                prediction=prediction,
+                doctor=doctor
+            ).first()
+
         data.append({
             "id": img.id,
             "image_base64": base64.b64encode(img.retinal_image).decode("utf-8"),
@@ -618,6 +616,8 @@ def doctor_history_cases(request):
             "prediction_id": prediction.id if prediction else None,
             "predicted_stage": prediction.predicted_dr_stage if prediction else None,
             "confidence": prediction.confidence_score if prediction else None,
+            "doctor_final_stage": validation.final_dr_stage if validation else None,
+            "validated_at": validation.validation_date if validation else None,
         })
 
     return Response(data)

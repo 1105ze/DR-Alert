@@ -74,6 +74,18 @@ const doctorworklisthistory = () => {
 
         loadProfileImage();
         }, []);
+
+    const getStageColor = (stage) => {
+      switch (stage) {
+        case "No DR": return "#4CAF50";
+        case "Mild": return "#13a09b";
+        case "Moderate": return "#FFC107";
+        case "Severe": return "#d16d37";
+        case "Proliferative": return "#F44336";
+        default: return "#000";
+      }
+    };
+
     return (
         <View>
             <View style={styles.header}>
@@ -108,7 +120,7 @@ const doctorworklisthistory = () => {
                         No verified cases yet.
                     </Text>
                 )}
-                
+
                 {cases.map(item => (
                 <TouchableOpacity
                     key={item.id}
@@ -128,16 +140,29 @@ const doctorworklisthistory = () => {
                     />
 
                     <View style={styles.cardContent}>
+
                     <Text style={styles.time}>
-                        {new Date(item.created_at).toLocaleString()}
-                    </Text>
-                    <Text style={styles.name}>
-                        {item.patient_name ? item.patient_name : "Unknown Patient"}
+                        Uploaded: {new Date(item.created_at).toLocaleString()}
                     </Text>
 
-                        <Text style={styles.name}>
+                    <Text style={styles.name}>
+                        Name: {item.patient_name ? item.patient_name : "Unknown Patient"}
+                    </Text>
+
+                    <Text style={styles.name}>
                         Case ID: {item.id}
+                    </Text>
+
+                   <Text style={styles.stage}>
+                        Final Stage:{" "}
+                        <Text style={{ color: getStageColor(item.doctor_final_stage || "Pending") }}>
+                            {item.doctor_final_stage || "N/A"}
                         </Text>
+                    </Text>
+
+                    <Text style={styles.validated}>
+                        Validated: {item.validated_at ? new Date(item.validated_at).toLocaleString() : "N/A"}
+                    </Text>
                     </View>
 
                     <Text style={styles.arrow}>›</Text>
@@ -294,5 +319,16 @@ profileImage: {
     textAlign: 'center',
     marginTop: 90,
     marginBottom: 10,
-  }
+  },
+  stage: {
+  marginTop: 3,
+  fontSize: 13,
+  fontWeight: "700",
+},
+
+validated: {
+  marginTop: 2,
+  fontSize: 12,
+  color: "#555",
+},
 })

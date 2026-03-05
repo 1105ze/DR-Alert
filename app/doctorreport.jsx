@@ -418,7 +418,7 @@ const doctorreport = () => {
             if (!isValidated) {
               Alert.alert(
                 "Report Not Validated",
-                "This report must be validated first before editing."
+                "This report must be validated by a doctor before editing."
               );
               return;
             }
