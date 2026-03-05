@@ -283,3 +283,47 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.receiver_role} | {self.message[:30]}"
+
+
+class MedicalDetails(models.Model):
+
+    ROLE_CHOICES = (
+        ('patient', 'Patient'),
+        ('doctor', 'Doctor'),
+    )
+
+    patient = models.ForeignKey(
+        Patient,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="medical_details"
+    )
+
+    doctor = models.ForeignKey(
+        Doctor,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="medical_details"
+    )
+
+    selected_role = models.CharField(
+        max_length=10,
+        choices=ROLE_CHOICES
+    )
+
+    medical_conditions = models.JSONField(null=True, blank=True)
+
+    vision_symptoms = models.JSONField(null=True, blank=True)
+
+    additional_notes = models.TextField(null=True, blank=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        if self.patient:
+            return f"MedicalDetails - {self.patient.user.username}"
+        if self.doctor:
+            return f"MedicalDetails - {self.doctor.user.username}"
+        return "MedicalDetails"

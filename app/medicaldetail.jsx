@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native'
 import React from 'react'
 import { useRouter } from "expo-router"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
+import { API_BASE_URL } from "../config";
 
 const CheckboxRow = ({ label, checked, onToggle }) => {
   return (
@@ -59,18 +62,61 @@ const medicaldetail = () => {
     setSymptoms((prev) => ({ ...prev, [key]: !prev[key], none: false }));
   };
 
-  const onSubmit = () => {
-    const payload = {
-      conditions,
-      conditionNotes,
-      symptoms,
-      symptomNotes,
+  useEffect(() => {
+    const loadMedicalDetails = async () => {
+      const token = await AsyncStorage.getItem("accessToken");
+
+      const res = await fetch(`${API_BASE_URL}/api/accounts/get_medical_details/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+
+        if (data.conditions) {
+          setConditions(data.conditions);
+        }
+
+        if (data.symptoms) {
+          setSymptoms(data.symptoms);
+        }
+
+        if (data.notes) {
+          const parts = data.notes.split("\n");
+          setConditionNotes(parts[0]?.replace("Condition Notes: ", "") || "");
+          setSymptomNotes(parts[1]?.replace("Symptom Notes: ", "") || "");
+        }
+      }
     };
 
-    // Later connect to database/API; for now just show message
-    Alert.alert("Saved", "Your medical details have been saved.");
-    // console.log(payload);
-    // router.back(); // optional
+    loadMedicalDetails();
+  }, []);
+
+  const onSubmit = async () => {
+    const token = await AsyncStorage.getItem("accessToken");
+
+    const payload = {
+      conditions,
+      symptoms,
+      notes: `Condition Notes: ${conditionNotes}\nSymptom Notes: ${symptomNotes}`
+    };
+
+    const res = await fetch(`${API_BASE_URL}/api/accounts/save_medical_details/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (res.ok) {
+      Alert.alert("Saved", "Medical details saved successfully");
+    } else {
+      Alert.alert("Error", "Failed to save medical details");
+    }
   };
 
     return (

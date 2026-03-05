@@ -106,6 +106,28 @@ const profile = () => {
         loadUser();
         }, []);
 
+    const handleLogout = () => {
+        Alert.alert(
+            "Sign Out",
+            "Are you sure you want to sign out?",
+            [
+            {
+                text: "Cancel",
+                style: "cancel"
+            },
+            {
+                text: "Sign Out",
+                style: "destructive",
+                onPress: async () => {
+                await AsyncStorage.removeItem("accessToken");
+                await AsyncStorage.removeItem("user");
+                router.replace("/firstpage");
+                }
+            }
+            ]
+        );
+        };
+
     return (
         <ScrollView>
             <View>
@@ -161,7 +183,7 @@ const profile = () => {
 
                     <View style={styles.divider} />
 
-                    <TouchableOpacity style={styles.row}>
+                    <TouchableOpacity style={styles.row} onPress={() => router.push('/medicaldetail')}>
                         <Image source={require('../assets/medical_icon.png')} style={styles.rowImage} />
                         <Text style={styles.rowText}>Medical Details </Text>
                         <View style={styles.rowRight}>
@@ -195,7 +217,7 @@ const profile = () => {
 
                     <View style={styles.divider} />
 
-                    <TouchableOpacity style={styles.row}>
+                    <TouchableOpacity style={styles.row} onPress={() => router.push('/helpandsupport')}>
                         <Image source={require('../assets/phone_icon.png')} style={styles.rowImage} />
                         <Text style={styles.rowText}>Help & Support </Text>
                         <View style={styles.rowRight}>
@@ -215,7 +237,7 @@ const profile = () => {
 
                     <View style={styles.divider} />
 
-                    <TouchableOpacity style={styles.row}>
+                    <TouchableOpacity style={styles.row} onPress={() => router.push('/aboutapp')}>
                         <Image source={require('../assets/iphone_icon.png')} style={styles.rowImage} />
                         <Text style={styles.rowText}>About App         </Text>
                         <View style={styles.rowRight}>
@@ -225,8 +247,8 @@ const profile = () => {
 
                 </View>                    
                 
-                <TouchableOpacity style={styles.signoutButton} onPress={() => router.push("/firstpage")}>
-                    <Image source={require('../assets/signout_icon.png')} style={styles.signoutImage} />
+                <TouchableOpacity style={styles.signoutButton} onPress={() => handleLogout()}>                   
+                <Image source={require('../assets/signout_icon.png')} style={styles.signoutImage} />
                     <Text style={styles.signoutText}>Sign Out</Text>
                 </TouchableOpacity>
 

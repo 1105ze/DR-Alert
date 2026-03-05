@@ -4,7 +4,7 @@ from rest_framework import status
 from .serializers import SignupSerializer
 from django.contrib.auth import authenticate
 import base64
-from .models import Patient, RetinalImage, User, Doctor, PredictionResult, DoctorVerification, DoctorValidation
+from .models import MedicalDetails, Patient, RetinalImage, User, Doctor, PredictionResult, DoctorVerification, DoctorValidation
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
@@ -665,3 +665,69 @@ def update_report(request, prediction_id):
     validation.save()
 
     return Response({"message": "Report updated successfully"})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def save_medical_details(request):
+
+    user = request.user
+
+    conditions = request.data.get("conditions")
+    symptoms = request.data.get("symptoms")
+    notes = request.data.get("notes")
+
+    if user.role == "patient":
+        patient = user.patient_profile
+
+        obj, created = MedicalDetails.objects.update_or_create(
+            patient=patient,
+            defaults={
+                "selected_role": "patient",
+                "medical_conditions": conditions,
+                "vision_symptoms": symptoms,
+                "additional_notes": notes
+            }
+        )
+
+    elif user.role == "doctor":
+        doctor = user.doctor_profile
+
+        obj, created = MedicalDetails.objects.update_or_create(
+            doctor=doctor,
+            defaults={
+                "selected_role": "doctor",
+                "medical_conditions": conditions,
+                "vision_symptoms": symptoms,
+                "additional_notes": notes
+            }
+        )
+
+    return Response({"status": "saved"})
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_medical_details(request):
+
+    user = request.user
+
+    if user.role == "patient":
+        patient = user.patient_profile
+        obj = MedicalDetails.objects.filter(patient=patient).first()
+
+    elif user.role == "doctor":
+        doctor = user.doctor_profile
+        obj = MedicalDetails.objects.filter(doctor=doctor).first()
+
+    else:
+        obj = None
+
+    if not obj:
+        return Response({})
+
+    return Response({
+        "conditions": obj.medical_conditions,
+        "symptoms": obj.vision_symptoms,
+        "notes": obj.additional_notes
+    })

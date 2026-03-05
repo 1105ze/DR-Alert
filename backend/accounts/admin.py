@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils import timezone
-from .models import User, Patient, Doctor, DoctorVerification, RetinalImage, PredictionResult, DoctorValidation, Notification
+from .models import User, Patient, Doctor, DoctorVerification, RetinalImage, PredictionResult, DoctorValidation, Notification, MedicalDetails
 import base64
 
 
@@ -586,3 +586,70 @@ class DoctorValidationAdmin(admin.ModelAdmin):
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ('id', 'receiver_role', 'is_read', 'sent_at')
     list_filter = ('receiver_role', 'is_read')
+
+
+@admin.register(MedicalDetails)
+class MedicalDetailsAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "id",
+        "user_display",
+        "selected_role",
+        "conditions_display",
+        "symptoms_display",
+        "updated_at",
+    )
+
+    fields = (
+        "user_display",
+        "selected_role",
+        "conditions_display",
+        "symptoms_display",
+        "additional_notes",
+        "updated_at",
+    )
+
+    readonly_fields = (
+        "user_display",
+        "selected_role",
+        "conditions_display",
+        "symptoms_display",
+        "additional_notes",
+        "updated_at",
+    )
+
+    def user_display(self, obj):
+        if obj.patient:
+            return obj.patient.user.username
+        if obj.doctor:
+            return obj.doctor.user.username
+        return "-"
+    user_display.short_description = "Submitted By"
+
+    def conditions_display(self, obj):
+        if not obj.medical_conditions:
+            return "None"
+
+        selected = [
+            key.capitalize()
+            for key, value in obj.medical_conditions.items()
+            if value
+        ]
+
+        return ", ".join(selected) if selected else "None"
+
+    conditions_display.short_description = "Medical Conditions"
+
+    def symptoms_display(self, obj):
+        if not obj.vision_symptoms:
+            return "None"
+
+        selected = [
+            key.capitalize()
+            for key, value in obj.vision_symptoms.items()
+            if value
+        ]
+
+        return ", ".join(selected) if selected else "None"
+
+    symptoms_display.short_description = "Vision Symptoms"
