@@ -6,6 +6,19 @@ import { API_BASE_URL } from "../config";
 
 const Specialist = () => {
   const router = useRouter();
+  const [user, setUser] = useState(null);
+    useEffect(() => {
+      const loadUser = async () => {
+        const storedUser = await AsyncStorage.getItem("user");
+
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      };
+
+      loadUser();
+    }, []);
+    
 
   const [doctors, setDoctors] = useState([]);
   const [query, setQuery] = useState("");
@@ -131,14 +144,23 @@ const Specialist = () => {
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.header}>
-        <View style={styles.avatarCircle} />
+        <TouchableOpacity style={styles.profile} onPress={() => router.push('/profile')}>
+          <Image
+            source={
+              profileImage
+                ? { uri: profileImage }
+                : require("../assets/people_icon.png")
+            }
+            style={styles.profileImage}
+          />
+        </TouchableOpacity>
         <View style={styles.headerTitleWrap}>
           <Text style={styles.headerTitle}>DR Detection</Text>
           <Text style={styles.headerSubtitle}>
             Diabetic Retinopathy Screening
           </Text>
         </View>
-        <Text style={styles.headerName}>Ze Gui</Text>
+        <Text style={styles.username}>{user ? user.username : ""}</Text>
       </View>
 
       <TouchableOpacity style={styles.backRow} onPress={() => router.back()}>
@@ -183,24 +205,54 @@ const styles = StyleSheet.create({
   page: { flex: 1, backgroundColor: "#FFFFFF" },
 
   header: {
-    backgroundColor: "#88C8FF",
-    paddingVertical: 16,
-    paddingHorizontal: 18,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  avatarCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: "#BFE1FF",
-    borderWidth: 3,
-    borderColor: "#6BB6FF",
-  },
-  headerTitleWrap: { flex: 1, marginLeft: 12 },
-  headerTitle: { fontSize: 18, fontWeight: "800" },
-  headerSubtitle: { marginTop: 6, fontSize: 13 },
-  headerName: { fontSize: 16, fontWeight: "800" },
+  flexDirection: "row",
+  marginTop: 10,
+  backgroundColor: "#88C8FF",
+  paddingVertical: 15,
+},
+
+profile: {
+  width: 56,
+  height: 56,
+  borderRadius: 28,
+  marginLeft: 30,
+  borderWidth: 3,
+  borderColor: "#54adfa",
+  backgroundColor: "#aad5fc",
+  justifyContent: "center",
+  alignItems: "center",
+  overflow: "hidden",
+},
+
+profileImage: {
+  width: "100%",
+  height: "100%",
+  resizeMode: "cover",
+},
+
+headerTitleWrap: {
+  flex: 1,
+  marginTop: 5,
+},
+
+headerTitle: {
+  fontSize: 18,
+  fontWeight: "bold",
+  marginLeft: 10,
+},
+
+headerSubtitle: {
+  fontSize: 14,
+  marginLeft: 10,
+  marginTop: 8,
+},
+
+username: {
+  fontSize: 18,
+  fontWeight: "bold",
+  marginRight: 30,
+  marginTop: 18,
+},
 
   backRow: {
     flexDirection: "row",

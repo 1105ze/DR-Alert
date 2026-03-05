@@ -366,10 +366,17 @@ def assign_doctor(request):
     
     uploaded_time = localtime(retinal_image.created_at).strftime("%d/%m/%Y %I:%M %p")
 
+    prediction = PredictionResult.objects.filter(
+        retinal_image=retinal_image
+    ).first()
+
+    dr_stage = prediction.predicted_dr_stage if prediction else "Unknown"
+
     message = (
         f"New Case Assigned\n"
         f"Patient: {patient_name}\n"
         f"Uploaded: {uploaded_time}\n"
+        f"DR Stage: {dr_stage}\n"
         f"Action: Review retinal image"
     )
 
@@ -624,3 +631,37 @@ def unread_notification_count(request):
     ).count()
 
     return Response({"unread_count": count})
+
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def update_report(request, prediction_id):
+
+    user = request.user
+
+    if user.role != "doctor":
+        return Response({"error": "Unauthorized"}, status=403)
+
+    try:
+        validation = DoctorValidation.objects.select_related(
+            "prediction__retinal_image__selected_doctor"
+        ).get(prediction_id=prediction_id)
+
+        doctor = Doctor.objects.get(user=user)
+
+    except DoctorValidation.DoesNotExist:
+        return Response({"error": "Report not found"}, status=404)
+
+    # ensure same doctor
+    if validation.doctor != doctor:
+        return Response({"error": "Unauthorized"}, status=403)
+
+    new_report = request.data.get("report_data")
+
+    if not new_report:
+        return Response({"error": "report_data required"}, status=400)
+
+    validation.report_data = new_report
+    validation.save()
+
+    return Response({"message": "Report updated successfully"})

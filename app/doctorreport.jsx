@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, SafeAreaView, Alert } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, SafeAreaView, Alert, TextInput } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
 import { useLocalSearchParams } from "expo-router";
@@ -8,6 +8,47 @@ import { API_BASE_URL } from "../config";
 
 const doctorreport = () => {
   const router = useRouter();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const storedUser = await AsyncStorage.getItem("user");
+
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    };
+
+    loadUser();
+  }, []);
+
+  const [profileImage, setProfileImage] = useState(null);
+
+  useEffect(() => {
+    const loadProfileImage = async () => {
+      const token = await AsyncStorage.getItem("accessToken");
+      if (!token) return;
+
+      const res = await fetch(`${API_BASE_URL}/api/accounts/profile/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.profile_image) {
+          setProfileImage(
+            data.profile_image.startsWith("data:")
+              ? data.profile_image
+              : `data:image/jpeg;base64,${data.profile_image}`
+          );
+        }
+      }
+    };
+
+    loadProfileImage();
+  }, []);
 
   const { retinalImageId } = useLocalSearchParams();
   const [retinaData, setRetinaData] = useState(null);
@@ -70,17 +111,74 @@ const doctorreport = () => {
 
   const stageColor = getStageColor(stage);
 
+  const [editMode, setEditMode] = useState(false);
+  const [editableReport, setEditableReport] = useState(null);
+
+  useEffect(() => {
+    if (retinaData?.report_data) {
+      setEditableReport(retinaData.report_data);
+    }
+  }, [retinaData]);
+
+  const saveEditedReport = async () => {
+    try {
+      const token = await AsyncStorage.getItem("accessToken");
+
+      const res = await fetch(
+        `${API_BASE_URL}/api/accounts/update_report/${retinaData.prediction_id}/`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            report_data: editableReport,
+          }),
+        }
+      );
+
+      if (res.ok) {
+
+        // update local state so UI refreshes immediately
+        setRetinaData(prev => ({
+          ...prev,
+          report_data: editableReport
+        }));
+
+        Alert.alert("Success", "Report updated");
+        setEditMode(false);
+
+      } else {
+        Alert.alert("Error", "Failed to update report");
+      }
+
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Something went wrong");
+    }
+  };
+
 
   return (
     <SafeAreaView style={styles.page}>
       {/* Header */}
       <View style={styles.header}>
-        <View style={styles.avatarCircle} />
+        <TouchableOpacity style={styles.profile} onPress={() => router.push('/profile')}>
+          <Image
+            source={
+              profileImage
+                ? { uri: profileImage }
+                : require("../assets/people_icon.png")
+            }
+            style={styles.profileImage}
+          />
+        </TouchableOpacity>
         <View style={styles.headerTitleWrap}>
           <Text style={styles.headerTitle}>DR Detection</Text>
           <Text style={styles.headerSubtitle}>Diabetic Retinopathy Screening</Text>
         </View>
-        <Text style={styles.headerName}>Ze Gui</Text>
+        <Text style={styles.username}>{user ? user.username : ""}</Text>
       </View>
 
       {/* Back row */}
@@ -164,11 +262,27 @@ const doctorreport = () => {
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🏥  Recommendations next steps</Text>
 
-            {report?.next_steps?.map((item, index) => (
-              <Text key={index} style={styles.infoLine}>
-                {item}
-              </Text>
-            ))}
+            {editMode
+              ? editableReport?.next_steps?.map((item, index) => (
+                  <TextInput
+                    key={index}
+                    style={styles.input}
+                    value={item}
+                    onChangeText={(text) => {
+                      const updated = [...editableReport.next_steps];
+                      updated[index] = text;
+
+                      setEditableReport({
+                        ...editableReport,
+                        next_steps: updated,
+                      });
+                    }}
+                  />
+                ))
+              : report?.next_steps?.map((item, index) => (
+                  <Text key={index} style={styles.infoLine}>{item}</Text>
+                ))
+            }
           </View>
 
           {/* Diet recommendations */}
@@ -178,22 +292,64 @@ const doctorreport = () => {
             <View style={styles.dietRow}>
               {/* Green box */}
               <View style={[styles.dietBox, styles.dietGood]}>
-                {report?.diet?.good?.map((item, index) => (
-                  <View key={index} style={styles.dietItem}>
-                    <Text style={styles.goodIcon}>✅</Text>
-                    <Text style={styles.dietText}>{item}</Text>
-                  </View>
-                ))}
+                {editMode
+                  ? editableReport?.diet?.good?.map((item, index) => (
+                      <TextInput
+                        key={index}
+                        style={styles.input}
+                        value={item}
+                        onChangeText={(text) => {
+                          const updated = [...editableReport.diet.good];
+                          updated[index] = text;
+
+                          setEditableReport({
+                            ...editableReport,
+                            diet: {
+                              ...editableReport.diet,
+                              good: updated
+                            }
+                          });
+                        }}
+                      />
+                    ))
+                  : report?.diet?.good?.map((item, index) => (
+                      <View key={index} style={styles.dietItem}>
+                        <Text style={styles.goodIcon}>✅</Text>
+                        <Text style={styles.dietText}>{item}</Text>
+                      </View>
+                    ))
+                }
               </View>
 
               {/* Red box */}
               <View style={[styles.dietBox, styles.dietBad]}>
-                {report?.diet?.avoid?.map((item, index) => (
-                  <View key={index} style={styles.dietItem}>
-                    <Text style={styles.badIcon}>❌</Text>
-                    <Text style={styles.dietText}>{item}</Text>
-                  </View>
-                ))}
+                {editMode
+                  ? editableReport?.diet?.avoid?.map((item, index) => (
+                      <TextInput
+                        key={index}
+                        style={styles.input}
+                        value={item}
+                        onChangeText={(text) => {
+                          const updated = [...editableReport.diet.avoid];
+                          updated[index] = text;
+
+                          setEditableReport({
+                            ...editableReport,
+                            diet: {
+                              ...editableReport.diet,
+                              avoid: updated
+                            }
+                          });
+                        }}
+                      />
+                    ))
+                  : report?.diet?.avoid?.map((item, index) => (
+                      <View key={index} style={styles.dietItem}>
+                        <Text style={styles.badIcon}>❌</Text>
+                        <Text style={styles.dietText}>{item}</Text>
+                      </View>
+                    ))
+                }
               </View>
             </View>
           </View>
@@ -202,25 +358,54 @@ const doctorreport = () => {
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🚴‍♂️  Exercise Recommendations</Text>
 
-            {report?.exercise?.map((item, index) => (
-              <Text key={index} style={styles.infoLine}>
-                {item}
-              </Text>
-            ))}
+            {editMode
+              ? editableReport?.exercise?.map((item, index) => (
+                  <TextInput
+                    key={index}
+                    style={styles.input}
+                    value={item}
+                    onChangeText={(text) => {
+                      const updated = [...editableReport.exercise];
+                      updated[index] = text;
+
+                      setEditableReport({
+                        ...editableReport,
+                        exercise: updated,
+                      });
+                    }}
+                  />
+                ))
+              : report?.exercise?.map((item, index) => (
+                  <Text key={index} style={styles.infoLine}>{item}</Text>
+                ))
+            }
           </View>
 
           {/* Prevention tips */}
           <View style={styles.infoCard}>
             <Text style={styles.infoTitle}>🚫  Prevention Tips</Text>
 
-            {report?.prevention?.map((item, index) => (
-              <View key={index}>
-                <View style={styles.tipRow}>
-                  <Text style={styles.tipText}>{item}</Text>
-                </View>
-                <View style={styles.tipDivider} />
-              </View>
-            ))}
+            {editMode
+              ? editableReport?.prevention?.map((item, index) => (
+                  <TextInput
+                    key={index}
+                    style={styles.input}
+                    value={item}
+                    onChangeText={(text) => {
+                      const updated = [...editableReport.prevention];
+                      updated[index] = text;
+
+                      setEditableReport({
+                        ...editableReport,
+                        prevention: updated,
+                      });
+                    }}
+                  />
+                ))
+              : report?.prevention?.map((item, index) => (
+                  <Text key={index} style={styles.infoLine}>{item}</Text>
+                ))
+            }
           </View>
 
           {/* Important */}
@@ -229,9 +414,27 @@ const doctorreport = () => {
             <Text style={styles.importantText}>Eye Exam every 6-12 months</Text>
           </View>
 
-          {/* Download button */}
+          <TouchableOpacity style={styles.editBtn} onPress={() => {
+            if (!isValidated) {
+              Alert.alert(
+                "Report Not Validated",
+                "This report must be validated first before editing."
+              );
+              return;
+            }
+            setEditMode(true);
+          }}>
+          <Text style={styles.editText}>Edit Report</Text>
+        </TouchableOpacity>
+
+          {editMode && (
+            <TouchableOpacity style={styles.editBtn} onPress={saveEditedReport}>
+              <Text style={styles.editText}>Save Report</Text>
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity style={styles.editBtn} onPress={onDownloadReport}>
-            <Text style={styles.editText}>Edit Report</Text>
+            <Text style={styles.editText}>Download Report</Text>
           </TouchableOpacity>
         </View>
 
@@ -251,24 +454,54 @@ const styles = StyleSheet.create({
   page: { flex: 1, backgroundColor: "#EAF6FF" },
 
   header: {
-    backgroundColor: "#88C8FF",
-    paddingVertical: 16,
-    paddingHorizontal: 18,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  avatarCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: "#BFE1FF",
-    borderWidth: 3,
-    borderColor: "#6BB6FF",
-  },
-  headerTitleWrap: { flex: 1, marginLeft: 12 },
-  headerTitle: { fontSize: 18, fontWeight: "800" },
-  headerSubtitle: { marginTop: 6, fontSize: 13 },
-  headerName: { fontSize: 16, fontWeight: "800" },
+  flexDirection: "row",
+  marginTop: 10,
+  backgroundColor: "#88C8FF",
+  paddingVertical: 15,
+},
+
+profile: {
+  width: 56,
+  height: 56,
+  borderRadius: 28,
+  marginLeft: 30,
+  borderWidth: 3,
+  borderColor: "#54adfa",
+  backgroundColor: "#aad5fc",
+  justifyContent: "center",
+  alignItems: "center",
+  overflow: "hidden",
+},
+
+profileImage: {
+  width: "100%",
+  height: "100%",
+  resizeMode: "cover",
+},
+
+headerTitleWrap: {
+  flex: 1,
+  marginTop: 5,
+},
+
+headerTitle: {
+  fontSize: 18,
+  fontWeight: "bold",
+  marginLeft: 10,
+},
+
+headerSubtitle: {
+  fontSize: 14,
+  marginLeft: 10,
+  marginTop: 8,
+},
+
+username: {
+  fontSize: 18,
+  fontWeight: "bold",
+  marginRight: 30,
+  marginTop: 18,
+},
 
     backRow: {
         flexDirection: "row",
@@ -414,4 +647,12 @@ const styles = StyleSheet.create({
     opacity: 0.75,
     paddingHorizontal: 18,
   },
+  input: {
+  borderWidth: 1,
+  borderColor: "#7DBEFF",
+  borderRadius: 8,
+  padding: 10,
+  marginBottom: 10,
+  backgroundColor: "#FFFFFF"
+},
 });
