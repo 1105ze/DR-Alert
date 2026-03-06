@@ -81,7 +81,7 @@ const SignUp = () => {
         const data = await response.json();
 
         if (response.ok) {
-          alert("Account created successfully");
+          alert("Account created successfully, Please verify your email before logging in.");
           console.log("Saved to PostgreSQL:", data);
           router.push('/');
 

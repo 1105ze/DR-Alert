@@ -59,6 +59,9 @@ const Home = () => {
         else if (data.error === "INVALID_PASSWORD") {
           alert("Invalid username or password.");
         } 
+        else if (data.error === "EMAIL_NOT_VERIFIED") {
+          alert("Please verify your email before logging in. Check your inbox.");
+        }
         else if (data.error === "DOCTOR_NOT_VERIFIED") {
           if (data.status === "pending") {
             alert("Your doctor account is pending admin verification.");
