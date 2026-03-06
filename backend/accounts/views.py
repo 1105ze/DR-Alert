@@ -515,6 +515,10 @@ def get_retina_detail(request, pk):
     else:
         uploader_user = None
 
+    medical_details = MedicalDetails.objects.filter(
+        patient=retina.patient
+    ).first()
+
     data = {
         "id": retina.id,
         "image_base64": base64.b64encode(retina.retinal_image).decode("utf-8"),
@@ -531,6 +535,12 @@ def get_retina_detail(request, pk):
         "digital_signature": validation.digital_signature if validation else None,
         "validation_date": validation.validation_date if validation else None,
         "report_data": report_data,
+
+        "medical_details": {
+            "conditions": medical_details.medical_conditions if medical_details else None,
+            "symptoms": medical_details.vision_symptoms if medical_details else None,
+            "notes": medical_details.additional_notes if medical_details else None,
+        } if medical_details else None,
 
         "assigned_doctor": (
             DoctorSerializer(retina.selected_doctor).data

@@ -50,6 +50,7 @@ const doctorreport = () => {
     loadProfileImage();
   }, []);
 
+
   const { retinalImageId } = useLocalSearchParams();
   const [retinaData, setRetinaData] = useState(null);
 
@@ -219,13 +220,26 @@ const doctorreport = () => {
             {/* Medical & Vision */}
             <View style={styles.profileCard}>
                 <Text style={styles.sectionTitle}>Medical Conditions</Text>
-                <Text style={styles.profileLine}>None</Text>
+                <Text style={styles.profileLine}>
+                  {retinaData?.medical_details?.conditions
+                    ? Object.entries(retinaData.medical_details.conditions)
+                        .filter(([key, value]) => value === true)
+                        .map(([key]) => key)
+                        .join(", ") || "None"
+                    : "None"}
+                </Text>
 
                 <View style={styles.sectionDivider} />
 
                 <Text style={styles.sectionTitle}>Vision Symptoms</Text>
-                <Text style={styles.profileLine}>Blurred Vision</Text>
-                <Text style={styles.profileLine}>Eye Pressure</Text>
+                <Text style={styles.profileLine}>
+                  {retinaData?.medical_details?.symptoms
+                    ? Object.entries(retinaData.medical_details.symptoms)
+                        .filter(([key, value]) => value === true)
+                        .map(([key]) => key)
+                        .join(", ") || "None"
+                    : "None"}
+                </Text>
             </View>
 
           {/* Result block (pink) */}
