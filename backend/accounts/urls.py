@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup, upload_retinal_image, login, profile, recent_retinal_images, mark_notification_read, get_notifications, verified_doctors, assign_doctor, get_retina_detail, doctor_review_cases, submit_doctor_validation, doctor_history_cases, unread_notification_count, update_report, save_medical_details, get_medical_details, verify_email
+from .views import signup, upload_retinal_image, login, profile, recent_retinal_images, mark_notification_read, get_notifications, verified_doctors, assign_doctor, get_retina_detail, doctor_review_cases, submit_doctor_validation, doctor_history_cases, unread_notification_count, update_report, save_medical_details, get_medical_details, verify_email, send_reset_code, verify_reset_code, reset_password
 
 urlpatterns = [
     path('signup/', signup),
@@ -20,4 +20,7 @@ urlpatterns = [
     path("update_report/<int:prediction_id>/",update_report),
     path("save_medical_details/", save_medical_details),
     path("get_medical_details/", get_medical_details),
+    path("send-reset-code/", send_reset_code),
+    path("verify-reset-code/", verify_reset_code),
+    path("reset-password/", reset_password),
 ]

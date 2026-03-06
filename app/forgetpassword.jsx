@@ -1,9 +1,49 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
 import React from 'react'
 import { useRouter } from "expo-router"
+import { useState } from 'react';
+import { API_BASE_URL } from "../config";
 
 const forgetpassword = () => {
     const router = useRouter();
+    const [email, setEmail] = useState("");
+
+    const sendCode = async () => {
+        if (!email) {
+            alert("Please enter your email");
+            return;
+        }
+
+        try {
+
+            const res = await fetch(`${API_BASE_URL}/api/accounts/send-reset-code/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email
+            })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+
+            router.push({
+                pathname: "/verificationcode",
+                params: { email }
+            });
+
+            } else {
+            alert(data.error || "Email not found");
+            }
+
+        } catch (error) {
+            console.log(error);
+            alert("Server error");
+        }
+        };
 
         return (
             <ScrollView>
@@ -23,10 +63,21 @@ const forgetpassword = () => {
 
                 <View style={styles.inputRow}>
                     <Image source={require('../assets/email_icon.png')} style={styles.iconImage} />
-                    <TextInput placeholder="Enter Email" />
+                    <TextInput
+                        placeholder="Enter Email"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                        textContentType="emailAddress"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        autoComplete="email"
+                        spellCheck={false}
+                        style={{ flex: 1 }}
+                        />
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={() => router.push('/verificationcode')}>
+                <TouchableOpacity style={styles.button} onPress={sendCode}>
                     <Text style={styles.buttonText}>Confirm</Text>
                 </TouchableOpacity>
             </ScrollView>
@@ -79,7 +130,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         marginVertical: 8,
         height: 50,
-        padding: 20,
         marginLeft: 30,
         marginRight: 30,
         marginTop: 10, 

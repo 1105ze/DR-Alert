@@ -1,17 +1,11 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  TextInput,
-} from "react-native";
-import React, { useRef, useState } from "react";
-import { useRouter } from "expo-router";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, TextInput} from "react-native";
+import React, { useRef, useState, useEffect } from "react";
+import { useRouter, useLocalSearchParams } from "expo-router";
+import { API_BASE_URL } from "../config";
 
 const verificationcode = () => {
   const router = useRouter();
+  const { email } = useLocalSearchParams();
 
   // Store OTP digits
   const [code, setCode] = useState(["", "", "", ""]);
@@ -37,6 +31,97 @@ const verificationcode = () => {
   const handleKeyPress = (e, index) => {
     if (e.nativeEvent.key === "Backspace" && !code[index] && index > 0) {
       inputs.current[index - 1].focus();
+    }
+  };
+
+  const [timer, setTimer] = useState(30);
+  const [canResend, setCanResend] = useState(false);
+    useEffect(() => {
+    let interval;
+
+    if (!canResend && timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
+
+    if (timer === 0) {
+      setCanResend(true);
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [timer, canResend]);
+
+  const verifyCode = async () => {
+    const otp = code.join("");
+
+    if (otp.length !== 4) {
+      alert("Please enter the 4-digit code");
+      return;
+    }
+
+    try {
+
+      const res = await fetch(`${API_BASE_URL}/api/accounts/verify-reset-code/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          code: otp
+        })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+
+        router.push({
+          pathname: "/newpassword",
+          params: { email }
+        });
+
+      } else {
+        alert(data.error || "Invalid code");
+      }
+
+    } catch (err) {
+      console.log(err);
+      alert("Server error");
+    }
+  };
+
+  const resendCode = async () => {
+    if (!canResend) return;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/accounts/send-reset-code/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("New verification code sent");
+
+        setTimer(30);
+        setCanResend(false);
+
+      } else {
+        alert(data.error || "Failed to resend code");
+      }
+
+    } catch (error) {
+      console.log(error);
+      alert("Server error");
     }
   };
 
@@ -79,13 +164,15 @@ const verificationcode = () => {
           If you didn’t receive a code.
         </Text>
 
-        <TouchableOpacity>
-          <Text style={styles.resendBtn}> Resend</Text>
+        <TouchableOpacity onPress={resendCode} disabled={!canResend}>
+          <Text style={[styles.resendBtn, { opacity: canResend ? 1 : 0.5 }]}>
+            {canResend ? "Resend" : `Resend in ${timer}s`}
+          </Text>
         </TouchableOpacity>
       </View>
 
       {/* Confirm Button */}
-      <TouchableOpacity style={styles.confirmBtn} onPress={() => router.push('/newpassword')}>
+      <TouchableOpacity style={styles.confirmBtn} onPress={verifyCode}>
         <Text style={styles.confirmText}>Confirm</Text>
       </TouchableOpacity>
 

@@ -28,6 +28,9 @@ class User(AbstractUser):
     profile_image = models.BinaryField(null=True, blank=True)
     profile_image_size = models.IntegerField(null=True, blank=True)
 
+    reset_code = models.CharField(max_length=4, null=True, blank=True)
+    reset_code_expire = models.DateTimeField(null=True, blank=True)
+
     def __str__(self):
         return self.username
     

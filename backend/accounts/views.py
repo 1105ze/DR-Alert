@@ -1,5 +1,4 @@
 import token
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -20,6 +19,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .email_token import generate_token, verify_token
 from django.http import HttpResponse
+import random
+from datetime import timedelta
+
 
 
 # @api_view(['POST'])
@@ -820,3 +822,75 @@ def get_medical_details(request):
         "symptoms": obj.vision_symptoms,
         "notes": obj.additional_notes
     })
+
+
+@api_view(["POST"])
+def send_reset_code(request):
+
+    email = request.data.get("email")
+
+    user = User.objects.filter(email=email).first()
+
+    if not user:
+        return Response({"error": "Email not found"}, status=404)
+
+    code = str(random.randint(1000, 9999))
+
+    user.reset_code = code
+    user.reset_code_expire = timezone.now() + timedelta(minutes=10)
+    user.save()
+
+    send_mail(
+        "Password Reset Code",
+        f"Your verification code is: {code}",
+        settings.DEFAULT_FROM_EMAIL,
+        [email],
+        fail_silently=False,
+    )
+
+    return Response({"message": "Verification code sent"})
+
+
+@api_view(["POST"])
+def verify_reset_code(request):
+
+    email = request.data.get("email")
+    code = request.data.get("code")
+
+    user = User.objects.filter(email=email).first()
+
+    if not user:
+        return Response({"error": "User not found"}, status=404)
+
+    if user.reset_code != code:
+        return Response({"error": "Invalid code"}, status=400)
+
+    if timezone.now() > user.reset_code_expire:
+        return Response({"error": "Code expired"}, status=400)
+
+    user.reset_code = None
+    user.save()
+
+    return Response({"message": "Code verified"})
+
+
+@api_view(["POST"])
+def reset_password(request):
+
+    email = request.data.get("email")
+    password = request.data.get("password")
+
+    user = User.objects.filter(email=email).first()
+
+    if not user:
+        return Response({"error": "User not found"}, status=404)
+
+    if user.reset_code is not None:
+        return Response({"error": "OTP not verified"}, status=400)
+
+    user.set_password(password)
+    user.reset_code = None
+    user.reset_code_expire = None
+    user.save()
+
+    return Response({"message": "Password updated"})

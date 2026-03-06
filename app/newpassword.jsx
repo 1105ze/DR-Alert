@@ -1,9 +1,57 @@
 import { StyleSheet, Text, View, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router'
+import { useLocalSearchParams } from "expo-router";
+import { API_BASE_URL } from "../config";
+import { useState } from "react";
 
 const newpassword = () => {
     const router = useRouter();
+    const { email } = useLocalSearchParams();
+
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const resetPassword = async () => {
+        if (!password || !confirmPassword) {
+            alert("Please fill in both fields");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        try {
+
+            const res = await fetch(`${API_BASE_URL}/api/accounts/reset-password/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+            alert("Password updated successfully");
+            router.replace("/");
+            } else {
+            alert(data.error || "Failed to reset password");
+            }
+
+        } catch (error) {
+            console.log(error);
+            alert("Server error");
+        }
+        };
+
+
         return (
             <ScrollView>
                 <TouchableOpacity style={styles.back} onPress={() => router.back()}>
@@ -22,7 +70,13 @@ const newpassword = () => {
 
                 <View style={styles.inputRow}>
                     <Image source={require('../assets/password_icon.png')} style={styles.iconImage} />
-                    <TextInput placeholder="Enter New Password" secureTextEntry />
+                    <TextInput
+                        placeholder="Enter New Password"
+                        secureTextEntry
+                        value={password}
+                        onChangeText={setPassword}
+                        style={{ flex: 1 }}
+                        />
                 </View>
 
                 <View>
@@ -31,10 +85,16 @@ const newpassword = () => {
 
                 <View style={styles.inputRow}>
                     <Image source={require('../assets/password_icon.png')} style={styles.iconImage} />
-                    <TextInput placeholder="Confirm Password" secureTextEntry />
+                    <TextInput
+                        placeholder="Confirm Password"
+                        secureTextEntry
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
+                        style={{ flex: 1 }}
+                        />
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={() => router.replace('/')}>
+                <TouchableOpacity style={styles.button} onPress={resetPassword}>
                     <Text style={styles.buttonText}>Confirm</Text>
                 </TouchableOpacity>
             </ScrollView>
@@ -83,7 +143,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         marginVertical: 8,
         height: 50,
-        padding: 20,
         marginLeft: 30,
         marginRight: 30,
         marginTop: 10, 
