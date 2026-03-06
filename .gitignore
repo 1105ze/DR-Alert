@@ -6,6 +6,9 @@ __pycache__/
 backend/.venv/
 *.sqlite3
 
+# Environment variables
+.env
+
 # macOS
 .DS_Store
 

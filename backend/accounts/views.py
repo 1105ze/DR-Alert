@@ -19,6 +19,7 @@ from .reporttemplates import STAGE_TEMPLATES
 from django.core.mail import send_mail
 from django.conf import settings
 from .email_token import generate_token, verify_token
+from django.http import HttpResponse
 
 
 # @api_view(['POST'])
@@ -100,7 +101,7 @@ def verify_email(request, token):
     user.is_verified = True
     user.save()
 
-    return Response({"message": "Email verified successfully"})
+    return HttpResponse("Email verified successfully. You can now close this page and log in to the app.")
     
 
 @api_view(['POST'])
