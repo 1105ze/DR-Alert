@@ -44,7 +44,7 @@ const SignUp = () => {
         return;
       }
 
-      const formattedDOB = dateOfBirth.split('/').reverse().join('-')
+      const formattedDOB = dateOfBirth;
 
       console.log("Submitting signup:", {
         role,

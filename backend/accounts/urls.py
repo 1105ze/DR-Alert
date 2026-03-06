@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import signup, upload_retinal_image, login, profile, recent_retinal_images, mark_notification_read, get_notifications, verified_doctors, assign_doctor, get_retina_detail, doctor_review_cases, submit_doctor_validation, doctor_history_cases, unread_notification_count, update_report, save_medical_details, get_medical_details
+from .views import signup, upload_retinal_image, login, profile, recent_retinal_images, mark_notification_read, get_notifications, verified_doctors, assign_doctor, get_retina_detail, doctor_review_cases, submit_doctor_validation, doctor_history_cases, unread_notification_count, update_report, save_medical_details, get_medical_details, verify_email
 
 urlpatterns = [
     path('signup/', signup),
+    path("verify-email/<str:token>/", verify_email),
     path('login/', login, name='login'),
     path("retinal-images/", upload_retinal_image),
     path("profile/", profile),

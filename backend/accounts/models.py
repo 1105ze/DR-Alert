@@ -20,6 +20,8 @@ class User(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
 
+    is_verified = models.BooleanField(default=False)   # ADD THIS
+
     license_image = models.BinaryField(null=True, blank=True)
     license_image_size = models.IntegerField(null=True, blank=True)
 
@@ -320,6 +322,10 @@ class MedicalDetails(models.Model):
     additional_notes = models.TextField(null=True, blank=True)
 
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Medical Detail"
+        verbose_name_plural = "Medical Details"
 
     def __str__(self):
         if self.patient:

@@ -1,3 +1,5 @@
+import token
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -14,22 +16,92 @@ from .models import Notification
 from .serializers import DoctorSerializer
 from .notification_services import create_notification
 from .reporttemplates import STAGE_TEMPLATES
+from django.core.mail import send_mail
+from django.conf import settings
+from .email_token import generate_token, verify_token
 
+
+# @api_view(['POST'])
+# def signup(request):
+#     print("🔥 signup view hit")
+#     print("RAW request.data:", request.data)
+
+#     serializer = SignupSerializer(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(
+#             {"message": "User created successfully"},
+#             status=status.HTTP_201_CREATED
+#         )
+#     print("❌ serializer errors:", serializer.errors)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def signup(request):
-    print("🔥 signup view hit")
-    print("RAW request.data:", request.data)
+
+    email = request.data.get("email")
+
+    if User.objects.filter(email=email).exists():
+        return Response({"error": "EMAIL_ALREADY_EXISTS"}, status=400)
 
     serializer = SignupSerializer(data=request.data)
+
     if serializer.is_valid():
-        serializer.save()
-        return Response(
-            {"message": "User created successfully"},
-            status=status.HTTP_201_CREATED
-        )
-    print("❌ serializer errors:", serializer.errors)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user = serializer.save()
+
+        # PATIENT → email verification required
+        if user.role == "patient":
+            user.is_verified = False
+            user.save()
+
+            token = generate_token(user.email)
+
+            host = request.get_host()
+            verify_url = f"http://{host}/api/accounts/verify-email/{token}/"
+
+            send_mail(
+                "Verify your account",
+                f"Click this link to verify your account:\n{verify_url}",
+                settings.DEFAULT_FROM_EMAIL,
+                [user.email],
+                fail_silently=False,
+            )
+
+            return Response({
+                "message": "Account created. Please verify your email."
+            }, status=201)
+
+        # DOCTOR → no email verification
+        else:
+            user.is_verified = True
+            user.save()
+
+            return Response({
+                "message": "Doctor account created. Waiting for admin verification."
+            }, status=201)
+
+    return Response(serializer.errors, status=400)
+
+
+@api_view(["GET"])
+def verify_email(request, token):
+
+    email = verify_token(token)
+
+    if not email:
+        return Response({"error": "Invalid or expired link"}, status=400)
+
+    user = User.objects.filter(email=email).first()
+
+    if not user:
+        return Response({"error": "User not found"}, status=404)
+
+    user.is_verified = True
+    user.save()
+
+    return Response({"message": "Email verified successfully"})
+    
 
 @api_view(['POST'])
 def upload_retinal_image(request):
@@ -116,6 +188,12 @@ def login(request):
     user = authenticate(username=username, password=password)
     if not user:
         return Response({"error": "INVALID_PASSWORD"}, status=401)
+    
+    if not user.is_verified:
+        return Response(
+            {"error": "EMAIL_NOT_VERIFIED"},
+            status=403
+        )
 
     # 🔒 BLOCK doctors who are not verified
     if user.role == "doctor":
@@ -231,7 +309,7 @@ def recent_retinal_images(request):
         ).prefetch_related(
             "predictions",
             "predictions__validations"
-        ).order_by("-created_at")[:5]
+        ).order_by("-created_at")
 
     elif user.role == "doctor":
         images = RetinalImage.objects.filter(
@@ -239,7 +317,7 @@ def recent_retinal_images(request):
         ).prefetch_related(
             "predictions",
             "predictions__validations"
-        ).order_by("-created_at")[:5]
+        ).order_by("-created_at")
 
     else:
         return Response([])
