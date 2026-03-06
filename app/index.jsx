@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -83,7 +83,9 @@ const Home = () => {
   };
 
   return (
-    <View>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+    <View style={{ flex: 1 }}>
   {/* Header */}        
       <View>
         <TouchableOpacity style={styles.back} onPress={() => router.push('/firstpage')}>
@@ -158,7 +160,8 @@ const Home = () => {
         </TouchableOpacity>
       </View>
     </View>
-
+  </ScrollView>
+  </KeyboardAvoidingView>
   )
 }
 

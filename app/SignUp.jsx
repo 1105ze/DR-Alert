@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, ScrollView, Modal, KeyboardAvoidingView, Platform } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker'
 import { API_BASE_URL } from "../config";
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 
 const SignUp = () => {
@@ -14,6 +15,24 @@ const SignUp = () => {
     const [licenseImageBase64, setLicenseImageBase64] = useState(null)
     const [licenseImageUri, setLicenseImageUri] = useState(null)
     const [dateOfBirth, setDateOfBirth] = useState('')
+    const [showDatePicker, setShowDatePicker] = useState(false)
+    const [selectedDate, setSelectedDate] = useState(new Date())
+    
+    const onChangeDate = (event, selected) => {
+
+      if (selected) {
+        setSelectedDate(selected)
+
+        const year = selected.getFullYear()
+        const month = String(selected.getMonth() + 1).padStart(2, '0')
+        const day = String(selected.getDate()).padStart(2, '0')
+
+        const formatted = `${year}-${month}-${day}`
+        setDateOfBirth(formatted)
+      }
+
+    }
+
     const [gender, setGender] = useState(null)
     const [showGenderList, setShowGenderList] = useState(false)
     const [role, setRole] = useState(null)
@@ -99,8 +118,9 @@ const SignUp = () => {
 
 
 return (
-  <ScrollView>
-    <View>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+    <View style={{ flex: 1 }}>
         <View>
             <TouchableOpacity style={styles.back} onPress={() => router.push('/firstpage')}>
                 <Image source={require('../assets/back_icon.png')} style={styles.backImage} />
@@ -133,18 +153,47 @@ return (
                 />
             </View>
 
-            <View style={styles.inputRow}>
-              <Image
-                source={require('../assets/clock_icon.png')}
-                style={styles.iconImage}
-              />
-              <TextInput
-                placeholder="Date of Birth (YYYY-MM-DD)"
-                value={dateOfBirth}
-                onChangeText={setDateOfBirth}
-                style={{ flex: 1 }}
-              />
+            <View>
+              <TouchableOpacity
+                style={styles.inputRow}
+                onPress={() => setShowDatePicker(true)}
+              >
+                <Image
+                  source={require('../assets/clock_icon.png')}
+                  style={styles.iconImage}
+                />
+
+                <Text style={{ color: dateOfBirth ? "#000" : "#999", flex: 1 }}>
+                  {dateOfBirth || "Select Date of Birth"}
+                </Text>
+              </TouchableOpacity>
             </View>
+            <Modal
+              visible={showDatePicker}
+              transparent={true}
+              animationType="slide"
+            >
+              <View style={styles.modalOverlay}>
+                <View style={styles.pickerContainer}>
+
+                  <DateTimePicker
+                    value={selectedDate}
+                    mode="date"
+                    display="spinner"
+                    maximumDate={new Date()}
+                    onChange={onChangeDate}
+                  />
+
+                  <TouchableOpacity
+                    onPress={() => setShowDatePicker(false)}
+                    style={styles.doneButton}
+                  >
+                    <Text style={styles.doneText}>Done</Text>
+                  </TouchableOpacity>
+
+                </View>
+              </View>
+            </Modal>
 
 {/* Gender */}
             <View>
@@ -363,7 +412,8 @@ return (
             </TouchableOpacity>
         </View>
     </View>
-  </ScrollView>
+    </ScrollView>
+    </KeyboardAvoidingView>
 )
 }
 
@@ -510,6 +560,30 @@ errorText: {
   fontSize: 12,
   marginTop: 4,
   marginLeft: 4,
+},
+modalOverlay: {
+  flex: 1,
+  backgroundColor: "rgba(0,0,0,0.3)",
+  justifyContent: "center",
+  alignItems: "center"
+},
+
+pickerContainer: {
+  width: "90%",
+  backgroundColor: "#fff",
+  borderRadius: 12,
+  padding: 20,
+  alignItems: "center"
+},
+
+doneButton: {
+  marginTop: 10
+},
+
+doneText: {
+  fontSize: 18,
+  color: "#007AFF",
+  fontWeight: "600"
 },
 
 })
