@@ -4,6 +4,7 @@ import { useRouter } from "expo-router"
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_BASE_URL } from "../config";
+import { useLocalSearchParams } from "expo-router";
 
 const gradcam = () => {
   const router = useRouter();
@@ -48,9 +49,40 @@ const gradcam = () => {
     loadProfileImage();
   }, []);
 
-  // Replace these with real data (from params / state / API)
-  const stage = "Severe";
-  const confidence = "80%";
+  const { retinalImageId } = useLocalSearchParams();
+  const [retinaData, setRetinaData] = useState(null);
+
+    useEffect(() => {
+    const loadRetina = async () => {
+      const token = await AsyncStorage.getItem("accessToken");
+      if (!token || !retinalImageId) return;
+
+      const res = await fetch(
+        `${API_BASE_URL}/api/accounts/retina/${retinalImageId}/`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        setRetinaData(data);
+      }
+    };
+
+    loadRetina();
+  }, [retinalImageId]);
+
+    const stage =
+      retinaData?.validated
+        ? retinaData?.doctor_final_stage
+        : retinaData?.predicted_stage;
+
+    const confidence =
+      retinaData?.confidence != null
+        ? `${Math.round(retinaData.confidence * 100)}%`
+        : "--";
+
 
   return (
     <SafeAreaView style={styles.page}>
@@ -93,13 +125,13 @@ const gradcam = () => {
           <View style={styles.summaryLeft}>
             <Text style={styles.summaryLabel}>Classification Result</Text>
             <View style={styles.stagePill}>
-              <Text style={styles.stageText}>{stage}</Text>
+              <Text style={styles.stageText}>{stage || "Unknown"}</Text>
             </View>
           </View>
 
           <View style={styles.summaryRight}>
             <Text style={styles.summaryLabel}>Confidence</Text>
-            <Text style={styles.confidenceText}>{confidence}</Text>
+            <Text style={styles.confidenceText}>{confidence || "--"}</Text>
           </View>
         </View>
 
@@ -110,13 +142,18 @@ const gradcam = () => {
           <View style={styles.heatmapInner}>
             {/* Heatmap placeholder (put your Grad-CAM image here) */}
             <View style={styles.heatmapBox}>
-              {/* Option A: Use local asset */}
-              {/* <Image
-                source={require("../assets/gradcam_sample.png")}
-                style={styles.heatmapImage}
-              /> */}
-
-              {/* Option B: Keep placeholder box empty (like your screenshot) */}
+              {retinaData?.gradcam_image ? (
+                <Image
+                  source={{
+                    uri: `data:image/png;base64,${retinaData.gradcam_image}`,
+                  }}
+                  style={styles.heatmapImage}
+                />
+              ) : (
+                <Text style={{ textAlign: "center", marginTop: 160, opacity: 0.5 }}>
+                  Heatmap not available
+                </Text>
+              )}
             </View>
 
             <View style={styles.heatmapExplain}>

@@ -8,6 +8,18 @@ import { useLocalSearchParams } from "expo-router";
 
 const result = () => {
     const router = useRouter();
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+      const loadUser = async () => {
+        const storedUser = await AsyncStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      };
+      loadUser();
+    }, []);
+
     const [profileImage, setProfileImage] = useState(null);
 
     useEffect(() => {
@@ -235,7 +247,7 @@ const result = () => {
 
                     <Text style={styles.subtitle}>Diabetic Retinopathy Screening</Text>
                 </View>
-                <Text style={styles.username}>Ze Gui</Text>
+                <Text style={styles.username}>{user ? user.username : ""}</Text>
             </View>
 
             <View>
@@ -344,7 +356,7 @@ const result = () => {
                         </View>
                     )}
 
-                    <TouchableOpacity style={styles.button} onPress={() => router.push('/gradcam')} >
+                    <TouchableOpacity style={styles.button} onPress={() => router.push({ pathname: "/gradcam", params: { retinalImageId } })} >
                         <Text style={styles.buttonText}>View AI Explanation (Grad-CAM)</Text>
                     </TouchableOpacity>
 

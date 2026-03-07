@@ -5,6 +5,9 @@ import { useState, useEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_BASE_URL } from "../config";
+import * as Print from "expo-print";
+import * as FileSystem from "expo-file-system/legacy";
+import * as Sharing from "expo-sharing";
 
 const report = () => {
     const router = useRouter();
@@ -85,10 +88,70 @@ const report = () => {
         ? Math.round(retinaData.confidence * 100)
         : null;
 
+  const uploader = retinaData?.uploader;
 
-  const onDownloadReport = () => {
-    // Later: generate PDF + download/share
-    Alert.alert("Download Report", "PDF download function can be connected here.");
+  const onDownloadReport = async () => {
+    try {
+
+      const html = `
+      <html>
+      <body style="font-family: Arial; padding:20px">
+
+      <h1>Diabetic Retinopathy Screening Report</h1>
+
+      <h2>Patient Information</h2>
+      <p><b>Username:</b> ${uploader?.username || "--"}</p>
+      <p><b>Gender:</b> ${uploader?.gender || "--"}</p>
+      <p><b>Date of Birth:</b> ${uploader?.date_of_birth || "--"}</p>
+      <p><b>Email:</b> ${uploader?.email || "--"}</p>
+
+      <h2>Detection Result</h2>
+      <p><b>Stage:</b> ${stageToShow}</p>
+      <p><b>Confidence:</b> ${confidenceToShow}%</p>
+
+      <h2>Next Steps</h2>
+      ${nextSteps.map(i => `<p>• ${i}</p>`).join("")}
+
+      <h2>Diet Recommendations</h2>
+      <h3>Recommended</h3>
+      ${dietGood.map(i => `<p>• ${i}</p>`).join("")}
+
+      <h3>Avoid</h3>
+      ${dietAvoid.map(i => `<p>• ${i}</p>`).join("")}
+
+      <h2>Exercise</h2>
+      ${exercise.map(i => `<p>• ${i}</p>`).join("")}
+
+      <h2>Prevention Tips</h2>
+      ${prevention.map(i => `<p>• ${i}</p>`).join("")}
+
+      <br/>
+      <p><b>Important:</b> Eye Exam every 6-12 months.</p>
+
+      <br/><br/>
+      <p style="font-size:12px;color:gray">
+      This is a screening tool only. Consult a healthcare professional for diagnosis.
+      </p>
+
+      </body>
+      </html>
+      `;
+
+      const { uri } = await Print.printToFileAsync({ html });
+
+      const pdfPath = FileSystem.documentDirectory + "DR_Report.pdf";
+
+      await FileSystem.moveAsync({
+        from: uri,
+        to: pdfPath,
+      });
+
+      await Sharing.shareAsync(pdfPath);
+
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Failed to generate report");
+    }
   };
 
   const currentTemplate = reportData || {};

@@ -269,7 +269,7 @@ const doctorresult = () => {
                         )}
 
 
-                    <TouchableOpacity style={styles.button} onPress={() => router.push('/gradcam')} >
+                    <TouchableOpacity style={styles.button} onPress={() => router.push({ pathname: "/gradcam", params: { retinalImageId } })} >
                         <Text style={styles.buttonText}>View AI Explanation (Grad-CAM)</Text>
                     </TouchableOpacity>
 

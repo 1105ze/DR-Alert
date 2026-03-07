@@ -520,6 +520,7 @@ class PredictionResultAdmin(admin.ModelAdmin):
                 "predicted_dr_stage",
                 "confidence_score",
                 "ai_report",
+                "gradcam_preview",
                 "prediction_date",
             )
         }),
@@ -528,6 +529,7 @@ class PredictionResultAdmin(admin.ModelAdmin):
     readonly_fields = (
         "retinal_image_preview",
         "prediction_date",
+        "gradcam_preview",
         "retinal_image",
     )
 
@@ -537,6 +539,20 @@ class PredictionResultAdmin(admin.ModelAdmin):
         "prediction_date",
         "confidence_score",
     )
+
+    def gradcam_preview(self, obj):
+        if not obj.gradcam_data:
+            return "No heatmap"
+
+        import base64
+        b64 = base64.b64encode(obj.gradcam_data).decode()
+
+        return format_html(
+            '<img src="data:image/png;base64,{}" style="max-height:300px;" />',
+            b64
+        )
+
+    gradcam_preview.short_description = "Grad-CAM Heatmap"
 
 
 @admin.register(DoctorValidation)

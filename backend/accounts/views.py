@@ -557,6 +557,11 @@ def get_retina_detail(request, pk):
             "role": uploader_user.role if uploader_user else None,
             "email": uploader_user.email if uploader_user else None,
         } if uploader_user else None,
+        "gradcam_image": (
+            base64.b64encode(prediction.gradcam_data).decode("utf-8")
+            if prediction and prediction.gradcam_data
+            else None
+        ),
     }
 
     return Response(data)
