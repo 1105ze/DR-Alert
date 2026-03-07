@@ -500,7 +500,7 @@ const result = () => {
 
                         <TouchableOpacity
                         style={styles.bigBtn}
-                        onPress={() => router.push("/doctorresult")}
+                        onPress={() => router.push("/home")}
                         >
                         <Text style={styles.bigBtnText}>Back to home</Text>
                         </TouchableOpacity>

@@ -360,12 +360,12 @@ const doctorhome = () => {
                                                     Upload your first retinal image to get started
                                                 </Text>
                     
-                                                {/* <TouchableOpacity
+                                                <TouchableOpacity
                                                     style={styles.emptyButton}
                                                     onPress={() => router.push("/upload")}
                                                 >
                                                     <Text style={styles.emptyButtonText}>Upload Image</Text>
-                                                </TouchableOpacity> */}
+                                                </TouchableOpacity>
                                             </View>
                                         ) : (
                                             <FlatList
