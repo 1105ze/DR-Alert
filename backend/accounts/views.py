@@ -20,7 +20,9 @@ from django.conf import settings
 from .email_token import generate_token, verify_token
 from django.http import HttpResponse
 import random
-from datetime import timedelta
+from datetime import timedelta, date
+from .predict import run_prediction
+import cv2
 
 
 
@@ -106,14 +108,124 @@ def verify_email(request, token):
     return HttpResponse("Email verified successfully. You can now close this page and log in to the app.")
     
 
+# @api_view(['POST'])
+# def upload_retinal_image(request):
+#     print("🧠 upload_retinal_image hit")
+#     print("RAW request data:", request.data)
+
+#     image_data = request.data.get("image_data")
+#     uploaded_by_type = request.data.get("uploaded_by_type")
+#     uploaded_by_id = request.data.get("uploaded_by_id")
+#     patient_age = request.data.get("patient_age")
+#     patient_sex = request.data.get("patient_sex")
+
+#     if not image_data:
+#         return Response({"error": "image_data is required"}, status=400)
+
+#     try:
+#         image_bytes = base64.b64decode(image_data)
+#     except Exception:
+#         return Response({"error": "Invalid base64 image data"}, status=400)
+
+#     # ✅ PATIENT upload
+#     if uploaded_by_type == "patient":
+#         try:
+#             patient = Patient.objects.get(user_id=uploaded_by_id)
+#         except Patient.DoesNotExist:
+#             return Response({"error": "Patient not found"}, status=404)
+
+#         retinal_image = RetinalImage.objects.create(
+#             uploaded_by_type="patient",
+#             patient=patient,
+#             retinal_image=image_bytes,
+#             retinal_image_size=len(image_bytes),
+#         )
+
+#     # ✅ DOCTOR upload
+#     elif uploaded_by_type == "doctor":
+#         try:
+#             doctor = Doctor.objects.get(user_id=uploaded_by_id)
+#         except Doctor.DoesNotExist:
+#             return Response({"error": "Doctor not found"}, status=404)
+
+#         retinal_image = RetinalImage.objects.create(
+#             uploaded_by_type="doctor",
+#             doctor=doctor,
+#             selected_doctor=doctor,
+#             retinal_image=image_bytes,
+#             retinal_image_size=len(image_bytes),
+#         )
+
+#         age = int(patient_age) if patient_age else None
+#         sex = patient_sex
+
+#     else:
+#         return Response({"error": "Invalid uploaded_by_type"}, status=400)
+
+    
+#     age = None
+#     sex = None
+
+#     # PATIENT upload → use profile data
+#     if uploaded_by_type == "patient" and retinal_image.patient:
+
+#         patient_user = retinal_image.patient.user
+#         dob = patient_user.date_of_birth
+
+#         if dob:
+#             today = date.today()
+#             age = today.year - dob.year - (
+#                 (today.month, today.day) < (dob.month, dob.day)
+#             )
+
+#         sex = patient_user.gender
+
+#     # DOCTOR upload → use input fields
+#     elif uploaded_by_type == "doctor":
+#         age = int(patient_age) if patient_age else None
+#         sex = patient_sex
+
+#     prediction_result = run_prediction(
+#         image_bytes,
+#         age,
+#         sex
+#     )
+
+#     _, buffer = cv2.imencode(".jpg", prediction_result["heatmap_image"])
+#     gradcam_bytes = buffer.tobytes()
+    
+#     # ===== CREATE EMPTY PREDICTION RESULT =====
+#     # PredictionResult.objects.create(
+#     #     retinal_image=retinal_image,
+#     #     predicted_dr_stage="Moderate",  # temporary mock
+#     #     confidence_score=0.80,
+#     #     prediction_date=timezone.now()
+#     # )
+
+#     PredictionResult.objects.create(
+#         retinal_image=retinal_image,
+#         predicted_dr_stage=prediction_result["predicted_stage"],
+#         confidence_score=prediction_result["confidence"],
+#         gradcam_data=gradcam_bytes,
+#         prediction_date=timezone.now()
+#     )
+
+#     return Response(
+#         {
+#             "message": "Retinal image uploaded successfully",
+#             "retinal_image_id": retinal_image.id,
+#         },
+#         status=201
+#     )
+
 @api_view(['POST'])
 def upload_retinal_image(request):
-    print("🧠 upload_retinal_image hit")
-    print("RAW request data:", request.data)
 
     image_data = request.data.get("image_data")
     uploaded_by_type = request.data.get("uploaded_by_type")
     uploaded_by_id = request.data.get("uploaded_by_id")
+    patient_age = request.data.get("patient_age")
+    patient_sex = request.data.get("patient_sex")
 
     if not image_data:
         return Response({"error": "image_data is required"}, status=400)
@@ -123,8 +235,12 @@ def upload_retinal_image(request):
     except Exception:
         return Response({"error": "Invalid base64 image data"}, status=400)
 
-    # ✅ PATIENT upload
+    age = None
+    sex = None
+
+    # PATIENT upload
     if uploaded_by_type == "patient":
+
         try:
             patient = Patient.objects.get(user_id=uploaded_by_id)
         except Patient.DoesNotExist:
@@ -137,8 +253,21 @@ def upload_retinal_image(request):
             retinal_image_size=len(image_bytes),
         )
 
-    # ✅ DOCTOR upload
+        patient_user = patient.user
+        dob = patient_user.date_of_birth
+
+        if dob:
+            today = date.today()
+            age = today.year - dob.year - (
+                (today.month, today.day) < (dob.month, dob.day)
+            )
+
+        sex = patient_user.gender.strip().upper()[0] if patient_user.gender else None
+
+
+    # DOCTOR upload
     elif uploaded_by_type == "doctor":
+
         try:
             doctor = Doctor.objects.get(user_id=uploaded_by_id)
         except Doctor.DoesNotExist:
@@ -152,24 +281,37 @@ def upload_retinal_image(request):
             retinal_image_size=len(image_bytes),
         )
 
+        age = int(patient_age) if patient_age else None
+
+        if patient_sex:
+            sex = patient_sex.strip().upper()[0]   # "Male" -> "M", "female" -> "F"
+        else:
+            sex = None
+
     else:
         return Response({"error": "Invalid uploaded_by_type"}, status=400)
-    
-    # ===== CREATE EMPTY PREDICTION RESULT =====
+
+    prediction_result = run_prediction(
+        image_bytes,
+        age,
+        sex
+    )
+
+    _, buffer = cv2.imencode(".jpg", prediction_result["heatmap_image"])
+    gradcam_bytes = buffer.tobytes()
+
     PredictionResult.objects.create(
         retinal_image=retinal_image,
-        predicted_dr_stage="Moderate",  # temporary mock
-        confidence_score=0.80,
+        predicted_dr_stage=prediction_result["predicted_stage"],
+        confidence_score=prediction_result["confidence"],
+        gradcam_data=gradcam_bytes,
         prediction_date=timezone.now()
     )
 
-    return Response(
-        {
-            "message": "Retinal image uploaded successfully",
-            "retinal_image_id": retinal_image.id,
-        },
-        status=201
-    )
+    return Response({
+        "message": "Retinal image uploaded successfully",
+        "retinal_image_id": retinal_image.id
+    }, status=201)
 
 
 @api_view(['POST'])

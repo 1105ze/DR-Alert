@@ -16,3 +16,10 @@ backend/.venv/
 .expo/
 node_modules/
 *.log
+
+# Machine Learning models
+*.keras
+*.h5
+*.pt
+*.pth
+backend/model/

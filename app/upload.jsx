@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput } from 'react-native'
 import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
@@ -9,6 +9,8 @@ import { API_BASE_URL } from "../config";
 
 const upload = () => {
   const router = useRouter();
+    const [patientAge, setPatientAge] = useState("");
+    const [patientSex, setPatientSex] = useState("");
     const [image, setImage] = useState(null);
     const [user, setUser] = useState(null);
     useEffect(() => { 
@@ -106,6 +108,8 @@ const upload = () => {
             image_data: imageBase64,
             uploaded_by_type: user.role,
             uploaded_by_id: user.id,
+            patient_age: user.role === "doctor" ? patientAge : null,
+            patient_sex: user.role === "doctor" ? patientSex : null,
           }),
         }
       );
@@ -184,6 +188,40 @@ const upload = () => {
                   </TouchableOpacity>
                   )}
                 </View>
+
+                {user?.role === "doctor" && (
+                  <View style={{ marginHorizontal: '6%', marginBottom: 10 }}>
+                    
+                    <Text>Patient Age</Text>
+                    <TextInput
+                      style={{
+                        borderWidth: 1,
+                        borderColor: "#4da3ff",
+                        borderRadius: 8,
+                        padding: 8,
+                        marginBottom: 10
+                      }}
+                      value={patientAge}
+                      onChangeText={setPatientAge}
+                      keyboardType="numeric"
+                      placeholder="Enter patient age"
+                    />
+
+                    <Text>Patient Sex</Text>
+                    <TextInput
+                      style={{
+                        borderWidth: 1,
+                        borderColor: "#4da3ff",
+                        borderRadius: 8,
+                        padding: 8
+                      }}
+                      value={patientSex}
+                      onChangeText={setPatientSex}
+                      placeholder="Male / Female"
+                    />
+
+                  </View>
+                )}
 
                 {image && (
                     <TouchableOpacity style={styles.analyzeImage} onPress={handleAnalyze}>
