@@ -23,6 +23,7 @@ import random
 from datetime import timedelta, date
 from .predict import run_prediction
 import cv2
+from django.core.mail import EmailMultiAlternatives
 
 
 
@@ -62,16 +63,58 @@ def signup(request):
 
             token = generate_token(user.email)
 
+            scheme = request.scheme
             host = request.get_host()
-            verify_url = f"http://{host}/api/accounts/verify-email/{token}/"
+            verify_url = f"{scheme}://{host}/api/accounts/verify-email/{token}/"
 
-            send_mail(
-                "Verify your account",
-                f"Click this link to verify your account:\n{verify_url}",
+            subject = "Verify Your Account"
+
+            text_content = f"""
+            Hello,
+
+            Thank you for registering.
+
+            Please verify your email using the link below:
+            {verify_url}
+
+            If you did not create this account, please ignore this email.
+            """
+
+            html_content = f"""
+            <html>
+            <body style="font-family: Arial, sans-serif;">
+                <h2>Verify Your Account</h2>
+                <p>Thank you for registering your account.</p>
+                <p>Please click the button below to verify your email.</p>
+
+                <a href="{verify_url}" 
+                style="background-color:#4CAF50;
+                        color:white;
+                        padding:12px 20px;
+                        text-decoration:none;
+                        border-radius:6px;
+                        display:inline-block;">
+                    Verify Email
+                </a>
+
+                <p style="margin-top:20px;">
+                    If the button does not work, copy this link:
+                </p>
+
+                <p>{verify_url}</p>
+            </body>
+            </html>
+            """
+
+            message = EmailMultiAlternatives(
+                subject,
+                text_content,
                 settings.DEFAULT_FROM_EMAIL,
-                [user.email],
-                fail_silently=False,
+                [user.email]
             )
+
+            message.attach_alternative(html_content, "text/html")
+            message.send()
 
             return Response({
                 "message": "Account created. Please verify your email."
@@ -107,116 +150,6 @@ def verify_email(request, token):
 
     return HttpResponse("Email verified successfully. You can now close this page and log in to the app.")
     
-
-# @api_view(['POST'])
-# def upload_retinal_image(request):
-#     print("🧠 upload_retinal_image hit")
-#     print("RAW request data:", request.data)
-
-#     image_data = request.data.get("image_data")
-#     uploaded_by_type = request.data.get("uploaded_by_type")
-#     uploaded_by_id = request.data.get("uploaded_by_id")
-#     patient_age = request.data.get("patient_age")
-#     patient_sex = request.data.get("patient_sex")
-
-#     if not image_data:
-#         return Response({"error": "image_data is required"}, status=400)
-
-#     try:
-#         image_bytes = base64.b64decode(image_data)
-#     except Exception:
-#         return Response({"error": "Invalid base64 image data"}, status=400)
-
-#     # ✅ PATIENT upload
-#     if uploaded_by_type == "patient":
-#         try:
-#             patient = Patient.objects.get(user_id=uploaded_by_id)
-#         except Patient.DoesNotExist:
-#             return Response({"error": "Patient not found"}, status=404)
-
-#         retinal_image = RetinalImage.objects.create(
-#             uploaded_by_type="patient",
-#             patient=patient,
-#             retinal_image=image_bytes,
-#             retinal_image_size=len(image_bytes),
-#         )
-
-#     # ✅ DOCTOR upload
-#     elif uploaded_by_type == "doctor":
-#         try:
-#             doctor = Doctor.objects.get(user_id=uploaded_by_id)
-#         except Doctor.DoesNotExist:
-#             return Response({"error": "Doctor not found"}, status=404)
-
-#         retinal_image = RetinalImage.objects.create(
-#             uploaded_by_type="doctor",
-#             doctor=doctor,
-#             selected_doctor=doctor,
-#             retinal_image=image_bytes,
-#             retinal_image_size=len(image_bytes),
-#         )
-
-#         age = int(patient_age) if patient_age else None
-#         sex = patient_sex
-
-#     else:
-#         return Response({"error": "Invalid uploaded_by_type"}, status=400)
-
-    
-#     age = None
-#     sex = None
-
-#     # PATIENT upload → use profile data
-#     if uploaded_by_type == "patient" and retinal_image.patient:
-
-#         patient_user = retinal_image.patient.user
-#         dob = patient_user.date_of_birth
-
-#         if dob:
-#             today = date.today()
-#             age = today.year - dob.year - (
-#                 (today.month, today.day) < (dob.month, dob.day)
-#             )
-
-#         sex = patient_user.gender
-
-#     # DOCTOR upload → use input fields
-#     elif uploaded_by_type == "doctor":
-#         age = int(patient_age) if patient_age else None
-#         sex = patient_sex
-
-#     prediction_result = run_prediction(
-#         image_bytes,
-#         age,
-#         sex
-#     )
-
-#     _, buffer = cv2.imencode(".jpg", prediction_result["heatmap_image"])
-#     gradcam_bytes = buffer.tobytes()
-    
-#     # ===== CREATE EMPTY PREDICTION RESULT =====
-#     # PredictionResult.objects.create(
-#     #     retinal_image=retinal_image,
-#     #     predicted_dr_stage="Moderate",  # temporary mock
-#     #     confidence_score=0.80,
-#     #     prediction_date=timezone.now()
-#     # )
-
-#     PredictionResult.objects.create(
-#         retinal_image=retinal_image,
-#         predicted_dr_stage=prediction_result["predicted_stage"],
-#         confidence_score=prediction_result["confidence"],
-#         gradcam_data=gradcam_bytes,
-#         prediction_date=timezone.now()
-#     )
-
-#     return Response(
-#         {
-#             "message": "Retinal image uploaded successfully",
-#             "retinal_image_id": retinal_image.id,
-#         },
-#         status=201
-#     )
 
 @api_view(['POST'])
 def upload_retinal_image(request):
