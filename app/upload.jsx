@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native'
 import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
@@ -12,6 +12,7 @@ const upload = () => {
     const [patientAge, setPatientAge] = useState("");
     const [patientSex, setPatientSex] = useState("");
     const [image, setImage] = useState(null);
+    const [isUploading, setIsUploading] = useState(false);
     const [user, setUser] = useState(null);
     useEffect(() => { 
       const loadUser = async () => { 
@@ -52,7 +53,19 @@ const upload = () => {
         }, []);
     
     const handleAnalyze = async () => {
+
+      if (user?.role === "doctor") {
+        if (!patientAge || !patientSex) {
+          alert("Please enter patient age and sex before analyzing.");
+          return;
+        }
+      }
+      setIsUploading(true);
+
       const retinalImageId = await uploadImageToBackend();
+
+      setIsUploading(false);
+
       if (!retinalImageId || !user) return;
 
       if (user.role === "patient") {
@@ -129,10 +142,18 @@ const upload = () => {
     }
   };
 
-
+  if (isUploading) {
+    return (
+      <View style={{ flex:1, justifyContent:"center", alignItems:"center" }}>
+        <Text style={{ fontSize:20, fontWeight:"bold" }}>
+          Uploading and analyzing image...
+        </Text>
+      </View>
+    );
+  }
 
   return (
-    <View style={{flex: 1}}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.header}>
             <TouchableOpacity style={styles.profile} onPress={() => router.push('/home')}>
                 <Image
@@ -240,7 +261,7 @@ const upload = () => {
                 This is a screening tool only. Consult a healthcare professional for diagnosis.
             </Text>
         </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 

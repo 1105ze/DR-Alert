@@ -285,6 +285,8 @@ def upload_retinal_image(request):
 
         if patient_sex:
             sex = patient_sex.strip().upper()[0]   # "Male" -> "M", "female" -> "F"
+            if sex not in ["M", "F"]:
+                sex = None
         else:
             sex = None
 
