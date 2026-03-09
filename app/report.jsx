@@ -78,15 +78,19 @@ const report = () => {
       loadReport();
     }, [retinalImageId]);
 
+    const isValidated = retinaData?.validated;
+
     const stageToShow =
       retinaData?.validated
         ? retinaData?.doctor_final_stage
         : retinaData?.predicted_stage;
 
-    const confidenceToShow =
-      retinaData?.confidence != null
-        ? Math.round(retinaData.confidence * 100)
-        : null;
+  const confidenceToShow = retinaData?.validated
+    ? "Doctor Verified"
+    : retinaData?.confidence != null
+    ? `${Math.round(retinaData.confidence * 100)}%`
+    : "--";
+
 
   const uploader = retinaData?.uploader;
 
@@ -107,7 +111,7 @@ const report = () => {
 
       <h2>Detection Result</h2>
       <p><b>Stage:</b> ${stageToShow}</p>
-      <p><b>Confidence:</b> ${confidenceToShow}%</p>
+      <p><b>${retinaData?.validated ? "Status" : "Confidence"}:</b> ${confidenceToShow}</p>
 
       <h2>Next Steps</h2>
       ${nextSteps.map(i => `<p>• ${i}</p>`).join("")}
@@ -236,11 +240,12 @@ const report = () => {
               {stageToShow || "Loading..."}
             </Text>
 
-            {confidenceToShow != null && (
-              <Text style={styles.resultConfidence}>
-                Confidence: {confidenceToShow}%
-              </Text>
-            )}
+            <Text style={styles.resultConfidence}>
+              {isValidated
+                ? `Status: ${confidenceToShow}`
+                : `Confidence: ${confidenceToShow}`
+              }
+            </Text>
 
             <View style={styles.findingPill}>
               <Text style={styles.findingText}>

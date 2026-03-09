@@ -73,15 +73,37 @@ const gradcam = () => {
     loadRetina();
   }, [retinalImageId]);
 
-    const stage =
-      retinaData?.validated
-        ? retinaData?.doctor_final_stage
-        : retinaData?.predicted_stage;
+    const stage = retinaData?.predicted_stage;
 
     const confidence =
       retinaData?.confidence != null
         ? `${Math.round(retinaData.confidence * 100)}%`
         : "--";
+
+    const isValidated = retinaData?.validated;
+
+    const finalStage = isValidated
+      ? retinaData?.doctor_final_stage
+      : retinaData?.predicted_stage;
+
+    const getStageColor = (stage) => {
+      switch (stage) {
+        case "No DR":
+          return "#4CAF50";
+        case "Mild":
+          return "#13a09b";
+        case "Moderate":
+          return "#FFC107";
+        case "Severe":
+          return "#d16d37";
+        case "Proliferative":
+          return "#F44336";
+        default:
+          return "#333";
+      }
+    };
+
+    const finalStageColor = getStageColor(finalStage);
 
 
   return (
@@ -134,6 +156,27 @@ const gradcam = () => {
             <Text style={styles.confidenceText}>{confidence || "--"}</Text>
           </View>
         </View>
+
+        {isValidated && (
+          <View style={styles.findingCard}>
+            <Text style={styles.findingTitle}>Doctor Findings</Text>
+
+            <Text style={styles.findingLine}>
+              Final DR Stage: 
+              <Text style={{ color: finalStageColor, fontWeight: "700" }}>
+                {" "}{finalStage || "--"}
+              </Text>
+            </Text>
+
+            <Text style={styles.findingLine}>
+              Validation Status: Doctor Validated
+            </Text>
+
+            <Text style={styles.findingExplain}>
+              The diagnosis has been reviewed and confirmed by a medical professional.
+            </Text>
+          </View>
+        )}
 
         {/* Heatmap section */}
         <View style={styles.heatmapCard}>
@@ -366,4 +409,31 @@ username: {
     opacity: 0.75,
     paddingHorizontal: 18,
   },
+findingCard: {
+  backgroundColor: "#E8F7EC",
+  marginHorizontal: 16,
+  marginTop: 14,
+  borderRadius: 18,
+  padding: 14,
+  borderWidth: 1,
+  borderColor: "#7ED197",
+},
+
+findingTitle: {
+  fontSize: 18,
+  fontWeight: "600",
+  marginBottom: 10,
+  color: "#1E6B3C",
+},
+
+findingLine: {
+  fontSize: 15,
+  marginBottom: 6,
+},
+
+findingExplain: {
+  marginTop: 6,
+  fontSize: 13,
+  opacity: 0.8,
+},
 });

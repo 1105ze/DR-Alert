@@ -86,9 +86,11 @@ const doctorreport = () => {
 
   const report = retinaData?.report_data ?? null;
 
-  const confidence = retinaData?.confidence
-    ? (retinaData.confidence * 100).toFixed(0)
-    : null;
+  const confidence = retinaData?.validated
+    ? "Doctor Verified"
+    : retinaData?.confidence != null
+    ? `${Math.round(retinaData.confidence * 100)}%`
+    : "--";
 
 
   const onDownloadReport = async () => {
@@ -323,7 +325,10 @@ const doctorreport = () => {
               {stage}
             </Text>
             <Text style={styles.resultConfidence}>
-              Confidence: {confidence}%
+              {isValidated
+                ? `Status: ${confidence}`
+                : `Confidence: ${confidence}`
+              }
             </Text>
 
             <View style={styles.findingPill}>
