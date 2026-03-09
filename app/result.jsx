@@ -215,15 +215,23 @@ const result = () => {
 
         const isValidated = retinaData?.validated;
 
-        const adviceText = isValidated
-        ? retinaData?.report_data?.findings
-        : retinaData?.predicted_stage
-            ? `${retinaData.predicted_stage} diabetic retinopathy detected.`
-            : "Awaiting AI result.";
+    //     const adviceText = isValidated
+    //     ? retinaData?.report_data?.findings
+    //     : retinaData?.predicted_stage
+    //         ? `${retinaData.predicted_stage} diabetic retinopathy detected.`
+    //         : "Awaiting AI result.";
 
-        const validationStatusText = isValidated
-        ? "Doctor validated"
-        : "Awaiting doctor validation.";
+    // const validationStatusText = isValidated
+    //     ? "Doctor validated"
+    //     : "Awaiting doctor validation.";
+
+    const resultTitle = isValidated
+        ? "Doctor Final Result"
+        : "Preliminary AI Result";
+
+    const aiBoxTitle = isValidated
+        ? "Preliminary AI Result"
+        : "Key Findings";
 
         
 
@@ -303,46 +311,88 @@ const result = () => {
                 <View style={[styles.firstCard, { backgroundColor: cardColor }]}>
                     <View style={styles.warningSection}>
                         <Image source={require('../assets/warning_icon.png')} style={styles.warningIcon} />
-                        <Text style={styles.warningText}>Prelimary AI Result</Text>
+                        <Text style={styles.warningText}>{resultTitle}</Text>
                     </View>
                     <Text style={styles.stageText}>
                         {stageToShow || "Loading..."}
                     </Text>
 
-                    <Text style={styles.confidenceText}>
-                        Confidence: {
-                            retinaData?.confidence != null
-                            ? Math.round(retinaData.confidence * 100)
-                            : 0
-                        }%
-                    </Text>
+                    {isValidated && (
+                        <Text
+                        style={{
+                            textAlign: "center",
+                            marginTop: 6,
+                            fontSize: 13,
+                            fontWeight: "600",
+                        }}
+                        >
+                        Status : Doctor validated
+                        </Text>
+                        )}
+
+                    {!isValidated && (
+                        <Text style={styles.confidenceText}>
+                            Confidence: {
+                                retinaData?.confidence != null
+                                ? Math.round(retinaData.confidence * 100)
+                                : 0
+                            }%
+                        </Text>
+                        )}
 
                     <View style={styles.adviceColumn}>
+                        <Text style={styles.aiTitle}>{aiBoxTitle}</Text>
+
+                    {isValidated ? (
+                        <>
+                            <View style={styles.aiBlock}>
+                                <Text style={styles.aiLabel}>AI Prediction:</Text>
+                                <Text style={styles.aiValue}>{retinaData?.predicted_stage}</Text>
+                            </View>
+
+                            <View style={styles.aiDivider} />
+
+                            <View style={styles.aiBlock}>
+                                <Text style={styles.aiLabel}>AI Confidence:</Text>
+                                <Text style={styles.aiValue}>
+                                    {retinaData?.confidence != null
+                                        ? Math.round(retinaData.confidence * 100)
+                                        : 0}%
+                                </Text>
+                            </View>
+
+                        </>
+
+                        ) : (
+
+                        <>
                         <Text style={styles.adviceText}>
-                            <Text
-                                style={{
-                                fontWeight: "800",
-                                color: getStageColor(stageToShow),
-                                }}
-                            >
-                                {stageToShow}
-                            </Text>
-                            {" "}
-                            diabetic retinopathy{" "}
-                            {isValidated ? "confirmed." : "detected."}
+                        <Text
+                        style={{
+                        fontWeight: "800",
+                        color: getStageColor(stageToShow),
+                        }}
+                        >
+                        {stageToShow}
+                        </Text>{" "}
+                        diabetic retinopathy detected.
                         </Text>
 
-                    <Text
+                        <Text
                         style={{
                         marginTop: 8,
                         fontSize: 12,
                         fontWeight: "600",
-                        color: isValidated ? "green" : "#444",
+                        color: "#444",
                         }}
-                    >
-                        {validationStatusText}
-                    </Text>
-                    </View>
+                        >
+                        Awaiting doctor validation.
+                        </Text>
+                        </>
+
+                        )}
+
+                        </View>
 
                     {isValidated && retinaData?.doctor_comments && (
                         <View style={styles.commentBlock}>
@@ -600,7 +650,7 @@ profileImage: {
         fontSize: 20,
     },
     scroll: {
-        padingBottom: 50,
+        paddingBottom: 50,
     },
     firstCard: {
         width: 385,
@@ -635,17 +685,16 @@ stageText: {
         marginTop: 15,        
     },
 adviceColumn: {
-    backgroundColor: '#aad5fcff',
+    backgroundColor: "#aad5fc",
     borderRadius: 18,
-    marginLeft: 20,
-    marginRight: 20,
+    marginHorizontal: 20,
     marginTop: 20,
-    minHeight: 85,
+    paddingVertical: 18,
+    paddingHorizontal: 16,
     borderWidth: 1,
+    borderColor: "#00000030",
     marginBottom: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 15,
+    alignItems: "center", 
 },
 adviceText: {
     fontSize: 14,
@@ -669,12 +718,6 @@ adviceText: {
         borderRadius: 18,
         marginLeft: 30,
         marginTop: 10,
-    },
-    doctorTitle: {
-        textAlign: 'center',
-        fontWeight: '700',
-        marginTop: 20,
-        fontSize: 16,
     },
     secondCard: {
         backgroundColor: "#d6eeff",
@@ -865,5 +908,33 @@ commentParagraph: {
     fontSize: 14,
     lineHeight: 20,
     color: "#222",
+},
+aiTitle: {
+fontSize: 15,
+fontWeight: "800",
+marginBottom: 6,
+textAlign: "center",
+},
+aiBlock: {
+    alignItems: "center",
+    marginTop: 6,
+},
+
+aiLabel: {
+    fontSize: 13,
+    color: "#333",
+    marginBottom: 4,
+},
+
+aiValue: {
+    fontSize: 18,
+    fontWeight: "800",
+},
+
+aiDivider: {
+    height: 1,
+    backgroundColor: "#00000030",
+    marginVertical: 12,
+    width: "100%",
 },
 })
