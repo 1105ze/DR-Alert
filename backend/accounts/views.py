@@ -67,7 +67,7 @@ def signup(request):
             host = request.get_host()
             verify_url = f"{scheme}://{host}/api/accounts/verify-email/{token}/"
 
-            subject = "Verify Your Account"
+            subject = "Verify Your DR Alert Account"
 
             text_content = f"""
             Hello,
@@ -84,7 +84,7 @@ def signup(request):
             <html>
             <body style="font-family: Arial, sans-serif;">
                 <h2>Verify Your Account</h2>
-                <p>Thank you for registering your account.</p>
+                <p>Thank you for registering your DR Alert account.</p>
                 <p>Please click the button below to verify your email.</p>
 
                 <a href="{verify_url}" 
@@ -96,12 +96,6 @@ def signup(request):
                         display:inline-block;">
                     Verify Email
                 </a>
-
-                <p style="margin-top:20px;">
-                    If the button does not work, copy this link:
-                </p>
-
-                <p>{verify_url}</p>
             </body>
             </html>
             """
