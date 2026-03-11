@@ -24,6 +24,7 @@ from datetime import timedelta, date
 from .predict import run_prediction
 import cv2
 from django.core.mail import EmailMultiAlternatives
+from .retina_scanner import verify_retina
 
 
 
@@ -161,6 +162,17 @@ def upload_retinal_image(request):
         image_bytes = base64.b64decode(image_data)
     except Exception:
         return Response({"error": "Invalid base64 image data"}, status=400)
+    
+    # -------- RETINA VALIDATION --------
+    is_valid, stats = verify_retina(image_bytes)
+
+    if not is_valid:
+        return Response({
+            "error": "INVALID_RETINA_IMAGE",
+            "details": stats,
+            "message": "Please upload a clear circular retina fundus image."
+        }, status=400)
+    # ----------------------------------
 
     age = None
     sex = None
