@@ -1,14 +1,49 @@
 import cv2
 import numpy as np
+import pandas as pd
 import tensorflow as tf
+import os
+import joblib
 from .ml_model import model, DEPLOY_IMG_SIZE, CLASS_NAMES
 from tensorflow.keras.applications.efficientnet import preprocess_input
 
+# --- 1. Load Scalers ---
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL_DIR = os.path.join(BASE_DIR, 'model')
 
+age_scaler = joblib.load(os.path.join(MODEL_DIR, 'age_scaler.pkl'))
+sex_encoder = joblib.load(os.path.join(MODEL_DIR, 'sex_encoder.pkl'))
+
+def safe_crop_retina(img):
+    """
+    Identifies the retina and centers it in a square canvas.
+    This prevents the circular eye from being stretched into an oval.
+    """
+    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    mask = gray > 10  # Filter out black background noise
+    
+    if not mask.any():
+        return img
+        
+    coords = np.argwhere(mask)
+    y0, x0 = coords.min(axis=0)
+    y1, x1 = coords.max(axis=0)
+    
+    # Calculate bounding box dimensions
+    h, w = y1 - y0, x1 - x0
+    side = max(h, w)
+    
+    # Create square canvas and center the eye
+    square_img = np.zeros((side, side, 3), dtype=np.uint8)
+    offset_y = (side - h) // 2
+    offset_x = (side - w) // 2
+    
+    square_img[offset_y:offset_y+h, offset_x:offset_x+w] = img[y0:y1, x0:x1]
+    return square_img
 
 def apply_clahe(img, clip=1.2, grid=(16, 16)):
-    """Matches the preprocessing used during training"""
-    lab = cv2.cvtColor(img, cv2.COLOR_RGB2LAB) # Use RGB to LAB
+    """Enhances clinical features like microaneurysms and exudates"""
+    lab = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
     l, a, b = cv2.split(lab)
     clahe = cv2.createCLAHE(clipLimit=clip, tileGridSize=grid)
     cl = clahe.apply(l)
@@ -16,124 +51,100 @@ def apply_clahe(img, clip=1.2, grid=(16, 16)):
     return cv2.cvtColor(limg, cv2.COLOR_LAB2RGB)
 
 def preprocess_image(image_bytes):
-    # 1. Decode bytes
+    # Decode bytes from app upload
     img = np.frombuffer(image_bytes, np.uint8)
     img = cv2.imdecode(img, cv2.IMREAD_COLOR)
-    
-    # 2. Basic cleaning
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img_resized = cv2.resize(img_rgb, (DEPLOY_IMG_SIZE, DEPLOY_IMG_SIZE))
 
-    # 3. ADDED: CLAHE Processing (Apply before normalization)
+    # --- NEW: Crop and Square before resizing ---
+    img_square = safe_crop_retina(img_rgb)
+    
+    # Resize the square image to 512x512
+    img_resized = cv2.resize(img_square, (DEPLOY_IMG_SIZE, DEPLOY_IMG_SIZE))
+
+    # Apply enhancement
     img_enhanced = apply_clahe(img_resized)
 
-    # 4. Final Model Prep
+    # Model prep
     img_array = np.expand_dims(img_enhanced, axis=0)
     img_array = preprocess_input(img_array.astype('float32'))
 
     return img_enhanced, img_array
 
-
 def prepare_clinical(age, sex):
+    """Standardizes age and sex using pre-trained scalers"""
+    sex_map = {"M": "Male", "F": "Female"}
+    sex_full = sex_map.get(sex, sex)
 
-    age_s = age / 100.0
+    input_df = pd.DataFrame(
+        [[float(age), sex_full]], 
+        columns=['Patient Age', 'Patient Sex']
+    )
 
-    if sex == "F":
-        s_f, s_m = 1.0, 0.0
-    else:
-        s_f, s_m = 0.0, 1.0
+    age_s = age_scaler.transform(input_df[['Patient Age']])[0][0]
+    sex_feats = sex_encoder.transform(input_df[['Patient Sex']])
+    s_f = sex_feats[0][0]
+    s_m = sex_feats[0][1]
 
     return np.array([[age_s, s_f, s_m]], dtype="float32")
 
-
-def get_diagnostic_gradcam(img_array, clinical_data):
-
-    last_conv = model.get_layer("top_conv")
-
+def get_diagnostic_gradcam(img_array, clinical_data, last_conv_layer_name="top_conv"):
     grad_model = tf.keras.models.Model(
         inputs=model.inputs,
-        outputs=[last_conv.output, model.output]
+        outputs=[model.get_layer(last_conv_layer_name).output, model.output]
     )
 
     with tf.GradientTape() as tape:
-
-        conv_outputs, predictions = grad_model(
-            [img_array, clinical_data]
-        )
-
+        conv_outputs, predictions = grad_model([img_array, clinical_data])
         if isinstance(predictions, list):
             predictions = predictions[0]
-
+        
         pred_index = tf.argmax(predictions[0])
-        confidence = predictions[0][pred_index]
-
         loss = predictions[:, pred_index]
 
-
     grads = tape.gradient(loss, conv_outputs)
-
     pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
 
     conv_outputs = conv_outputs[0]
-
     heatmap = tf.reduce_sum(conv_outputs * pooled_grads, axis=-1)
-    heatmap = tf.squeeze(heatmap).numpy()
+    
+    heatmap = heatmap.numpy() if hasattr(heatmap, "numpy") else heatmap
 
     heatmap = np.maximum(heatmap, 0)
+    if np.max(heatmap) != 0:
+        heatmap /= np.max(heatmap)
+        
+    final_pred = pred_index.numpy() if hasattr(pred_index, "numpy") else pred_index
+    conf_value = predictions[0][pred_index]
+    final_conf = conf_value.numpy() if hasattr(conf_value, "numpy") else conf_value
 
-    vmax = np.percentile(heatmap, 99)
-    if vmax > 0:
-        heatmap /= vmax
+    return heatmap, int(final_pred), float(final_conf)
 
-    heatmap = np.power(heatmap, 2.0)
-    heatmap = np.clip(heatmap, 0, 1)
+def overlay_heatmap(original_img, heatmap, alpha=0.4):
+    heatmap_rescaled = cv2.resize(heatmap, (original_img.shape[1], original_img.shape[0]))
+    
+    heatmap_rescaled[heatmap_rescaled < 0.2] = 0
+    
+    heatmap_255 = np.uint8(255 * heatmap_rescaled)
+    heatmap_color = cv2.applyColorMap(heatmap_255, cv2.COLORMAP_JET)
+    heatmap_color = cv2.cvtColor(heatmap_color, cv2.COLOR_BGR2RGB)
 
-    return heatmap, int(pred_index.numpy()), float(confidence.numpy())
-
-
-def overlay_heatmap(img, heatmap, alpha=0.6):
-
-    heatmap_resized = cv2.resize(
-        heatmap,
-        (img.shape[1], img.shape[0])
-    )
-
-    heatmap_resized[heatmap_resized < 0.2] = 0
-
-    heatmap_255 = np.uint8(255 * heatmap_resized)
-
-    heatmap_color = cv2.applyColorMap(
-        heatmap_255,
-        cv2.COLORMAP_JET
-    )
-
-    heatmap_color = cv2.cvtColor(
-        heatmap_color,
-        cv2.COLOR_BGR2RGB
-    )
-
-    mask = (heatmap_resized > 0).astype(float)
-    mask = np.stack([mask] * 3, axis=-1)
-
-    result = (
-        img.astype(float) * (1 - mask * alpha)
-        + heatmap_color.astype(float) * (mask * alpha)
-    )
-
-    return np.uint8(np.clip(result, 0, 255))
-
+    # Blends the heatmap smoothly over the eye
+    result = cv2.addWeighted(original_img, 1.0, heatmap_color, alpha, 0)
+    return result
 
 def run_prediction(image_bytes, age, sex):
-
+    # Process inputs
     img_input, img_array = preprocess_image(image_bytes)
-
     clinical_array = prepare_clinical(age, sex)
 
+    # Run AI
     heatmap, pred_index, confidence = get_diagnostic_gradcam(
         img_array,
         clinical_array
     )
 
+    # Create visualization
     result_img = overlay_heatmap(img_input, heatmap)
 
     return {
