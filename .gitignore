@@ -1,25 +1,41 @@
-# Python / Django junk
+# --- DATASET & IMAGES ---
+# Your folder is named exactly "ODIR_Images"
+ODIR_Images/
+# Also ignore any random images in the root
+*.jpg
+*.png
+
+# --- Python / Django ---
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-backend/.venv/
+.venv/
+# You have a venv inside backend/
+backend/venv/
+# Ignore the local database
 *.sqlite3
+db.sqlite3
 
-# Environment variables
+# --- Environment variables ---
 .env
+.env.example
 
-# macOS
-.DS_Store
-
-# Expo / React Native
+# --- Expo / React Native ---
+# You have an .expo folder in the root
 .expo/
+# You have node_modules in the root
 node_modules/
 *.log
 
-# Machine Learning models
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints/
+
+# --- Machine Learning models ---
+# Your folder is named "model" inside "backend"
+# Standard GitHub limit is 100MB; .keras files are usually larger.
 *.keras
 *.h5
-*.pt
-*.pth
-backend/model/
+backend/model/*.keras
+# If you want to save the .pkl files to GitHub (they are small), 
+# do NOT add them here.

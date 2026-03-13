@@ -6,18 +6,32 @@ from tensorflow.keras.applications.efficientnet import preprocess_input
 
 
 
-def preprocess_image(image_bytes):
+def apply_clahe(img, clip=1.2, grid=(16, 16)):
+    """Matches the preprocessing used during training"""
+    lab = cv2.cvtColor(img, cv2.COLOR_RGB2LAB) # Use RGB to LAB
+    l, a, b = cv2.split(lab)
+    clahe = cv2.createCLAHE(clipLimit=clip, tileGridSize=grid)
+    cl = clahe.apply(l)
+    limg = cv2.merge((cl, a, b))
+    return cv2.cvtColor(limg, cv2.COLOR_LAB2RGB)
 
+def preprocess_image(image_bytes):
+    # 1. Decode bytes
     img = np.frombuffer(image_bytes, np.uint8)
     img = cv2.imdecode(img, cv2.IMREAD_COLOR)
-
+    
+    # 2. Basic cleaning
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img_input = cv2.resize(img_rgb, (DEPLOY_IMG_SIZE, DEPLOY_IMG_SIZE))
+    img_resized = cv2.resize(img_rgb, (DEPLOY_IMG_SIZE, DEPLOY_IMG_SIZE))
 
-    img_array = np.expand_dims(img_input, axis=0)
-    img_array = preprocess_input(img_array)
+    # 3. ADDED: CLAHE Processing (Apply before normalization)
+    img_enhanced = apply_clahe(img_resized)
 
-    return img_input, img_array
+    # 4. Final Model Prep
+    img_array = np.expand_dims(img_enhanced, axis=0)
+    img_array = preprocess_input(img_array.astype('float32'))
+
+    return img_enhanced, img_array
 
 
 def prepare_clinical(age, sex):

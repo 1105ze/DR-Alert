@@ -1,0 +1,643 @@
+Patient_ID,Image_Path,Eye_Side,N,D,Other_Disease,Diagnostic_Keywords,Patient Age,Patient Sex,ID,G,C,A,H,M,O,Condition,Grade,Age_Scaled,Sex_F,Sex_M
+2425,3048_left.jpg,Left,1,0,0,normal fundus,61,Male,3048,0,0,0,0,0,0,Normal,0,0.6818181818181819,0.0,1.0
+2764,3387_left.jpg,Left,1,0,0,normal fundus,56,Male,3387,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+2500,3123_right.jpg,Right,1,0,0,normal fundus,66,Female,3123,0,0,0,0,0,0,Normal,0,0.7386363636363636,1.0,0.0
+1094,1136_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,67,Female,1136,0,0,0,0,0,0,DR,2,0.75,1.0,0.0
+3103,4244_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,73,Male,4244,0,0,0,0,0,0,DR,1,0.8181818181818182,0.0,1.0
+74,74_left.jpg,Left,0,1,1,"laser spot, moderate non proliferative retinopathy",68,Male,74,0,0,0,0,0,1,DR,2,0.7613636363636364,0.0,1.0
+3352,4519_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,54,Female,4519,0,0,0,0,0,0,DR,2,0.6022727272727273,1.0,0.0
+2990,4120_left.jpg,Left,0,1,1,"severe nonproliferative retinopathy, hypertensive retinopathy",61,Male,4120,0,0,0,1,0,0,DR,3,0.6818181818181819,0.0,1.0
+2040,2663_right.jpg,Right,1,0,0,normal fundus,61,Male,2663,0,0,0,0,0,0,Normal,0,0.6818181818181819,0.0,1.0
+2377,3000_right.jpg,Right,1,0,0,normal fundus,59,Female,3000,0,0,0,0,0,0,Normal,0,0.6590909090909092,1.0,0.0
+2323,2946_right.jpg,Right,1,0,0,normal fundus,64,Female,2946,0,0,0,0,0,0,Normal,0,0.7159090909090909,1.0,0.0
+2522,3145_right.jpg,Right,1,0,0,normal fundus,57,Female,3145,0,0,0,0,0,0,Normal,0,0.6363636363636364,1.0,0.0
+2991,4121_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,53,Male,4121,0,0,0,0,0,0,DR,2,0.5909090909090909,0.0,1.0
+2501,3124_right.jpg,Right,1,0,0,normal fundus,39,Female,3124,0,0,0,0,0,0,Normal,0,0.4318181818181818,1.0,0.0
+2331,2954_left.jpg,Left,1,0,0,normal fundus,51,Male,2954,0,0,0,0,0,0,Normal,0,0.5681818181818182,0.0,1.0
+2521,3144_left.jpg,Left,1,0,0,normal fundus,56,Female,3144,0,0,0,0,0,0,Normal,0,0.625,1.0,0.0
+11,11_right.jpg,Right,0,1,1,"moderate non proliferative retinopathy, hypertensive retinopathy",60,Female,11,0,0,0,1,0,0,DR,2,0.6704545454545455,1.0,0.0
+3386,4557_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,53,Female,4557,0,0,0,0,0,0,DR,1,0.5909090909090909,1.0,0.0
+3057,4197_left.jpg,Left,1,0,0,normal fundus,41,Female,4197,0,0,0,0,0,0,Normal,0,0.4545454545454546,1.0,0.0
+2865,3978_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,36,Male,3978,0,0,0,0,0,0,DR,1,0.39772727272727276,0.0,1.0
+2740,3363_left.jpg,Left,1,0,0,normal fundus,62,Female,3363,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+3443,4616_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,50,Male,4616,0,0,0,0,0,0,DR,1,0.5568181818181819,0.0,1.0
+1999,2622_right.jpg,Right,1,0,0,normal fundus,59,Male,2622,0,0,0,0,0,0,Normal,0,0.6590909090909092,0.0,1.0
+3034,4172_right.jpg,Right,1,0,0,normal fundus,59,Female,4172,0,0,0,0,0,0,Normal,0,0.6590909090909092,1.0,0.0
+2908,4029_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,36,Female,4029,0,0,0,0,0,0,DR,2,0.39772727272727276,1.0,0.0
+2505,3128_left.jpg,Left,1,0,0,normal fundus,43,Female,3128,0,0,0,0,0,0,Normal,0,0.4772727272727273,1.0,0.0
+2767,3390_left.jpg,Left,1,0,0,normal fundus,62,Female,3390,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+2652,3275_right.jpg,Right,1,0,0,normal fundus,59,Female,3275,0,0,0,0,0,0,Normal,0,0.6590909090909092,1.0,0.0
+3294,4449_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,45,Male,4449,0,0,0,0,0,0,DR,3,0.5,0.0,1.0
+1912,2535_left.jpg,Left,1,0,0,normal fundus,60,Female,2535,0,0,0,0,0,0,Normal,0,0.6704545454545455,1.0,0.0
+2753,3376_left.jpg,Left,1,0,0,normal fundus,53,Female,3376,0,0,0,0,0,0,Normal,0,0.5909090909090909,1.0,0.0
+2099,2722_left.jpg,Left,1,0,0,normal fundus,64,Female,2722,0,0,0,0,0,0,Normal,0,0.7159090909090909,1.0,0.0
+2686,3309_right.jpg,Right,1,0,0,normal fundus,56,Male,3309,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+1684,2228_left.jpg,Left,0,1,1,mild nonproliferative retinopathy,64,Female,2228,0,1,0,0,0,0,DR,1,0.7159090909090909,1.0,0.0
+1951,2574_right.jpg,Right,1,0,0,normal fundus,54,Female,2574,0,0,0,0,0,0,Normal,0,0.6022727272727273,1.0,0.0
+357,358_left.jpg,Left,0,1,1,mild nonproliferative retinopathy,47,Male,358,0,0,0,0,0,1,DR,1,0.5227272727272727,0.0,1.0
+2407,3030_right.jpg,Right,1,0,0,normal fundus,66,Male,3030,0,0,0,0,0,0,Normal,0,0.7386363636363636,0.0,1.0
+159,159_left.jpg,Left,0,1,1,mild nonproliferative retinopathy,69,Female,159,0,0,0,0,0,1,DR,1,0.7727272727272727,1.0,0.0
+855,857_right.jpg,Right,0,1,1,severe nonproliferative retinopathy,63,Male,857,0,0,0,0,0,1,DR,3,0.7045454545454546,0.0,1.0
+2528,3151_left.jpg,Left,1,0,0,normal fundus,67,Female,3151,0,0,0,0,0,0,Normal,0,0.75,1.0,0.0
+2743,3366_left.jpg,Left,1,0,0,normal fundus,54,Female,3366,0,0,0,0,0,0,Normal,0,0.6022727272727273,1.0,0.0
+3475,4651_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,41,Male,4651,0,0,0,0,0,0,DR,2,0.4545454545454546,0.0,1.0
+3345,4508_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,53,Female,4508,0,0,0,0,0,0,DR,3,0.5909090909090909,1.0,0.0
+699,701_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,60,Male,701,0,0,0,0,0,1,DR,2,0.6704545454545455,0.0,1.0
+3210,4354_right.jpg,Right,1,0,0,normal fundus,39,Male,4354,0,0,0,0,0,0,Normal,0,0.4318181818181818,0.0,1.0
+799,801_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,63,Male,801,0,0,0,0,0,0,DR,2,0.7045454545454546,0.0,1.0
+600,601_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,50,Female,601,0,0,0,0,0,1,DR,2,0.5568181818181819,1.0,0.0
+2644,3267_left.jpg,Left,1,0,0,normal fundus,37,Male,3267,0,0,0,0,0,0,Normal,0,0.4090909090909091,0.0,1.0
+2895,4014_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,60,Female,4014,0,0,0,0,0,0,DR,2,0.6704545454545455,1.0,0.0
+1741,2364_right.jpg,Right,1,0,0,normal fundus,58,Male,2364,0,0,0,0,0,0,Normal,0,0.6477272727272727,0.0,1.0
+2298,2921_right.jpg,Right,1,0,0,normal fundus,60,Male,2921,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+3392,4563_right.jpg,Right,1,0,0,normal fundus,54,Male,4563,0,0,0,0,0,0,Normal,0,0.6022727272727273,0.0,1.0
+2914,4036_left.jpg,Left,1,0,0,normal fundus,56,Male,4036,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+3244,4394_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,56,Male,4394,0,0,0,0,0,0,DR,1,0.625,0.0,1.0
+800,802_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,46,Male,802,0,0,0,0,0,1,DR,2,0.5113636363636364,0.0,1.0
+327,328_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,65,Female,328,0,0,0,0,0,1,DR,2,0.7272727272727273,1.0,0.0
+2097,2720_right.jpg,Right,1,0,0,normal fundus,65,Female,2720,0,0,0,0,0,0,Normal,0,0.7272727272727273,1.0,0.0
+2997,4127_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,57,Female,4127,0,0,0,0,0,0,DR,3,0.6363636363636364,1.0,0.0
+1856,2479_left.jpg,Left,1,0,0,normal fundus,40,Female,2479,0,0,0,0,0,0,Normal,0,0.44318181818181823,1.0,0.0
+2794,3417_right.jpg,Right,1,0,0,normal fundus,66,Male,3417,0,0,0,0,0,0,Normal,0,0.7386363636363636,0.0,1.0
+2980,4110_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,67,Male,4110,0,0,0,0,0,0,DR,2,0.75,0.0,1.0
+1705,2282_left.jpg,Left,0,1,1,severe proliferative diabetic retinopathy,64,Male,2282,0,1,0,0,0,1,DR,4,0.7159090909090909,0.0,1.0
+1040,1068_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,59,Male,1068,0,0,0,0,0,0,DR,2,0.6590909090909092,0.0,1.0
+2366,2989_left.jpg,Left,1,0,0,normal fundus,44,Male,2989,0,0,0,0,0,0,Normal,0,0.48863636363636365,0.0,1.0
+799,801_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,63,Male,801,0,0,0,0,0,0,DR,2,0.7045454545454546,0.0,1.0
+2947,4073_right.jpg,Right,0,1,0,proliferative diabetic retinopathy,52,Male,4073,0,0,0,0,0,0,DR,4,0.5795454545454546,0.0,1.0
+2738,3361_right.jpg,Right,1,0,0,normal fundus,64,Male,3361,0,0,0,0,0,0,Normal,0,0.7159090909090909,0.0,1.0
+1981,2604_left.jpg,Left,1,0,0,normal fundus,64,Female,2604,0,0,0,0,0,0,Normal,0,0.7159090909090909,1.0,0.0
+2108,2731_right.jpg,Right,1,0,0,normal fundus,69,Female,2731,0,0,0,0,0,0,Normal,0,0.7727272727272727,1.0,0.0
+2086,2709_right.jpg,Right,1,0,0,normal fundus,47,Male,2709,0,0,0,0,0,0,Normal,0,0.5227272727272727,0.0,1.0
+3413,4585_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,54,Female,4585,0,0,0,0,0,0,DR,2,0.6022727272727273,1.0,0.0
+1720,2343_left.jpg,Left,1,0,0,normal fundus,53,Male,2343,0,0,0,0,0,0,Normal,0,0.5909090909090909,0.0,1.0
+2509,3132_left.jpg,Left,1,0,0,normal fundus,54,Female,3132,0,0,0,0,0,0,Normal,0,0.6022727272727273,1.0,0.0
+2074,2697_right.jpg,Right,1,0,0,normal fundus,53,Female,2697,0,0,0,0,0,0,Normal,0,0.5909090909090909,1.0,0.0
+3237,4386_right.jpg,Right,0,1,0,severe nonproliferative retinopathy,54,Female,4386,0,0,0,0,0,0,DR,3,0.6022727272727273,1.0,0.0
+1727,2350_right.jpg,Right,1,0,0,normal fundus,67,Female,2350,0,0,0,0,0,0,Normal,0,0.75,1.0,0.0
+3060,4200_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,66,Female,4200,0,0,0,0,0,0,DR,1,0.7386363636363636,1.0,0.0
+752,754_right.jpg,Right,0,1,1,"hypertensive retinopathy, suspected diabetic retinopathy",64,Male,754,0,0,0,1,0,0,DR,1,0.7159090909090909,0.0,1.0
+1527,1974_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,65,Male,1974,1,0,0,0,0,0,DR,2,0.7272727272727273,0.0,1.0
+2593,3216_left.jpg,Left,1,0,0,normal fundus,81,Male,3216,0,0,0,0,0,0,Normal,0,0.9090909090909092,0.0,1.0
+3467,4640_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,69,Male,4640,0,0,0,0,0,0,DR,1,0.7727272727272727,0.0,1.0
+3189,4332_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,43,Male,4332,0,0,0,0,0,0,DR,2,0.4772727272727273,0.0,1.0
+505,506_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,73,Male,506,0,0,0,0,0,1,DR,1,0.8181818181818182,0.0,1.0
+2757,3380_right.jpg,Right,1,0,0,normal fundus,60,Female,3380,0,0,0,0,0,0,Normal,0,0.6704545454545455,1.0,0.0
+1721,2344_left.jpg,Left,1,0,0,normal fundus,42,Female,2344,0,0,0,0,0,0,Normal,0,0.46590909090909094,1.0,0.0
+2043,2666_left.jpg,Left,1,0,0,normal fundus,61,Male,2666,0,0,0,0,0,0,Normal,0,0.6818181818181819,0.0,1.0
+1738,2361_left.jpg,Left,1,0,0,normal fundus,46,Male,2361,0,0,0,0,0,0,Normal,0,0.5113636363636364,0.0,1.0
+2846,3953_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,50,Male,3953,0,0,0,0,0,0,DR,2,0.5568181818181819,0.0,1.0
+2508,3131_left.jpg,Left,1,0,0,normal fundus,37,Male,3131,0,0,0,0,0,0,Normal,0,0.4090909090909091,0.0,1.0
+1907,2530_right.jpg,Right,1,0,0,normal fundus,55,Male,2530,0,0,0,0,0,0,Normal,0,0.6136363636363636,0.0,1.0
+2519,3142_left.jpg,Left,1,0,0,normal fundus,61,Male,3142,0,0,0,0,0,0,Normal,0,0.6818181818181819,0.0,1.0
+2790,3413_left.jpg,Left,1,0,0,normal fundus,68,Male,3413,0,0,0,0,0,0,Normal,0,0.7613636363636364,0.0,1.0
+2426,3049_left.jpg,Left,1,0,0,normal fundus,46,Female,3049,0,0,0,0,0,0,Normal,0,0.5113636363636364,1.0,0.0
+2848,3955_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,67,Male,3955,0,0,0,0,0,0,DR,2,0.75,0.0,1.0
+2325,2948_right.jpg,Right,1,0,0,normal fundus,60,Male,2948,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+2002,2625_left.jpg,Left,1,0,0,normal fundus,51,Male,2625,0,0,0,0,0,0,Normal,0,0.5681818181818182,0.0,1.0
+1998,2621_left.jpg,Left,1,0,0,normal fundus,72,Male,2621,0,0,0,0,0,0,Normal,0,0.8068181818181819,0.0,1.0
+379,380_left.jpg,Left,0,1,1,mild nonproliferative retinopathy,57,Male,380,0,0,0,0,0,1,DR,1,0.6363636363636364,0.0,1.0
+1773,2396_left.jpg,Left,1,0,0,normal fundus,62,Female,2396,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+3144,4287_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,54,Male,4287,0,0,0,0,0,0,DR,1,0.6022727272727273,0.0,1.0
+2911,4033_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,45,Male,4033,0,0,0,0,0,0,DR,2,0.5,0.0,1.0
+485,486_right.jpg,Right,1,0,0,normal fundus,56,Male,486,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+2035,2658_left.jpg,Left,1,0,0,normal fundus,48,Male,2658,0,0,0,0,0,0,Normal,0,0.5340909090909091,0.0,1.0
+2745,3368_right.jpg,Right,1,0,0,normal fundus,55,Female,3368,0,0,0,0,0,0,Normal,0,0.6136363636363636,1.0,0.0
+3286,4440_left.jpg,Left,1,0,0,normal fundus,60,Male,4440,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+1812,2435_left.jpg,Left,1,0,0,normal fundus,28,Male,2435,0,0,0,0,0,0,Normal,0,0.3068181818181818,0.0,1.0
+2869,3982_right.jpg,Right,0,1,1,"moderate non proliferative retinopathy, hypertensive retinopathy",52,Male,3982,0,0,0,1,0,0,DR,2,0.5795454545454546,0.0,1.0
+2764,3387_right.jpg,Right,1,0,0,normal fundus,56,Male,3387,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+2264,2887_left.jpg,Left,1,0,0,normal fundus,49,Female,2887,0,0,0,0,0,0,Normal,0,0.5454545454545455,1.0,0.0
+3184,4327_left.jpg,Left,0,1,1,"mild nonproliferative retinopathy, hypertensive retinopathy",49,Male,4327,0,0,0,1,0,0,DR,1,0.5454545454545455,0.0,1.0
+444,445_right.jpg,Right,0,1,0,severe nonproliferative retinopathy,59,Male,445,0,0,0,0,0,0,DR,3,0.6590909090909092,0.0,1.0
+2005,2628_right.jpg,Right,1,0,0,normal fundus,48,Male,2628,0,0,0,0,0,0,Normal,0,0.5340909090909091,0.0,1.0
+2433,3056_left.jpg,Left,1,0,0,normal fundus,52,Male,3056,0,0,0,0,0,0,Normal,0,0.5795454545454546,0.0,1.0
+3260,4411_right.jpg,Right,1,0,0,normal fundus,52,Female,4411,0,0,0,0,0,0,Normal,0,0.5795454545454546,1.0,0.0
+421,422_right.jpg,Right,1,0,0,normal fundus,47,Male,422,0,0,0,0,0,1,Normal,0,0.5227272727272727,0.0,1.0
+2580,3203_right.jpg,Right,1,0,0,normal fundus,74,Female,3203,0,0,0,0,0,0,Normal,0,0.8295454545454546,1.0,0.0
+2402,3025_left.jpg,Left,1,0,0,normal fundus,58,Female,3025,0,0,0,0,0,0,Normal,0,0.6477272727272727,1.0,0.0
+2100,2723_left.jpg,Left,1,0,0,normal fundus,48,Male,2723,0,0,0,0,0,0,Normal,0,0.5340909090909091,0.0,1.0
+1754,2377_right.jpg,Right,1,0,0,normal fundus,51,Male,2377,0,0,0,0,0,0,Normal,0,0.5681818181818182,0.0,1.0
+2497,3120_left.jpg,Left,1,0,0,normal fundus,67,Male,3120,0,0,0,0,0,0,Normal,0,0.75,0.0,1.0
+2452,3075_left.jpg,Left,1,0,0,normal fundus,35,Male,3075,0,0,0,0,0,0,Normal,0,0.3863636363636364,0.0,1.0
+2184,2807_right.jpg,Right,1,0,0,normal fundus,54,Male,2807,0,0,0,0,0,0,Normal,0,0.6022727272727273,0.0,1.0
+1334,1496_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,31,Female,1496,1,0,0,0,0,0,DR,2,0.34090909090909094,1.0,0.0
+2552,3175_left.jpg,Left,1,0,0,normal fundus,70,Female,3175,0,0,0,0,0,0,Normal,0,0.7840909090909092,1.0,0.0
+3369,4539_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,42,Female,4539,0,0,0,0,0,0,DR,2,0.46590909090909094,1.0,0.0
+863,865_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,61,Male,865,0,0,0,0,0,1,DR,1,0.6818181818181819,0.0,1.0
+2080,2703_left.jpg,Left,1,0,0,normal fundus,70,Male,2703,0,0,0,0,0,0,Normal,0,0.7840909090909092,0.0,1.0
+1241,1364_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,53,Female,1364,0,0,0,0,1,0,DR,2,0.5909090909090909,1.0,0.0
+2746,3369_right.jpg,Right,1,0,0,normal fundus,50,Female,3369,0,0,0,0,0,0,Normal,0,0.5568181818181819,1.0,0.0
+2058,2681_right.jpg,Right,1,0,0,normal fundus,66,Female,2681,0,0,0,0,0,0,Normal,0,0.7386363636363636,1.0,0.0
+2689,3312_right.jpg,Right,1,0,0,normal fundus,74,Male,3312,0,0,0,0,0,0,Normal,0,0.8295454545454546,0.0,1.0
+2571,3194_right.jpg,Right,1,0,0,normal fundus,47,Male,3194,0,0,0,0,0,0,Normal,0,0.5227272727272727,0.0,1.0
+2260,2883_left.jpg,Left,1,0,0,normal fundus,72,Male,2883,0,0,0,0,0,0,Normal,0,0.8068181818181819,0.0,1.0
+1894,2517_right.jpg,Right,1,0,0,normal fundus,69,Male,2517,0,0,0,0,0,0,Normal,0,0.7727272727272727,0.0,1.0
+444,445_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,59,Male,445,0,0,0,0,0,0,DR,3,0.6590909090909092,0.0,1.0
+3348,4512_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,55,Male,4512,0,0,0,0,0,0,DR,1,0.6136363636363636,0.0,1.0
+287,288_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,57,Female,288,0,0,0,0,0,1,DR,2,0.6363636363636364,1.0,0.0
+728,730_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,59,Male,730,0,0,0,0,0,1,DR,1,0.6590909090909092,0.0,1.0
+2726,3349_left.jpg,Left,1,0,0,normal fundus,41,Male,3349,0,0,0,0,0,0,Normal,0,0.4545454545454546,0.0,1.0
+1861,2484_left.jpg,Left,1,0,0,normal fundus,60,Male,2484,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+1861,2484_right.jpg,Right,1,0,0,normal fundus,60,Male,2484,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+1848,2471_left.jpg,Left,1,0,0,normal fundus,56,Female,2471,0,0,0,0,0,0,Normal,0,0.625,1.0,0.0
+751,753_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,55,Female,753,0,0,0,0,0,1,DR,2,0.6136363636363636,1.0,0.0
+1899,2522_left.jpg,Left,1,0,0,normal fundus,60,Male,2522,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+2566,3189_right.jpg,Right,1,0,0,normal fundus,62,Female,3189,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+2641,3264_left.jpg,Left,1,0,0,normal fundus,63,Male,3264,0,0,0,0,0,0,Normal,0,0.7045454545454546,0.0,1.0
+366,367_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,53,Male,367,0,0,0,0,0,1,DR,2,0.5909090909090909,0.0,1.0
+3482,4664_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,63,Male,4664,0,0,0,0,0,0,DR,1,0.7045454545454546,0.0,1.0
+1793,2416_right.jpg,Right,1,0,0,normal fundus,72,Female,2416,0,0,0,0,0,0,Normal,0,0.8068181818181819,1.0,0.0
+2177,2800_left.jpg,Left,1,0,0,normal fundus,63,Female,2800,0,0,0,0,0,0,Normal,0,0.7045454545454546,1.0,0.0
+2525,3148_left.jpg,Left,1,0,0,normal fundus,47,Male,3148,0,0,0,0,0,0,Normal,0,0.5227272727272727,0.0,1.0
+2336,2959_right.jpg,Right,1,0,0,normal fundus,66,Female,2959,0,0,0,0,0,0,Normal,0,0.7386363636363636,1.0,0.0
+2609,3232_left.jpg,Left,1,0,0,normal fundus,59,Female,3232,0,0,0,0,0,0,Normal,0,0.6590909090909092,1.0,0.0
+2478,3101_left.jpg,Left,1,0,0,normal fundus,59,Male,3101,0,0,0,0,0,0,Normal,0,0.6590909090909092,0.0,1.0
+283,284_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,82,Male,284,0,0,0,0,0,0,DR,2,0.9204545454545455,0.0,1.0
+3279,4432_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,49,Male,4432,0,0,0,0,0,0,DR,2,0.5454545454545455,0.0,1.0
+2299,2922_right.jpg,Right,1,0,0,normal fundus,69,Female,2922,0,0,0,0,0,0,Normal,0,0.7727272727272727,1.0,0.0
+2600,3223_left.jpg,Left,1,0,0,normal fundus,56,Male,3223,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+1561,2099_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,69,Female,2099,0,1,0,0,0,0,DR,2,0.7727272727272727,1.0,0.0
+2569,3192_right.jpg,Right,1,0,0,normal fundus,58,Male,3192,0,0,0,0,0,0,Normal,0,0.6477272727272727,0.0,1.0
+2269,2892_left.jpg,Left,1,0,0,normal fundus,72,Male,2892,0,0,0,0,0,0,Normal,0,0.8068181818181819,0.0,1.0
+604,605_left.jpg,Left,0,1,1,"moderate non proliferative retinopathy, hypertensive retinopathy",52,Male,605,0,0,0,1,0,0,DR,2,0.5795454545454546,0.0,1.0
+1854,2477_right.jpg,Right,1,0,0,normal fundus,47,Male,2477,0,0,0,0,0,0,Normal,0,0.5227272727272727,0.0,1.0
+2871,3984_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,55,Male,3984,0,0,0,0,0,0,DR,1,0.6136363636363636,0.0,1.0
+1713,2336_left.jpg,Left,1,0,0,normal fundus,44,Female,2336,0,0,0,0,0,0,Normal,0,0.48863636363636365,1.0,0.0
+2409,3032_right.jpg,Right,1,0,0,normal fundus,64,Female,3032,0,0,0,0,0,0,Normal,0,0.7159090909090909,1.0,0.0
+3322,4480_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,63,Female,4480,0,0,0,0,0,0,DR,2,0.7045454545454546,1.0,0.0
+3329,4489_left.jpg,Left,1,0,0,normal fundus,54,Female,4489,0,0,0,0,0,0,Normal,0,0.6022727272727273,1.0,0.0
+176,176_left.jpg,Left,0,1,1,"moderate non proliferative retinopathy, hypertensive retinopathy",65,Female,176,0,0,0,1,0,0,DR,2,0.7272727272727273,1.0,0.0
+2978,4107_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,48,Male,4107,0,0,0,0,0,0,DR,2,0.5340909090909091,0.0,1.0
+2147,2770_left.jpg,Left,1,0,0,normal fundus,59,Female,2770,0,0,0,0,0,0,Normal,0,0.6590909090909092,1.0,0.0
+3146,4289_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,46,Male,4289,0,0,0,0,0,0,DR,2,0.5113636363636364,0.0,1.0
+3466,4639_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,60,Female,4639,0,0,0,0,0,0,DR,1,0.6704545454545455,1.0,0.0
+2639,3262_left.jpg,Left,1,0,0,normal fundus,57,Male,3262,0,0,0,0,0,0,Normal,0,0.6363636363636364,0.0,1.0
+1710,2333_left.jpg,Left,1,0,0,normal fundus,30,Female,2333,0,0,0,0,0,0,Normal,0,0.3295454545454546,1.0,0.0
+896,898_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,77,Female,898,0,0,0,0,0,1,DR,1,0.8636363636363636,1.0,0.0
+1857,2480_left.jpg,Left,1,0,0,normal fundus,63,Female,2480,0,0,0,0,0,0,Normal,0,0.7045454545454546,1.0,0.0
+2264,2887_right.jpg,Right,1,0,0,normal fundus,49,Female,2887,0,0,0,0,0,0,Normal,0,0.5454545454545455,1.0,0.0
+3438,4611_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,66,Male,4611,0,0,0,0,0,0,DR,2,0.7386363636363636,0.0,1.0
+2010,2633_left.jpg,Left,1,0,0,normal fundus,62,Female,2633,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+2074,2697_left.jpg,Left,1,0,0,normal fundus,53,Female,2697,0,0,0,0,0,0,Normal,0,0.5909090909090909,1.0,0.0
+2805,3428_right.jpg,Right,1,0,0,normal fundus,60,Male,3428,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+2627,3250_left.jpg,Left,1,0,0,normal fundus,44,Male,3250,0,0,0,0,0,0,Normal,0,0.48863636363636365,0.0,1.0
+2431,3054_right.jpg,Right,1,0,0,normal fundus,65,Male,3054,0,0,0,0,0,0,Normal,0,0.7272727272727273,0.0,1.0
+2842,3949_left.jpg,Left,1,0,0,normal fundus,67,Male,3949,0,0,0,0,0,0,Normal,0,0.75,0.0,1.0
+866,868_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,55,Female,868,0,0,0,0,0,1,DR,2,0.6136363636363636,1.0,0.0
+2194,2817_right.jpg,Right,1,0,0,normal fundus,57,Male,2817,0,0,0,0,0,0,Normal,0,0.6363636363636364,0.0,1.0
+3054,4194_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,50,Female,4194,0,0,0,0,0,0,DR,1,0.5568181818181819,1.0,0.0
+3163,4306_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,70,Male,4306,0,0,0,0,0,0,DR,2,0.7840909090909092,0.0,1.0
+2100,2723_right.jpg,Right,1,0,0,normal fundus,48,Male,2723,0,0,0,0,0,0,Normal,0,0.5340909090909091,0.0,1.0
+2817,3440_right.jpg,Right,1,0,0,normal fundus,63,Male,3440,0,0,0,0,0,0,Normal,0,0.7045454545454546,0.0,1.0
+2981,4111_left.jpg,Left,1,0,0,normal fundus,70,Male,4111,0,0,0,0,0,0,Normal,0,0.7840909090909092,0.0,1.0
+3000,4130_left.jpg,Left,1,0,0,normal fundus,58,Female,4130,0,0,0,0,0,0,Normal,0,0.6477272727272727,1.0,0.0
+3255,4406_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,63,Male,4406,0,0,0,0,0,0,DR,2,0.7045454545454546,0.0,1.0
+1841,2464_left.jpg,Left,1,0,0,normal fundus,68,Female,2464,0,0,0,0,0,0,Normal,0,0.7613636363636364,1.0,0.0
+2878,3993_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,52,Male,3993,0,0,0,0,0,0,DR,2,0.5795454545454546,0.0,1.0
+2912,4034_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,41,Female,4034,0,0,0,0,0,0,DR,1,0.4545454545454546,1.0,0.0
+3100,4241_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,57,Male,4241,0,0,0,0,0,0,DR,2,0.6363636363636364,0.0,1.0
+3012,4146_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,57,Female,4146,0,0,0,0,0,0,DR,2,0.6363636363636364,1.0,0.0
+3448,4621_left.jpg,Left,1,0,0,normal fundus,67,Male,4621,0,0,0,0,0,0,Normal,0,0.75,0.0,1.0
+2634,3257_left.jpg,Left,1,0,0,normal fundus,56,Male,3257,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+2769,3392_left.jpg,Left,1,0,0,normal fundus,56,Male,3392,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+3256,4407_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,54,Male,4407,0,0,0,0,0,0,DR,3,0.6022727272727273,0.0,1.0
+2381,3004_left.jpg,Left,1,0,0,normal fundus,66,Male,3004,0,0,0,0,0,0,Normal,0,0.7386363636363636,0.0,1.0
+2843,3950_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,78,Male,3950,0,0,0,0,0,0,DR,1,0.875,0.0,1.0
+3121,4263_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,49,Female,4263,0,0,0,0,0,0,DR,2,0.5454545454545455,1.0,0.0
+3083,4223_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,65,Male,4223,0,0,0,0,0,0,DR,3,0.7272727272727273,0.0,1.0
+2809,3432_right.jpg,Right,1,0,0,normal fundus,76,Female,3432,0,0,0,0,0,0,Normal,0,0.8522727272727273,1.0,0.0
+3454,4627_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,63,Female,4627,0,0,0,0,0,0,DR,1,0.7045454545454546,1.0,0.0
+3183,4326_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,66,Female,4326,0,0,0,0,0,0,DR,2,0.7386363636363636,1.0,0.0
+1974,2597_left.jpg,Left,1,0,0,normal fundus,61,Male,2597,0,0,0,0,0,0,Normal,0,0.6818181818181819,0.0,1.0
+2903,4024_left.jpg,Left,1,0,0,normal fundus,63,Female,4024,0,0,0,0,0,0,Normal,0,0.7045454545454546,1.0,0.0
+1724,2347_left.jpg,Left,1,0,0,normal fundus,74,Female,2347,0,0,0,0,0,0,Normal,0,0.8295454545454546,1.0,0.0
+2302,2925_right.jpg,Right,1,0,0,normal fundus,65,Male,2925,0,0,0,0,0,0,Normal,0,0.7272727272727273,0.0,1.0
+2943,4068_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,58,Male,4068,0,0,1,0,0,0,DR,2,0.6477272727272727,0.0,1.0
+133,133_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,59,Female,133,0,0,0,0,0,1,DR,2,0.6590909090909092,1.0,0.0
+1096,1138_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,46,Male,1138,0,0,0,0,0,0,DR,2,0.5113636363636364,0.0,1.0
+3185,4328_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,47,Male,4328,0,0,0,0,0,0,DR,1,0.5227272727272727,0.0,1.0
+2378,3001_right.jpg,Right,1,0,0,normal fundus,46,Female,3001,0,0,0,0,0,0,Normal,0,0.5113636363636364,1.0,0.0
+1749,2372_right.jpg,Right,1,0,0,normal fundus,80,Female,2372,0,0,0,0,0,0,Normal,0,0.8977272727272728,1.0,0.0
+93,93_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,70,Male,93,0,0,0,0,0,1,DR,2,0.7840909090909092,0.0,1.0
+1942,2565_right.jpg,Right,1,0,0,normal fundus,59,Female,2565,0,0,0,0,0,0,Normal,0,0.6590909090909092,1.0,0.0
+440,441_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,48,Male,441,0,0,0,0,0,1,DR,2,0.5340909090909091,0.0,1.0
+695,697_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,56,Female,697,0,0,0,0,0,1,DR,2,0.625,1.0,0.0
+2156,2779_left.jpg,Left,1,0,0,normal fundus,44,Male,2779,0,0,0,0,0,0,Normal,0,0.48863636363636365,0.0,1.0
+3358,4527_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,49,Male,4527,0,0,0,0,0,0,DR,1,0.5454545454545455,0.0,1.0
+1096,1138_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,46,Male,1138,0,0,0,0,0,0,DR,2,0.5113636363636364,0.0,1.0
+2925,4048_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,54,Female,4048,0,0,0,0,0,0,DR,1,0.6022727272727273,1.0,0.0
+1847,2470_right.jpg,Right,1,0,0,normal fundus,46,Female,2470,0,0,0,0,0,0,Normal,0,0.5113636363636364,1.0,0.0
+1747,2370_right.jpg,Right,1,0,0,normal fundus,46,Female,2370,0,0,0,0,0,0,Normal,0,0.5113636363636364,1.0,0.0
+738,740_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,56,Male,740,0,0,0,0,0,0,DR,1,0.625,0.0,1.0
+2463,3086_left.jpg,Left,1,0,0,normal fundus,45,Male,3086,0,0,0,0,0,0,Normal,0,0.5,0.0,1.0
+1860,2483_left.jpg,Left,1,0,0,normal fundus,33,Male,2483,0,0,0,0,0,0,Normal,0,0.36363636363636365,0.0,1.0
+2037,2660_left.jpg,Left,1,0,0,normal fundus,66,Female,2660,0,0,0,0,0,0,Normal,0,0.7386363636363636,1.0,0.0
+3299,4455_right.jpg,Right,1,0,0,normal fundus,65,Male,4455,0,0,0,0,0,0,Normal,0,0.7272727272727273,0.0,1.0
+1659,2201_left.jpg,Left,0,1,1,mild nonproliferative retinopathy,59,Male,2201,0,1,0,0,0,0,DR,1,0.6590909090909092,0.0,1.0
+1621,2161_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,59,Male,2161,0,1,0,0,0,0,DR,2,0.6590909090909092,0.0,1.0
+2499,3122_right.jpg,Right,1,0,0,normal fundus,49,Female,3122,0,0,0,0,0,0,Normal,0,0.5454545454545455,1.0,0.0
+537,538_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,62,Female,538,0,0,0,0,0,1,DR,2,0.6931818181818182,1.0,0.0
+3412,4584_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,42,Male,4584,0,0,0,0,0,0,DR,1,0.46590909090909094,0.0,1.0
+2057,2680_left.jpg,Left,1,0,0,normal fundus,51,Female,2680,0,0,0,0,0,0,Normal,0,0.5681818181818182,1.0,0.0
+1913,2536_right.jpg,Right,1,0,0,normal fundus,51,Female,2536,0,0,0,0,0,0,Normal,0,0.5681818181818182,1.0,0.0
+2632,3255_left.jpg,Left,1,0,0,normal fundus,63,Male,3255,0,0,0,0,0,0,Normal,0,0.7045454545454546,0.0,1.0
+2308,2931_right.jpg,Right,1,0,0,normal fundus,67,Male,2931,0,0,0,0,0,0,Normal,0,0.75,0.0,1.0
+2675,3298_right.jpg,Right,1,0,0,normal fundus,65,Male,3298,0,0,0,0,0,0,Normal,0,0.7272727272727273,0.0,1.0
+1682,2226_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,52,Female,2226,0,1,0,0,0,0,DR,2,0.5795454545454546,1.0,0.0
+2173,2796_right.jpg,Right,1,0,0,normal fundus,48,Male,2796,0,0,0,0,0,0,Normal,0,0.5340909090909091,0.0,1.0
+3477,4655_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,65,Male,4655,0,0,0,0,0,0,DR,1,0.7272727272727273,0.0,1.0
+357,358_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,47,Male,358,0,0,0,0,0,1,DR,1,0.5227272727272727,0.0,1.0
+3216,4360_left.jpg,Left,1,0,0,normal fundus,54,Female,4360,0,0,0,0,0,0,Normal,0,0.6022727272727273,1.0,0.0
+2359,2982_right.jpg,Right,1,0,0,normal fundus,64,Female,2982,0,0,0,0,0,0,Normal,0,0.7159090909090909,1.0,0.0
+2139,2762_right.jpg,Right,1,0,0,normal fundus,53,Male,2762,0,0,0,0,0,0,Normal,0,0.5909090909090909,0.0,1.0
+2802,3425_right.jpg,Right,1,0,0,normal fundus,58,Male,3425,0,0,0,0,0,0,Normal,0,0.6477272727272727,0.0,1.0
+2800,3423_left.jpg,Left,1,0,0,normal fundus,50,Male,3423,0,0,0,0,0,0,Normal,0,0.5568181818181819,0.0,1.0
+3119,4261_left.jpg,Left,1,0,0,normal fundus,35,Male,4261,0,0,0,0,0,0,Normal,0,0.3863636363636364,0.0,1.0
+2914,4036_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,56,Male,4036,0,0,0,0,0,0,DR,1,0.625,0.0,1.0
+934,936_right.jpg,Right,0,1,1,"laser spot, moderate non proliferative retinopathy",52,Male,936,0,0,0,0,0,1,DR,2,0.5795454545454546,0.0,1.0
+2219,2842_left.jpg,Left,1,0,0,normal fundus,45,Female,2842,0,0,0,0,0,0,Normal,0,0.5,1.0,0.0
+2036,2659_right.jpg,Right,1,0,0,normal fundus,56,Male,2659,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+3227,4373_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,65,Female,4373,0,0,0,0,0,0,DR,1,0.7272727272727273,1.0,0.0
+137,137_left.jpg,Left,1,0,0,normal fundus,44,Male,137,0,0,0,0,0,1,Normal,0,0.48863636363636365,0.0,1.0
+2780,3403_left.jpg,Left,1,0,0,normal fundus,59,Male,3403,0,0,0,0,0,0,Normal,0,0.6590909090909092,0.0,1.0
+3425,4597_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,54,Female,4597,0,0,0,0,0,0,DR,2,0.6022727272727273,1.0,0.0
+2893,4012_left.jpg,Left,0,1,1,"mild nonproliferative retinopathy, hypertensive retinopathy",56,Female,4012,0,0,0,1,0,0,DR,1,0.625,1.0,0.0
+2881,3996_right.jpg,Right,0,1,0,severe nonproliferative retinopathy,44,Female,3996,0,0,0,0,0,0,DR,3,0.48863636363636365,1.0,0.0
+2993,4123_right.jpg,Right,1,0,0,normal fundus,67,Female,4123,0,0,0,0,0,0,Normal,0,0.75,1.0,0.0
+1912,2535_right.jpg,Right,1,0,0,normal fundus,60,Female,2535,0,0,0,0,0,0,Normal,0,0.6704545454545455,1.0,0.0
+2369,2992_right.jpg,Right,1,0,0,normal fundus,74,Male,2992,0,0,0,0,0,0,Normal,0,0.8295454545454546,0.0,1.0
+2974,4102_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,54,Female,4102,0,0,0,0,0,0,DR,3,0.6022727272727273,1.0,0.0
+426,427_right.jpg,Right,1,0,0,normal fundus,56,Female,427,0,0,0,0,0,1,Normal,0,0.625,1.0,0.0
+2422,3045_right.jpg,Right,1,0,0,normal fundus,32,Female,3045,0,0,0,0,0,0,Normal,0,0.3522727272727273,1.0,0.0
+1878,2501_right.jpg,Right,1,0,0,normal fundus,50,Male,2501,0,0,0,0,0,0,Normal,0,0.5568181818181819,0.0,1.0
+1826,2449_right.jpg,Right,1,0,0,normal fundus,48,Female,2449,0,0,0,0,0,0,Normal,0,0.5340909090909091,1.0,0.0
+3428,4600_left.jpg,Left,0,1,1,"post retinal laser surgery, moderate non proliferative retinopathy",51,Male,4600,0,0,0,0,0,1,DR,2,0.5681818181818182,0.0,1.0
+2003,2626_left.jpg,Left,1,0,0,normal fundus,55,Female,2626,0,0,0,0,0,0,Normal,0,0.6136363636363636,1.0,0.0
+2888,4005_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,62,Female,4005,0,0,0,0,0,0,DR,1,0.6931818181818182,1.0,0.0
+2121,2744_right.jpg,Right,1,0,0,normal fundus,40,Male,2744,0,0,0,0,0,0,Normal,0,0.44318181818181823,0.0,1.0
+1984,2607_right.jpg,Right,1,0,0,normal fundus,69,Male,2607,0,0,0,0,0,0,Normal,0,0.7727272727272727,0.0,1.0
+2145,2768_left.jpg,Left,1,0,0,normal fundus,67,Male,2768,0,0,0,0,0,0,Normal,0,0.75,0.0,1.0
+3063,4203_left.jpg,Left,1,0,0,normal fundus,66,Female,4203,0,0,0,0,0,0,Normal,0,0.7386363636363636,1.0,0.0
+2153,2776_left.jpg,Left,1,0,0,normal fundus,54,Male,2776,0,0,0,0,0,0,Normal,0,0.6022727272727273,0.0,1.0
+2905,4026_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,55,Male,4026,0,0,0,0,0,0,DR,1,0.6136363636363636,0.0,1.0
+3272,4425_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,33,Female,4425,0,0,0,0,0,0,DR,2,0.36363636363636365,1.0,0.0
+3235,4384_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,58,Female,4384,0,0,0,0,0,0,DR,1,0.6477272727272727,1.0,0.0
+2984,4114_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,66,Female,4114,0,0,0,0,0,0,DR,1,0.7386363636363636,1.0,0.0
+2038,2661_left.jpg,Left,1,0,0,normal fundus,45,Female,2661,0,0,0,0,0,0,Normal,0,0.5,1.0,0.0
+2283,2906_left.jpg,Left,1,0,0,normal fundus,58,Male,2906,0,0,0,0,0,0,Normal,0,0.6477272727272727,0.0,1.0
+1985,2608_right.jpg,Right,1,0,0,normal fundus,54,Female,2608,0,0,0,0,0,0,Normal,0,0.6022727272727273,1.0,0.0
+2792,3415_right.jpg,Right,1,0,0,normal fundus,70,Female,3415,0,0,0,0,0,0,Normal,0,0.7840909090909092,1.0,0.0
+2262,2885_left.jpg,Left,1,0,0,normal fundus,56,Female,2885,0,0,0,0,0,0,Normal,0,0.625,1.0,0.0
+2202,2825_right.jpg,Right,1,0,0,normal fundus,64,Female,2825,0,0,0,0,0,0,Normal,0,0.7159090909090909,1.0,0.0
+1905,2528_left.jpg,Left,1,0,0,normal fundus,37,Male,2528,0,0,0,0,0,0,Normal,0,0.4090909090909091,0.0,1.0
+3119,4261_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,35,Male,4261,0,0,0,0,0,0,DR,2,0.3863636363636364,0.0,1.0
+2245,2868_right.jpg,Right,1,0,0,normal fundus,53,Female,2868,0,0,0,0,0,0,Normal,0,0.5909090909090909,1.0,0.0
+3429,4601_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,36,Male,4601,0,0,0,0,0,0,DR,2,0.39772727272727276,0.0,1.0
+2049,2672_left.jpg,Left,1,0,0,normal fundus,28,Female,2672,0,0,0,0,0,0,Normal,0,0.3068181818181818,1.0,0.0
+977,981_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,80,Male,981,0,0,0,0,0,1,DR,2,0.8977272727272728,0.0,1.0
+2171,2794_right.jpg,Right,1,0,0,normal fundus,56,Male,2794,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+2403,3026_right.jpg,Right,1,0,0,normal fundus,66,Female,3026,0,0,0,0,0,0,Normal,0,0.7386363636363636,1.0,0.0
+2276,2899_right.jpg,Right,1,0,0,normal fundus,55,Female,2899,0,0,0,0,0,0,Normal,0,0.6136363636363636,1.0,0.0
+2200,2823_left.jpg,Left,1,0,0,normal fundus,59,Male,2823,0,0,0,0,0,0,Normal,0,0.6590909090909092,0.0,1.0
+2027,2650_right.jpg,Right,1,0,0,normal fundus,51,Female,2650,0,0,0,0,0,0,Normal,0,0.5681818181818182,1.0,0.0
+2932,4055_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,61,Male,4055,0,0,0,1,0,0,DR,1,0.6818181818181819,0.0,1.0
+2053,2676_left.jpg,Left,1,0,0,normal fundus,58,Female,2676,0,0,0,0,0,0,Normal,0,0.6477272727272727,1.0,0.0
+2897,4016_right.jpg,Right,1,0,0,normal fundus,35,Female,4016,0,0,0,0,0,0,Normal,0,0.3863636363636364,1.0,0.0
+465,466_right.jpg,Right,0,1,1,"moderate non proliferative retinopathy, laser spot",62,Male,466,0,0,0,0,0,1,DR,2,0.6931818181818182,0.0,1.0
+536,537_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,61,Female,537,0,0,0,0,0,1,DR,1,0.6818181818181819,1.0,0.0
+2602,3225_left.jpg,Left,1,0,0,normal fundus,67,Male,3225,0,0,0,0,0,0,Normal,0,0.75,0.0,1.0
+2696,3319_left.jpg,Left,1,0,0,normal fundus,71,Female,3319,0,0,0,0,0,0,Normal,0,0.7954545454545455,1.0,0.0
+3251,4401_right.jpg,Right,0,1,0,severe nonproliferative retinopathy,78,Male,4401,0,0,0,0,0,0,DR,3,0.875,0.0,1.0
+3240,4389_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,54,Male,4389,0,0,0,0,0,0,DR,2,0.6022727272727273,0.0,1.0
+3080,4220_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,55,Female,4220,0,0,0,0,0,0,DR,2,0.6136363636363636,1.0,0.0
+2756,3379_right.jpg,Right,1,0,0,normal fundus,45,Female,3379,0,0,0,0,0,0,Normal,0,0.5,1.0,0.0
+532,533_right.jpg,Right,0,1,0,severe nonproliferative retinopathy,69,Male,533,0,0,0,0,0,0,DR,3,0.7727272727272727,0.0,1.0
+2413,3036_right.jpg,Right,1,0,0,normal fundus,58,Female,3036,0,0,0,0,0,0,Normal,0,0.6477272727272727,1.0,0.0
+2374,2997_left.jpg,Left,1,0,0,normal fundus,55,Female,2997,0,0,0,0,0,0,Normal,0,0.6136363636363636,1.0,0.0
+1042,1072_left.jpg,Left,1,0,0,normal fundus,54,Female,1072,0,0,0,0,0,0,Normal,0,0.6022727272727273,1.0,0.0
+3125,4268_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,50,Male,4268,0,0,0,0,0,0,DR,3,0.5568181818181819,0.0,1.0
+3354,4522_right.jpg,Right,0,1,0,severe nonproliferative retinopathy,67,Male,4522,0,0,0,0,0,0,DR,3,0.75,0.0,1.0
+496,497_left.jpg,Left,0,1,1,"laser spot, moderate non proliferative retinopathy",53,Male,497,0,0,0,0,0,1,DR,2,0.5909090909090909,0.0,1.0
+1840,2463_left.jpg,Left,1,0,0,normal fundus,41,Female,2463,0,0,0,0,0,0,Normal,0,0.4545454545454546,1.0,0.0
+2428,3051_right.jpg,Right,1,0,0,normal fundus,56,Male,3051,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+1954,2577_right.jpg,Right,1,0,0,normal fundus,60,Male,2577,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+2059,2682_left.jpg,Left,1,0,0,normal fundus,54,Male,2682,0,0,0,0,0,0,Normal,0,0.6022727272727273,0.0,1.0
+685,687_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,52,Male,687,0,0,0,0,0,0,DR,2,0.5795454545454546,0.0,1.0
+434,435_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,68,Male,435,0,0,0,0,0,1,DR,2,0.7613636363636364,0.0,1.0
+19,19_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,45,Male,19,0,0,0,0,0,0,DR,1,0.5,0.0,1.0
+1961,2584_right.jpg,Right,1,0,0,normal fundus,62,Female,2584,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+2535,3158_left.jpg,Left,1,0,0,normal fundus,59,Female,3158,0,0,0,0,0,0,Normal,0,0.6590909090909092,1.0,0.0
+2075,2698_right.jpg,Right,1,0,0,normal fundus,74,Female,2698,0,0,0,0,0,0,Normal,0,0.8295454545454546,1.0,0.0
+1762,2385_left.jpg,Left,1,0,0,normal fundus,74,Female,2385,0,0,0,0,0,0,Normal,0,0.8295454545454546,1.0,0.0
+2511,3134_left.jpg,Left,1,0,0,normal fundus,33,Male,3134,0,0,0,0,0,0,Normal,0,0.36363636363636365,0.0,1.0
+3066,4206_right.jpg,Right,1,0,0,normal fundus,55,Female,4206,0,0,0,0,0,0,Normal,0,0.6136363636363636,1.0,0.0
+1965,2588_right.jpg,Right,1,0,0,normal fundus,75,Male,2588,0,0,0,0,0,0,Normal,0,0.8409090909090909,0.0,1.0
+2514,3137_left.jpg,Left,1,0,0,normal fundus,46,Female,3137,0,0,0,0,0,0,Normal,0,0.5113636363636364,1.0,0.0
+1070,1106_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,64,Male,1106,0,0,0,0,0,0,DR,2,0.7159090909090909,0.0,1.0
+2273,2896_right.jpg,Right,1,0,0,normal fundus,62,Female,2896,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+2207,2830_right.jpg,Right,1,0,0,normal fundus,60,Female,2830,0,0,0,0,0,0,Normal,0,0.6704545454545455,1.0,0.0
+3014,4148_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,48,Female,4148,0,0,0,0,0,0,DR,1,0.5340909090909091,1.0,0.0
+2373,2996_right.jpg,Right,1,0,0,normal fundus,32,Female,2996,0,0,0,0,0,0,Normal,0,0.3522727272727273,1.0,0.0
+1923,2546_right.jpg,Right,1,0,0,normal fundus,37,Male,2546,0,0,0,0,0,0,Normal,0,0.4090909090909091,0.0,1.0
+3153,4296_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,61,Female,4296,0,0,0,0,0,0,DR,2,0.6818181818181819,1.0,0.0
+2404,3027_left.jpg,Left,1,0,0,normal fundus,62,Male,3027,0,0,0,0,0,0,Normal,0,0.6931818181818182,0.0,1.0
+1785,2408_right.jpg,Right,1,0,0,normal fundus,78,Female,2408,0,0,0,0,0,0,Normal,0,0.875,1.0,0.0
+2159,2782_left.jpg,Left,1,0,0,normal fundus,64,Female,2782,0,0,0,0,0,0,Normal,0,0.7159090909090909,1.0,0.0
+3490,4677_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,38,Male,4677,0,0,0,0,0,0,DR,1,0.42045454545454547,0.0,1.0
+2409,3032_left.jpg,Left,1,0,0,normal fundus,64,Female,3032,0,0,0,0,0,0,Normal,0,0.7159090909090909,1.0,0.0
+139,139_left.jpg,Left,0,1,1,"severe nonproliferative retinopathy, hypertensive retinopathy",41,Male,139,0,0,0,1,0,0,DR,3,0.4545454545454546,0.0,1.0
+2456,3079_left.jpg,Left,1,0,0,normal fundus,66,Female,3079,0,0,0,0,0,0,Normal,0,0.7386363636363636,1.0,0.0
+2454,3077_right.jpg,Right,1,0,0,normal fundus,52,Male,3077,0,0,0,0,0,0,Normal,0,0.5795454545454546,0.0,1.0
+3223,4368_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,38,Male,4368,0,0,0,0,0,0,DR,2,0.42045454545454547,0.0,1.0
+3336,4497_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,52,Male,4497,0,0,0,0,0,0,DR,1,0.5795454545454546,0.0,1.0
+3087,4227_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,66,Male,4227,0,0,0,0,0,0,DR,2,0.7386363636363636,0.0,1.0
+1778,2401_right.jpg,Right,1,0,0,normal fundus,57,Female,2401,0,0,0,0,0,0,Normal,0,0.6363636363636364,1.0,0.0
+3385,4556_right.jpg,Right,1,0,0,normal fundus,68,Male,4556,0,0,0,0,0,0,Normal,0,0.7613636363636364,0.0,1.0
+2123,2746_right.jpg,Right,1,0,0,normal fundus,62,Male,2746,0,0,0,0,0,0,Normal,0,0.6931818181818182,0.0,1.0
+2646,3269_right.jpg,Right,1,0,0,normal fundus,61,Male,3269,0,0,0,0,0,0,Normal,0,0.6818181818181819,0.0,1.0
+1990,2613_right.jpg,Right,1,0,0,normal fundus,64,Male,2613,0,0,0,0,0,0,Normal,0,0.7159090909090909,0.0,1.0
+1718,2341_right.jpg,Right,1,0,0,normal fundus,69,Female,2341,0,0,0,0,0,0,Normal,0,0.7727272727272727,1.0,0.0
+3171,4314_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,64,Female,4314,0,0,0,0,0,0,DR,1,0.7159090909090909,1.0,0.0
+2685,3308_right.jpg,Right,1,0,0,normal fundus,62,Female,3308,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+2703,3326_left.jpg,Left,1,0,0,normal fundus,52,Male,3326,0,0,0,0,0,0,Normal,0,0.5795454545454546,0.0,1.0
+430,431_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,53,Male,431,0,0,0,0,0,1,DR,1,0.5909090909090909,0.0,1.0
+3324,4484_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,46,Female,4484,0,0,0,0,0,0,DR,2,0.5113636363636364,1.0,0.0
+2477,3100_left.jpg,Left,1,0,0,normal fundus,57,Male,3100,0,0,0,0,0,0,Normal,0,0.6363636363636364,0.0,1.0
+2270,2893_right.jpg,Right,1,0,0,normal fundus,62,Female,2893,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+1262,1406_left.jpg,Left,0,1,1,"suspected glaucoma, mild nonproliferative retinopathy",78,Female,1406,1,0,0,0,0,0,DR,1,0.875,1.0,0.0
+2346,2969_left.jpg,Left,1,0,0,normal fundus,69,Female,2969,0,0,0,0,0,0,Normal,0,0.7727272727272727,1.0,0.0
+716,718_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,52,Male,718,0,0,0,0,0,1,DR,2,0.5795454545454546,0.0,1.0
+1982,2605_left.jpg,Left,1,0,0,normal fundus,64,Male,2605,0,0,0,0,0,0,Normal,0,0.7159090909090909,0.0,1.0
+2611,3234_left.jpg,Left,1,0,0,normal fundus,60,Male,3234,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+1885,2508_right.jpg,Right,1,0,0,normal fundus,74,Male,2508,0,0,0,0,0,0,Normal,0,0.8295454545454546,0.0,1.0
+2175,2798_right.jpg,Right,1,0,0,normal fundus,60,Male,2798,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+2813,3436_right.jpg,Right,1,0,0,normal fundus,58,Female,3436,0,0,0,0,0,0,Normal,0,0.6477272727272727,1.0,0.0
+2295,2918_left.jpg,Left,1,0,0,normal fundus,75,Male,2918,0,0,0,0,0,0,Normal,0,0.8409090909090909,0.0,1.0
+742,744_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,65,Female,744,0,0,0,0,0,1,DR,2,0.7272727272727273,1.0,0.0
+2550,3173_left.jpg,Left,1,0,0,normal fundus,46,Male,3173,0,0,0,0,0,0,Normal,0,0.5113636363636364,0.0,1.0
+2159,2782_right.jpg,Right,1,0,0,normal fundus,64,Female,2782,0,0,0,0,0,0,Normal,0,0.7159090909090909,1.0,0.0
+2735,3358_left.jpg,Left,1,0,0,normal fundus,71,Female,3358,0,0,0,0,0,0,Normal,0,0.7954545454545455,1.0,0.0
+3393,4564_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,50,Male,4564,0,0,0,0,0,0,DR,1,0.5568181818181819,0.0,1.0
+2866,3979_left.jpg,Left,0,1,1,mild nonproliferative retinopathy,54,Male,3979,0,0,1,0,0,0,DR,1,0.6022727272727273,0.0,1.0
+914,916_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,45,Female,916,0,0,0,0,0,0,DR,2,0.5,1.0,0.0
+2020,2643_left.jpg,Left,1,0,0,normal fundus,28,Male,2643,0,0,0,0,0,0,Normal,0,0.3068181818181818,0.0,1.0
+3027,4163_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,46,Male,4163,0,0,0,0,0,0,DR,1,0.5113636363636364,0.0,1.0
+298,299_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,65,Female,299,0,0,0,0,0,1,DR,2,0.7272727272727273,1.0,0.0
+2157,2780_left.jpg,Left,1,0,0,normal fundus,57,Male,2780,0,0,0,0,0,0,Normal,0,0.6363636363636364,0.0,1.0
+186,186_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,45,Male,186,0,0,0,0,0,1,DR,1,0.5,0.0,1.0
+2660,3283_right.jpg,Right,1,0,0,normal fundus,63,Female,3283,0,0,0,0,0,0,Normal,0,0.7045454545454546,1.0,0.0
+3460,4633_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,66,Male,4633,0,0,0,0,0,0,DR,2,0.7386363636363636,0.0,1.0
+3421,4593_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,65,Male,4593,0,0,0,0,0,0,DR,2,0.7272727272727273,0.0,1.0
+435,436_left.jpg,Left,1,0,0,normal fundus,64,Male,436,0,0,0,0,0,1,Normal,0,0.7159090909090909,0.0,1.0
+2810,3433_right.jpg,Right,1,0,0,normal fundus,34,Male,3433,0,0,0,0,0,0,Normal,0,0.375,0.0,1.0
+2239,2862_right.jpg,Right,1,0,0,normal fundus,51,Female,2862,0,0,0,0,0,0,Normal,0,0.5681818181818182,1.0,0.0
+2165,2788_right.jpg,Right,1,0,0,normal fundus,58,Female,2788,0,0,0,0,0,0,Normal,0,0.6477272727272727,1.0,0.0
+2845,3952_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,56,Male,3952,0,0,0,0,0,0,DR,2,0.625,0.0,1.0
+2589,3212_right.jpg,Right,1,0,0,normal fundus,64,Male,3212,0,0,0,0,0,0,Normal,0,0.7159090909090909,0.0,1.0
+2128,2751_left.jpg,Left,1,0,0,normal fundus,69,Female,2751,0,0,0,0,0,0,Normal,0,0.7727272727272727,1.0,0.0
+1760,2383_left.jpg,Left,1,0,0,normal fundus,42,Male,2383,0,0,0,0,0,0,Normal,0,0.46590909090909094,0.0,1.0
+896,898_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,77,Female,898,0,0,0,0,0,1,DR,2,0.8636363636363636,1.0,0.0
+94,94_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,55,Male,94,0,0,0,0,0,1,DR,1,0.6136363636363636,0.0,1.0
+1719,2342_right.jpg,Right,1,0,0,normal fundus,76,Male,2342,0,0,0,0,0,0,Normal,0,0.8522727272727273,0.0,1.0
+1936,2559_right.jpg,Right,1,0,0,normal fundus,52,Male,2559,0,0,0,0,0,0,Normal,0,0.5795454545454546,0.0,1.0
+223,224_left.jpg,Left,0,1,1,"laser spot, moderate non proliferative retinopathy",54,Female,224,0,0,0,0,0,1,DR,2,0.6022727272727273,1.0,0.0
+2722,3345_right.jpg,Right,1,0,0,normal fundus,65,Female,3345,0,0,0,0,0,0,Normal,0,0.7272727272727273,1.0,0.0
+1050,1083_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,55,Female,1083,0,1,0,0,0,0,DR,2,0.6136363636363636,1.0,0.0
+3071,4211_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,45,Female,4211,0,0,0,0,0,0,DR,2,0.5,1.0,0.0
+2558,3181_right.jpg,Right,1,0,0,normal fundus,43,Female,3181,0,0,0,0,0,0,Normal,0,0.4772727272727273,1.0,0.0
+608,609_left.jpg,Left,0,1,1,mild nonproliferative retinopathy,60,Female,609,0,0,0,0,0,1,DR,1,0.6704545454545455,1.0,0.0
+2483,3106_left.jpg,Left,1,0,0,normal fundus,48,Male,3106,0,0,0,0,0,0,Normal,0,0.5340909090909091,0.0,1.0
+2257,2880_left.jpg,Left,1,0,0,normal fundus,49,Male,2880,0,0,0,0,0,0,Normal,0,0.5454545454545455,0.0,1.0
+3368,4538_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,44,Male,4538,0,0,0,0,0,0,DR,2,0.48863636363636365,0.0,1.0
+2982,4112_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,60,Male,4112,0,0,0,0,0,0,DR,1,0.6704545454545455,0.0,1.0
+3074,4214_left.jpg,Left,0,1,1,"mild nonproliferative retinopathy, hypertensive retinopathy",45,Male,4214,0,0,0,1,0,0,DR,1,0.5,0.0,1.0
+3136,4279_left.jpg,Left,0,1,0,proliferative diabetic retinopathy,47,Male,4279,0,0,0,0,0,0,DR,4,0.5227272727272727,0.0,1.0
+2191,2814_right.jpg,Right,1,0,0,normal fundus,62,Male,2814,0,0,0,0,0,0,Normal,0,0.6931818181818182,0.0,1.0
+2734,3357_left.jpg,Left,1,0,0,normal fundus,69,Male,3357,0,0,0,0,0,0,Normal,0,0.7727272727272727,0.0,1.0
+2031,2654_right.jpg,Right,1,0,0,normal fundus,76,Male,2654,0,0,0,0,0,0,Normal,0,0.8522727272727273,0.0,1.0
+3376,4546_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,71,Female,4546,0,0,0,0,0,0,DR,2,0.7954545454545455,1.0,0.0
+2179,2802_left.jpg,Left,1,0,0,normal fundus,65,Male,2802,0,0,0,0,0,0,Normal,0,0.7272727272727273,0.0,1.0
+3235,4384_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,58,Female,4384,0,0,0,0,0,0,DR,2,0.6477272727272727,1.0,0.0
+2984,4114_right.jpg,Right,1,0,0,normal fundus,66,Female,4114,0,0,0,0,0,0,Normal,0,0.7386363636363636,1.0,0.0
+2714,3337_left.jpg,Left,1,0,0,normal fundus,49,Male,3337,0,0,0,0,0,0,Normal,0,0.5454545454545455,0.0,1.0
+936,939_right.jpg,Right,1,0,0,normal fundus,41,Female,939,0,0,0,0,0,0,Normal,0,0.4545454545454546,1.0,0.0
+2789,3412_left.jpg,Left,1,0,0,normal fundus,70,Female,3412,0,0,0,0,0,0,Normal,0,0.7840909090909092,1.0,0.0
+491,492_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,49,Male,492,0,0,0,0,0,0,DR,2,0.5454545454545455,0.0,1.0
+1880,2503_left.jpg,Left,1,0,0,normal fundus,64,Female,2503,0,0,0,0,0,0,Normal,0,0.7159090909090909,1.0,0.0
+1857,2480_right.jpg,Right,1,0,0,normal fundus,63,Female,2480,0,0,0,0,0,0,Normal,0,0.7045454545454546,1.0,0.0
+3448,4621_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,67,Male,4621,0,0,0,0,0,0,DR,1,0.75,0.0,1.0
+2427,3050_left.jpg,Left,1,0,0,normal fundus,52,Male,3050,0,0,0,0,0,0,Normal,0,0.5795454545454546,0.0,1.0
+2545,3168_right.jpg,Right,1,0,0,normal fundus,53,Male,3168,0,0,0,0,0,0,Normal,0,0.5909090909090909,0.0,1.0
+3396,4567_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,42,Female,4567,0,0,0,0,0,0,DR,1,0.46590909090909094,1.0,0.0
+2311,2934_right.jpg,Right,1,0,0,normal fundus,43,Male,2934,0,0,0,0,0,0,Normal,0,0.4772727272727273,0.0,1.0
+3446,4619_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,34,Male,4619,0,0,0,0,0,0,DR,2,0.375,0.0,1.0
+2310,2933_left.jpg,Left,1,0,0,normal fundus,50,Female,2933,0,0,0,0,0,0,Normal,0,0.5568181818181819,1.0,0.0
+2229,2852_right.jpg,Right,1,0,0,normal fundus,64,Male,2852,0,0,0,0,0,0,Normal,0,0.7159090909090909,0.0,1.0
+2234,2857_left.jpg,Left,1,0,0,normal fundus,55,Female,2857,0,0,0,0,0,0,Normal,0,0.6136363636363636,1.0,0.0
+1461,1706_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,63,Female,1706,0,0,0,0,1,0,DR,2,0.7045454545454546,1.0,0.0
+2125,2748_right.jpg,Right,1,0,0,normal fundus,55,Female,2748,0,0,0,0,0,0,Normal,0,0.6136363636363636,1.0,0.0
+256,257_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,57,Male,257,0,0,0,0,0,1,DR,2,0.6363636363636364,0.0,1.0
+567,568_right.jpg,Right,0,1,1,"laser spot, moderate non proliferative retinopathy",55,Female,568,0,0,0,0,0,1,DR,2,0.6136363636363636,1.0,0.0
+1889,2512_left.jpg,Left,1,0,0,normal fundus,50,Male,2512,0,0,0,0,0,0,Normal,0,0.5568181818181819,0.0,1.0
+2184,2807_left.jpg,Left,1,0,0,normal fundus,54,Male,2807,0,0,0,0,0,0,Normal,0,0.6022727272727273,0.0,1.0
+2151,2774_right.jpg,Right,1,0,0,normal fundus,71,Female,2774,0,0,0,0,0,0,Normal,0,0.7954545454545455,1.0,0.0
+3166,4309_left.jpg,Left,1,0,0,normal fundus,43,Male,4309,0,0,0,0,0,0,Normal,0,0.4772727272727273,0.0,1.0
+3301,4458_right.jpg,Right,1,0,0,normal fundus,65,Male,4458,0,0,0,0,0,0,Normal,0,0.7272727272727273,0.0,1.0
+794,796_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,64,Male,796,0,0,0,0,0,1,DR,2,0.7159090909090909,0.0,1.0
+1916,2539_right.jpg,Right,1,0,0,normal fundus,52,Female,2539,0,0,0,0,0,0,Normal,0,0.5795454545454546,1.0,0.0
+2138,2761_right.jpg,Right,1,0,0,normal fundus,53,Female,2761,0,0,0,0,0,0,Normal,0,0.5909090909090909,1.0,0.0
+2454,3077_left.jpg,Left,1,0,0,normal fundus,52,Male,3077,0,0,0,0,0,0,Normal,0,0.5795454545454546,0.0,1.0
+3447,4620_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,52,Female,4620,0,0,0,0,0,0,DR,3,0.5795454545454546,1.0,0.0
+3328,4488_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,45,Male,4488,0,0,0,0,0,0,DR,2,0.5,0.0,1.0
+1569,2107_right.jpg,Right,0,1,1,"laser spot, moderate non proliferative retinopathy",78,Male,2107,0,1,0,0,0,1,DR,2,0.875,0.0,1.0
+2015,2638_right.jpg,Right,1,0,0,normal fundus,48,Male,2638,0,0,0,0,0,0,Normal,0,0.5340909090909091,0.0,1.0
+3357,4525_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,48,Male,4525,0,0,0,0,0,0,DR,2,0.5340909090909091,0.0,1.0
+2150,2773_left.jpg,Left,1,0,0,normal fundus,71,Female,2773,0,0,0,0,0,0,Normal,0,0.7954545454545455,1.0,0.0
+3185,4328_right.jpg,Right,1,0,0,normal fundus,47,Male,4328,0,0,0,0,0,0,Normal,0,0.5227272727272727,0.0,1.0
+2820,3443_right.jpg,Right,1,0,0,normal fundus,65,Male,3443,0,0,0,0,0,0,Normal,0,0.7272727272727273,0.0,1.0
+3067,4207_left.jpg,Left,0,1,1,"mild nonproliferative retinopathy, hypertensive retinopathy",66,Female,4207,0,0,0,1,0,0,DR,1,0.7386363636363636,1.0,0.0
+3033,4171_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,62,Female,4171,0,0,0,0,0,0,DR,2,0.6931818181818182,1.0,0.0
+3457,4630_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,52,Male,4630,0,0,0,0,0,0,DR,2,0.5795454545454546,0.0,1.0
+3151,4294_right.jpg,Right,0,1,0,severe nonproliferative retinopathy,57,Female,4294,0,0,0,0,0,0,DR,3,0.6363636363636364,1.0,0.0
+2503,3126_left.jpg,Left,1,0,0,normal fundus,41,Male,3126,0,0,0,0,0,0,Normal,0,0.4545454545454546,0.0,1.0
+626,627_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,58,Female,627,0,0,0,0,0,1,DR,1,0.6477272727272727,1.0,0.0
+1991,2614_left.jpg,Left,1,0,0,normal fundus,56,Male,2614,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+2915,4037_left.jpg,Left,0,1,1,"moderate non proliferative retinopathy, hypertensive retinopathy",58,Male,4037,0,0,0,1,0,0,DR,2,0.6477272727272727,0.0,1.0
+1795,2418_right.jpg,Right,1,0,0,normal fundus,40,Female,2418,0,0,0,0,0,0,Normal,0,0.44318181818181823,1.0,0.0
+3333,4494_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,60,Male,4494,0,0,0,0,0,0,DR,1,0.6704545454545455,0.0,1.0
+278,279_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,56,Female,279,0,0,0,0,0,1,DR,2,0.625,1.0,0.0
+3120,4262_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,60,Male,4262,0,0,0,0,0,0,DR,1,0.6704545454545455,0.0,1.0
+3370,4540_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,43,Male,4540,0,0,0,0,0,0,DR,1,0.4772727272727273,0.0,1.0
+647,648_right.jpg,Right,1,0,0,normal fundus,55,Female,648,0,0,0,0,0,1,Normal,0,0.6136363636363636,1.0,0.0
+2985,4115_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,60,Male,4115,0,0,0,0,0,0,DR,1,0.6704545454545455,0.0,1.0
+859,861_right.jpg,Right,0,1,1,"proliferative diabetic retinopathy, hypertensive retinopathy",55,Male,861,0,0,0,1,0,0,DR,4,0.6136363636363636,0.0,1.0
+1762,2385_right.jpg,Right,1,0,0,normal fundus,74,Female,2385,0,0,0,0,0,0,Normal,0,0.8295454545454546,1.0,0.0
+565,566_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,60,Male,566,0,0,0,0,0,1,DR,2,0.6704545454545455,0.0,1.0
+2582,3205_left.jpg,Left,1,0,0,normal fundus,60,Male,3205,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+2281,2904_right.jpg,Right,1,0,0,normal fundus,26,Male,2904,0,0,0,0,0,0,Normal,0,0.2840909090909091,0.0,1.0
+2682,3305_left.jpg,Left,1,0,0,normal fundus,86,Female,3305,0,0,0,0,0,0,Normal,0,0.9659090909090909,1.0,0.0
+2340,2963_right.jpg,Right,1,0,0,normal fundus,72,Male,2963,0,0,0,0,0,0,Normal,0,0.8068181818181819,0.0,1.0
+2626,3249_right.jpg,Right,1,0,0,normal fundus,56,Male,3249,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+461,462_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,60,Female,462,0,0,0,0,0,1,DR,1,0.6704545454545455,1.0,0.0
+1835,2458_left.jpg,Left,1,0,0,normal fundus,52,Female,2458,0,0,0,0,0,0,Normal,0,0.5795454545454546,1.0,0.0
+2072,2695_right.jpg,Right,1,0,0,normal fundus,63,Male,2695,0,0,0,0,0,0,Normal,0,0.7045454545454546,0.0,1.0
+1118,1167_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,64,Male,1167,0,1,0,0,0,0,DR,2,0.7159090909090909,0.0,1.0
+2713,3336_right.jpg,Right,1,0,0,normal fundus,62,Male,3336,0,0,0,0,0,0,Normal,0,0.6931818181818182,0.0,1.0
+2844,3951_left.jpg,Left,0,1,1,"mild nonproliferative retinopathy, hypertensive retinopathy",54,Male,3951,0,0,0,1,0,0,DR,1,0.6022727272727273,0.0,1.0
+1786,2409_left.jpg,Left,1,0,0,normal fundus,52,Male,2409,0,0,0,0,0,0,Normal,0,0.5795454545454546,0.0,1.0
+1846,2469_left.jpg,Left,1,0,0,normal fundus,74,Female,2469,0,0,0,0,0,0,Normal,0,0.8295454545454546,1.0,0.0
+1616,2156_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,78,Male,2156,0,1,0,0,0,0,DR,1,0.875,0.0,1.0
+2894,4013_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,46,Male,4013,0,0,0,0,0,0,DR,2,0.5113636363636364,0.0,1.0
+2739,3362_left.jpg,Left,1,0,0,normal fundus,55,Female,3362,0,0,0,0,0,0,Normal,0,0.6136363636363636,1.0,0.0
+2528,3151_right.jpg,Right,1,0,0,normal fundus,67,Female,3151,0,0,0,0,0,0,Normal,0,0.75,1.0,0.0
+443,444_right.jpg,Right,1,0,0,normal fundus,53,Male,444,0,0,0,0,0,1,Normal,0,0.5909090909090909,0.0,1.0
+915,917_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,60,Male,917,0,0,0,0,0,0,DR,2,0.6704545454545455,0.0,1.0
+3364,4533_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,49,Male,4533,0,0,0,0,0,0,DR,1,0.5454545454545455,0.0,1.0
+2369,2992_left.jpg,Left,1,0,0,normal fundus,74,Male,2992,0,0,0,0,0,0,Normal,0,0.8295454545454546,0.0,1.0
+2760,3383_right.jpg,Right,1,0,0,normal fundus,68,Male,3383,0,0,0,0,0,0,Normal,0,0.7613636363636364,0.0,1.0
+1973,2596_left.jpg,Left,1,0,0,normal fundus,63,Female,2596,0,0,0,0,0,0,Normal,0,0.7045454545454546,1.0,0.0
+1932,2555_left.jpg,Left,1,0,0,normal fundus,51,Male,2555,0,0,0,0,0,0,Normal,0,0.5681818181818182,0.0,1.0
+976,980_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,51,Male,980,0,0,0,0,0,0,DR,2,0.5681818181818182,0.0,1.0
+591,592_right.jpg,Right,0,1,1,"moderate non proliferative retinopathy, laser spot",61,Male,592,0,0,0,0,0,1,DR,2,0.6818181818181819,0.0,1.0
+2830,3936_left.jpg,Left,0,1,1,"moderate non proliferative retinopathy, hypertensive retinopathy",50,Male,3936,0,0,0,1,0,0,DR,2,0.5568181818181819,0.0,1.0
+3306,4464_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,51,Male,4464,0,0,0,0,0,0,DR,1,0.5681818181818182,0.0,1.0
+561,562_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,73,Male,562,0,0,0,0,0,0,DR,3,0.8181818181818182,0.0,1.0
+3288,4442_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,62,Female,4442,0,0,0,0,0,0,DR,2,0.6931818181818182,1.0,0.0
+1795,2418_left.jpg,Left,1,0,0,normal fundus,40,Female,2418,0,0,0,0,0,0,Normal,0,0.44318181818181823,1.0,0.0
+339,340_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,66,Male,340,0,0,0,0,0,1,DR,2,0.7386363636363636,0.0,1.0
+3417,4589_right.jpg,Right,1,0,0,normal fundus,56,Male,4589,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+568,569_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,64,Male,569,0,0,0,0,0,0,DR,2,0.7159090909090909,0.0,1.0
+3468,4641_left.jpg,Left,1,0,0,normal fundus,56,Male,4641,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+3323,4481_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,51,Female,4481,0,0,0,0,0,0,DR,1,0.5681818181818182,1.0,0.0
+2664,3287_left.jpg,Left,1,0,0,normal fundus,56,Male,3287,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+2435,3058_right.jpg,Right,1,0,0,normal fundus,66,Male,3058,0,0,0,0,0,0,Normal,0,0.7386363636363636,0.0,1.0
+1756,2379_left.jpg,Left,1,0,0,normal fundus,66,Male,2379,0,0,0,0,0,0,Normal,0,0.7386363636363636,0.0,1.0
+3491,4678_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,54,Male,4678,0,0,0,0,0,0,DR,1,0.6022727272727273,0.0,1.0
+1931,2554_left.jpg,Left,1,0,0,normal fundus,57,Male,2554,0,0,0,0,0,0,Normal,0,0.6363636363636364,0.0,1.0
+1978,2601_left.jpg,Left,1,0,0,normal fundus,67,Male,2601,0,0,0,0,0,0,Normal,0,0.75,0.0,1.0
+3213,4357_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,68,Female,4357,0,0,0,0,0,0,DR,2,0.7613636363636364,1.0,0.0
+303,304_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,59,Female,304,0,0,0,0,0,1,DR,2,0.6590909090909092,1.0,0.0
+3242,4392_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,17,Male,4392,0,0,0,0,0,0,DR,1,0.18181818181818182,0.0,1.0
+3395,4566_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,53,Female,4566,0,0,0,0,0,0,DR,2,0.5909090909090909,1.0,0.0
+3191,4334_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,49,Male,4334,0,0,0,0,0,0,DR,2,0.5454545454545455,0.0,1.0
+2732,3355_right.jpg,Right,1,0,0,normal fundus,63,Female,3355,0,0,0,0,0,0,Normal,0,0.7045454545454546,1.0,0.0
+801,803_right.jpg,Right,0,1,1,mild nonproliferative retinopathy,59,Male,803,0,0,0,0,0,1,DR,1,0.6590909090909092,0.0,1.0
+2059,2682_right.jpg,Right,1,0,0,normal fundus,54,Male,2682,0,0,0,0,0,0,Normal,0,0.6022727272727273,0.0,1.0
+347,348_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,66,Female,348,0,0,0,0,0,0,DR,2,0.7386363636363636,1.0,0.0
+3270,4422_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,68,Female,4422,0,0,0,0,0,0,DR,2,0.7613636363636364,1.0,0.0
+3367,4536_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,60,Female,4536,0,0,0,0,0,0,DR,2,0.6704545454545455,1.0,0.0
+1541,2010_left.jpg,Left,0,1,1,"moderate non proliferative retinopathy, suspected glaucoma",75,Male,2010,1,0,0,0,0,0,DR,2,0.8409090909090909,0.0,1.0
+2270,2893_left.jpg,Left,1,0,0,normal fundus,62,Female,2893,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+2242,2865_right.jpg,Right,1,0,0,normal fundus,63,Female,2865,0,0,0,0,0,0,Normal,0,0.7045454545454546,1.0,0.0
+2237,2860_right.jpg,Right,1,0,0,normal fundus,66,Female,2860,0,0,0,0,0,0,Normal,0,0.7386363636363636,1.0,0.0
+903,905_left.jpg,Left,0,1,1,"laser spot, moderate non proliferative retinopathy",60,Male,905,0,0,0,0,0,1,DR,2,0.6704545454545455,0.0,1.0
+205,206_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,67,Female,206,0,0,0,0,0,1,DR,2,0.75,1.0,0.0
+1855,2478_right.jpg,Right,1,0,0,normal fundus,56,Female,2478,0,0,0,0,0,0,Normal,0,0.625,1.0,0.0
+2492,3115_left.jpg,Left,1,0,0,normal fundus,62,Female,3115,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+1738,2361_right.jpg,Right,1,0,0,normal fundus,46,Male,2361,0,0,0,0,0,0,Normal,0,0.5113636363636364,0.0,1.0
+3446,4619_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,34,Male,4619,0,0,0,0,0,0,DR,2,0.375,0.0,1.0
+3140,4283_left.jpg,Left,1,0,0,normal fundus,61,Male,4283,0,0,0,0,0,0,Normal,0,0.6818181818181819,0.0,1.0
+644,645_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,43,Male,645,0,0,0,0,0,1,DR,2,0.4772727272727273,0.0,1.0
+3330,4491_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,43,Female,4491,0,0,0,0,0,0,DR,1,0.4772727272727273,1.0,0.0
+177,177_left.jpg,Left,0,1,1,"laser spot, mild nonproliferative retinopathy",56,Female,177,0,0,0,0,0,1,DR,1,0.625,1.0,0.0
+3263,4414_left.jpg,Left,1,0,0,normal fundus,73,Female,4414,0,0,0,0,0,0,Normal,0,0.8181818181818182,1.0,0.0
+2769,3392_right.jpg,Right,1,0,0,normal fundus,56,Male,3392,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+2964,4091_right.jpg,Right,0,1,1,"post retinal laser surgery, moderate non proliferative retinopathy",75,Male,4091,0,0,0,0,0,1,DR,2,0.8409090909090909,0.0,1.0
+603,604_right.jpg,Right,0,1,1,"moderate non proliferative retinopathy, laser spot",56,Female,604,0,0,0,0,0,1,DR,2,0.625,1.0,0.0
+3145,4288_left.jpg,Left,1,0,0,normal fundus,69,Female,4288,0,0,0,0,0,0,Normal,0,0.7727272727272727,1.0,0.0
+664,666_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,60,Female,666,0,0,0,0,0,1,DR,2,0.6704545454545455,1.0,0.0
+1863,2486_right.jpg,Right,1,0,0,normal fundus,50,Female,2486,0,0,0,0,0,0,Normal,0,0.5568181818181819,1.0,0.0
+566,567_left.jpg,Left,0,1,1,mild nonproliferative retinopathy,60,Male,567,0,0,0,0,1,0,DR,1,0.6704545454545455,0.0,1.0
+1997,2620_left.jpg,Left,1,0,0,normal fundus,44,Male,2620,0,0,0,0,0,0,Normal,0,0.48863636363636365,0.0,1.0
+1726,2349_right.jpg,Right,1,0,0,normal fundus,45,Male,2349,0,0,0,0,0,0,Normal,0,0.5,0.0,1.0
+763,765_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,70,Female,765,0,0,0,0,0,0,DR,3,0.7840909090909092,1.0,0.0
+2147,2770_right.jpg,Right,1,0,0,normal fundus,59,Female,2770,0,0,0,0,0,0,Normal,0,0.6590909090909092,1.0,0.0
+1987,2610_right.jpg,Right,1,0,0,normal fundus,46,Female,2610,0,0,0,0,0,0,Normal,0,0.5113636363636364,1.0,0.0
+2280,2903_right.jpg,Right,1,0,0,normal fundus,19,Male,2903,0,0,0,0,0,0,Normal,0,0.20454545454545456,0.0,1.0
+555,556_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,67,Male,556,0,0,0,0,0,0,DR,2,0.75,0.0,1.0
+386,387_left.jpg,Left,0,1,1,"laser spot, moderate non proliferative retinopathy",74,Male,387,0,0,0,0,0,1,DR,2,0.8295454545454546,0.0,1.0
+3243,4393_right.jpg,Right,0,1,0,severe nonproliferative retinopathy,50,Male,4393,0,0,0,0,0,0,DR,3,0.5568181818181819,0.0,1.0
+1751,2374_right.jpg,Right,1,0,0,normal fundus,47,Female,2374,0,0,0,0,0,0,Normal,0,0.5227272727272727,1.0,0.0
+3035,4173_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,70,Male,4173,0,0,0,0,0,0,DR,2,0.7840909090909092,0.0,1.0
+3325,4485_right.jpg,Right,0,1,1,"post retinal laser surgery, moderate non proliferative retinopathy",49,Female,4485,0,0,0,0,0,1,DR,2,0.5454545454545455,1.0,0.0
+2540,3163_right.jpg,Right,1,0,0,normal fundus,45,Male,3163,0,0,0,0,0,0,Normal,0,0.5,0.0,1.0
+2796,3419_left.jpg,Left,1,0,0,normal fundus,64,Male,3419,0,0,0,0,0,0,Normal,0,0.7159090909090909,0.0,1.0
+382,383_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,59,Female,383,0,0,0,0,0,1,DR,2,0.6590909090909092,1.0,0.0
+2761,3384_left.jpg,Left,1,0,0,normal fundus,67,Male,3384,0,0,0,0,0,0,Normal,0,0.75,0.0,1.0
+2419,3042_left.jpg,Left,1,0,0,normal fundus,66,Female,3042,0,0,0,0,0,0,Normal,0,0.7386363636363636,1.0,0.0
+2244,2867_right.jpg,Right,1,0,0,normal fundus,51,Male,2867,0,0,0,0,0,0,Normal,0,0.5681818181818182,0.0,1.0
+2573,3196_right.jpg,Right,1,0,0,normal fundus,56,Male,3196,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+2095,2718_right.jpg,Right,1,0,0,normal fundus,45,Male,2718,0,0,0,0,0,0,Normal,0,0.5,0.0,1.0
+3316,4474_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,53,Male,4474,0,0,0,0,0,0,DR,2,0.5909090909090909,0.0,1.0
+50,50_left.jpg,Left,0,1,1,"laser spot, moderate non proliferative retinopathy",59,Female,50,0,0,0,0,0,1,DR,2,0.6590909090909092,1.0,0.0
+2663,3286_right.jpg,Right,1,0,0,normal fundus,56,Male,3286,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+3094,4235_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,69,Female,4235,0,0,0,0,0,0,DR,2,0.7727272727272727,1.0,0.0
+2485,3108_right.jpg,Right,1,0,0,normal fundus,62,Female,3108,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+1920,2543_left.jpg,Left,1,0,0,normal fundus,49,Male,2543,0,0,0,0,0,0,Normal,0,0.5454545454545455,0.0,1.0
+506,507_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,57,Female,507,0,0,0,0,0,1,DR,2,0.6363636363636364,1.0,0.0
+2681,3304_left.jpg,Left,1,0,0,normal fundus,64,Female,3304,0,0,0,0,0,0,Normal,0,0.7159090909090909,1.0,0.0
+3174,4317_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,64,Male,4317,0,0,0,0,0,0,DR,2,0.7159090909090909,0.0,1.0
+3339,4500_right.jpg,Right,0,1,0,mild nonproliferative retinopathy,67,Female,4500,0,0,0,0,0,0,DR,1,0.75,1.0,0.0
+2068,2691_right.jpg,Right,1,0,0,normal fundus,54,Female,2691,0,0,0,0,0,0,Normal,0,0.6022727272727273,1.0,0.0
+2552,3175_right.jpg,Right,1,0,0,normal fundus,70,Female,3175,0,0,0,0,0,0,Normal,0,0.7840909090909092,1.0,0.0
+2111,2734_left.jpg,Left,1,0,0,normal fundus,1,Female,2734,0,0,0,0,0,0,Normal,0,0.0,1.0,0.0
+3164,4307_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,57,Male,4307,0,0,0,0,0,0,DR,2,0.6363636363636364,0.0,1.0
+2381,3004_right.jpg,Right,1,0,0,normal fundus,66,Male,3004,0,0,0,0,0,0,Normal,0,0.7386363636363636,0.0,1.0
+2436,3059_left.jpg,Left,1,0,0,normal fundus,61,Male,3059,0,0,0,0,0,0,Normal,0,0.6818181818181819,0.0,1.0
+2396,3019_left.jpg,Left,1,0,0,normal fundus,57,Male,3019,0,0,0,0,0,0,Normal,0,0.6363636363636364,0.0,1.0
+2169,2792_right.jpg,Right,1,0,0,normal fundus,54,Male,2792,0,0,0,0,0,0,Normal,0,0.6022727272727273,0.0,1.0
+2690,3313_left.jpg,Left,1,0,0,normal fundus,60,Male,3313,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+2205,2828_right.jpg,Right,1,0,0,normal fundus,60,Male,2828,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+1677,2220_left.jpg,Left,0,1,1,severe proliferative diabetic retinopathy,54,Female,2220,0,1,0,0,0,0,DR,4,0.6022727272727273,1.0,0.0
+3201,4344_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,46,Male,4344,0,0,0,0,0,0,DR,3,0.5113636363636364,0.0,1.0
+3186,4329_left.jpg,Left,1,0,0,normal fundus,58,Male,4329,0,0,0,0,0,0,Normal,0,0.6477272727272727,0.0,1.0
+2976,4105_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,46,Female,4105,0,0,0,0,0,0,DR,2,0.5113636363636364,1.0,0.0
+972,976_left.jpg,Left,0,1,1,mild nonproliferative retinopathy,78,Male,976,0,0,0,0,0,1,DR,1,0.875,0.0,1.0
+2180,2803_right.jpg,Right,1,0,0,normal fundus,71,Male,2803,0,0,0,0,0,0,Normal,0,0.7954545454545455,0.0,1.0
+1042,1072_right.jpg,Right,1,0,0,normal fundus,54,Female,1072,0,0,0,0,0,0,Normal,0,0.6022727272727273,1.0,0.0
+1103,1147_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,65,Female,1147,0,0,0,0,0,0,DR,2,0.7272727272727273,1.0,0.0
+1867,2490_right.jpg,Right,1,0,0,normal fundus,60,Male,2490,0,0,0,0,0,0,Normal,0,0.6704545454545455,0.0,1.0
+761,763_left.jpg,Left,0,1,1,moderate non proliferative retinopathy,59,Male,763,0,0,0,0,0,1,DR,2,0.6590909090909092,0.0,1.0
+111,111_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,64,Male,111,0,0,0,0,0,1,DR,2,0.7159090909090909,0.0,1.0
+2813,3436_left.jpg,Left,1,0,0,normal fundus,58,Female,3436,0,0,0,0,0,0,Normal,0,0.6477272727272727,1.0,0.0
+1626,2166_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,60,Male,2166,0,1,0,0,0,0,DR,2,0.6704545454545455,0.0,1.0
+2231,2854_right.jpg,Right,1,0,0,normal fundus,28,Male,2854,0,0,0,0,0,0,Normal,0,0.3068181818181818,0.0,1.0
+1690,2234_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,66,Female,2234,0,1,0,0,0,0,DR,2,0.7386363636363636,1.0,0.0
+2309,2932_right.jpg,Right,1,0,0,normal fundus,56,Male,2932,0,0,0,0,0,0,Normal,0,0.625,0.0,1.0
+2765,3388_right.jpg,Right,1,0,0,normal fundus,82,Female,3388,0,0,0,0,0,0,Normal,0,0.9204545454545455,1.0,0.0
+2486,3109_left.jpg,Left,1,0,0,normal fundus,69,Male,3109,0,0,0,0,0,0,Normal,0,0.7727272727272727,0.0,1.0
+2929,4052_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,55,Male,4052,0,0,0,0,0,0,DR,1,0.6136363636363636,0.0,1.0
+2502,3125_right.jpg,Right,1,0,0,normal fundus,52,Male,3125,0,0,0,0,0,0,Normal,0,0.5795454545454546,0.0,1.0
+2314,2937_left.jpg,Left,1,0,0,normal fundus,85,Female,2937,0,0,0,0,0,0,Normal,0,0.9545454545454546,1.0,0.0
+2501,3124_left.jpg,Left,1,0,0,normal fundus,39,Female,3124,0,0,0,0,0,0,Normal,0,0.4318181818181818,1.0,0.0
+1891,2514_left.jpg,Left,1,0,0,normal fundus,62,Male,2514,0,0,0,0,0,0,Normal,0,0.6931818181818182,0.0,1.0
+3418,4590_right.jpg,Right,1,0,0,normal fundus,40,Male,4590,0,0,0,0,0,0,Normal,0,0.44318181818181823,0.0,1.0
+2222,2845_right.jpg,Right,1,0,0,normal fundus,50,Male,2845,0,0,0,0,0,0,Normal,0,0.5568181818181819,0.0,1.0
+223,224_right.jpg,Right,0,1,1,moderate non proliferative retinopathy,54,Female,224,0,0,0,0,0,1,DR,2,0.6022727272727273,1.0,0.0
+3310,4468_left.jpg,Left,1,0,0,normal fundus,65,Male,4468,0,0,0,0,0,0,Normal,0,0.7272727272727273,0.0,1.0
+2799,3422_right.jpg,Right,1,0,0,normal fundus,75,Male,3422,0,0,0,0,0,0,Normal,0,0.8409090909090909,0.0,1.0
+3157,4300_left.jpg,Left,1,0,0,normal fundus,49,Female,4300,0,0,0,0,0,0,Normal,0,0.5454545454545455,1.0,0.0
+3275,4428_right.jpg,Right,1,0,0,normal fundus,57,Female,4428,0,0,0,0,0,0,Normal,0,0.6363636363636364,1.0,0.0
+1898,2521_right.jpg,Right,1,0,0,normal fundus,78,Female,2521,0,0,0,0,0,0,Normal,0,0.875,1.0,0.0
+2253,2876_left.jpg,Left,1,0,0,normal fundus,67,Female,2876,0,0,0,0,0,0,Normal,0,0.75,1.0,0.0
+2209,2832_left.jpg,Left,1,0,0,normal fundus,63,Male,2832,0,0,0,0,0,0,Normal,0,0.7045454545454546,0.0,1.0
+2377,3000_left.jpg,Left,1,0,0,normal fundus,59,Female,3000,0,0,0,0,0,0,Normal,0,0.6590909090909092,1.0,0.0
+468,469_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,69,Female,469,0,0,0,0,0,0,DR,2,0.7727272727272727,1.0,0.0
+3188,4331_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,75,Male,4331,0,0,0,0,0,0,DR,2,0.8409090909090909,0.0,1.0
+3360,4529_right.jpg,Right,0,1,0,moderate non proliferative retinopathy,52,Female,4529,0,0,0,0,0,0,DR,2,0.5795454545454546,1.0,0.0
+667,669_left.jpg,Left,0,1,0,mild nonproliferative retinopathy,56,Male,669,0,0,0,0,0,0,DR,1,0.625,0.0,1.0
+927,929_left.jpg,Left,0,1,1,mild nonproliferative retinopathy,55,Male,929,0,0,0,0,0,1,DR,1,0.6136363636363636,0.0,1.0
+2335,2958_right.jpg,Right,1,0,0,normal fundus,61,Female,2958,0,0,0,0,0,0,Normal,0,0.6818181818181819,1.0,0.0
+2961,4088_right.jpg,Right,0,1,1,"moderate non proliferative retinopathy, hypertensive retinopathy",42,Female,4088,0,0,0,1,0,0,DR,2,0.46590909090909094,1.0,0.0
+2549,3172_left.jpg,Left,1,0,0,normal fundus,68,Female,3172,0,0,0,0,0,0,Normal,0,0.7613636363636364,1.0,0.0
+2048,2671_left.jpg,Left,1,0,0,normal fundus,67,Male,2671,0,0,0,0,0,0,Normal,0,0.75,0.0,1.0
+1946,2569_left.jpg,Left,1,0,0,normal fundus,68,Female,2569,0,0,0,0,0,0,Normal,0,0.7613636363636364,1.0,0.0
+2010,2633_right.jpg,Right,1,0,0,normal fundus,62,Female,2633,0,0,0,0,0,0,Normal,0,0.6931818181818182,1.0,0.0
+228,229_left.jpg,Left,0,1,0,severe nonproliferative retinopathy,63,Female,229,0,0,0,0,0,0,DR,3,0.7045454545454546,1.0,0.0
+3222,4367_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,43,Female,4367,0,0,0,0,0,0,DR,2,0.4772727272727273,1.0,0.0
+2835,3941_left.jpg,Left,0,1,0,moderate non proliferative retinopathy,61,Male,3941,0,0,0,0,0,0,DR,2,0.6818181818181819,0.0,1.0
+1911,2534_left.jpg,Left,1,0,0,normal fundus,76,Male,2534,0,0,0,0,0,0,Normal,0,0.8522727272727273,0.0,1.0
+2692,3315_right.jpg,Right,1,0,0,normal fundus,57,Male,3315,0,0,0,0,0,0,Normal,0,0.6363636363636364,0.0,1.0
+2588,3211_left.jpg,Left,1,0,0,normal fundus,35,Female,3211,0,0,0,0,0,0,Normal,0,0.3863636363636364,1.0,0.0
+2562,3185_right.jpg,Right,1,0,0,normal fundus,63,Male,3185,0,0,0,0,0,0,Normal,0,0.7045454545454546,0.0,1.0
