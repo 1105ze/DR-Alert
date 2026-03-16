@@ -120,7 +120,7 @@ const history = () => {
             </View>
 
             <View>
-                <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
+                <TouchableOpacity style={styles.back} onPress={() => router.back()}>
                     <Text style={styles.historyText}>‹   Detection History</Text>
                 </TouchableOpacity>
             </View>

@@ -100,7 +100,7 @@ const history = () => {
     return (
         <View>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.profile} onPress={() => router.push('/home')}>
+                <TouchableOpacity style={styles.profile} onPress={() => router.push('/profile')}>
                     <Image
                       source={
                           profileImage
@@ -120,7 +120,7 @@ const history = () => {
             </View>
 
             <View>
-                <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
+                <TouchableOpacity style={styles.back} onPress={() => router.back()}>
                     <Text style={styles.historyText}>‹   Detection History</Text>
                 </TouchableOpacity>
             </View>

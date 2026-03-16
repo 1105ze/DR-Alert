@@ -175,7 +175,7 @@ const personaldetail = () => {
         <ScrollView>
             <View>
                 <View style={styles.header}>
-                    <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
+                    <TouchableOpacity style={styles.back} onPress={() => router.back()}>
                         <Text style={styles.backText}>‹   Personal Details</Text>
                     </TouchableOpacity>
                 </View>

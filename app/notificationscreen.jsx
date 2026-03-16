@@ -137,7 +137,7 @@ import { API_BASE_URL } from "../config";
     return (
        <View style={{ flex: 1 }}>
           <View style={styles.header}>
-              <TouchableOpacity style={styles.profile} onPress={() => router.push('/home')}>
+              <TouchableOpacity style={styles.profile} onPress={() => router.push('/profile')}>
                   <Image
                     source={
                         profileImage
@@ -157,7 +157,7 @@ import { API_BASE_URL } from "../config";
           </View>
 
           <View>
-              <TouchableOpacity style={styles.back} onPress={() => router.push('/home')}>
+              <TouchableOpacity style={styles.back} onPress={() => router.back()}>
                   <Text style={styles.notificationText}>‹   Notifications</Text>
               </TouchableOpacity>
           </View>
@@ -391,7 +391,7 @@ profileImage: {
     width: 20,
     height: 25,
     resizeMode: 'contain',
-    marginLeft: 20,
+    marginLeft: 40,
     tintColor: '#4da3ff',
   },
   unreadCard: {
