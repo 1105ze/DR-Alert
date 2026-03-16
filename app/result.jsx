@@ -237,7 +237,7 @@ const result = () => {
 
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.profile} onPress={() => router.push('/profile')}>
                     <Image

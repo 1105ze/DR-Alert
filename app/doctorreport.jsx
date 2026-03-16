@@ -696,7 +696,11 @@ username: {
   dietItem: { flexDirection: "row", alignItems: "center", marginBottom: 18 },
   goodIcon: { fontSize: 18, marginRight: 10 },
   badIcon: { fontSize: 18, marginRight: 10 },
-  dietText: { fontSize: 15 },
+  dietText: {   
+    fontSize: 15,
+    flex: 1,
+    flexWrap: "wrap", 
+  },
 
   tipRow: { paddingVertical: 6 },
   tipText: { fontSize: 15 },
