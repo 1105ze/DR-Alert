@@ -5,7 +5,7 @@ from django.conf import settings
 MODEL_PATH = os.path.join(
     settings.BASE_DIR,
     "model",
-    "multimodal_best_model.keras"
+    "multimodal_best_model(32_60_3.0).keras"
 )
 
 CLASS_NAMES = [
@@ -14,7 +14,6 @@ CLASS_NAMES = [
     "Moderate",
     "Severe",
     "Proliferative"
-    
 ]
 
 DEPLOY_IMG_SIZE = 512

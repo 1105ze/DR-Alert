@@ -20,7 +20,7 @@ def safe_crop_retina(img):
     This prevents the circular eye from being stretched into an oval.
     """
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    mask = gray > 10  # Filter out black background noise
+    mask = gray > 8
     
     if not mask.any():
         return img
@@ -29,8 +29,11 @@ def safe_crop_retina(img):
     y0, x0 = coords.min(axis=0)
     y1, x1 = coords.max(axis=0)
     
-    # Calculate bounding box dimensions
-    h, w = y1 - y0, x1 - x0
+    # Get the raw cropped region
+    cropped_img = img[y0:y1, x0:x1]
+    
+    # Calculate the size needed for a square canvas
+    h, w = cropped_img.shape[:2]
     side = max(h, w)
     
     # Create square canvas and center the eye
@@ -38,10 +41,10 @@ def safe_crop_retina(img):
     offset_y = (side - h) // 2
     offset_x = (side - w) // 2
     
-    square_img[offset_y:offset_y+h, offset_x:offset_x+w] = img[y0:y1, x0:x1]
+    square_img[offset_y:offset_y+h, offset_x:offset_x+w] = cropped_img
     return square_img
 
-def apply_clahe(img, clip=1.2, grid=(16, 16)):
+def apply_clahe(img, clip=2, grid=(16, 16)):
     """Enhances clinical features like microaneurysms and exudates"""
     lab = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
     l, a, b = cv2.split(lab)
